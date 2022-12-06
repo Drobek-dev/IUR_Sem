@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FirstDraft.View.AllFestivalsPage"
+             xmlns:viewModel="clr-namespace:FirstDraft.ViewModel"
+             xmlns:entities="clr-namespace:FirstDraft.Model.DatabaseFramework.Entities"
+             
+             x:DataType="viewModel:AllFestivalsPageVM"
+             Title="AllFestivalsPage">
+    <VerticalStackLayout>
+        <Label 
+            Text="Welcome to AllFestivalsPage"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+        <Button Text="Festival A" Command="{Binding NavigateCommand}"/>
+        <CollectionView x:Name="festivalsCollection" ItemsSource="{Binding ActiveFestivals}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="entities:Festival">
+                    <Grid Padding="10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Text="{Binding Name}" Command="{Binding Source={RelativeSource AncestorType={x:Type viewModel:AllFestivalsPageVM}},Path=NavigateCommand}"/>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </VerticalStackLayout>
+</ContentPage>
