@@ -17,6 +17,8 @@ public sealed class ExternalWorker
     public required string Function { get; set; }
     public required string FirstName { get; init; }
     public required string LastName { get; init; }
+    public required string PhoneNumber { get; init; }
+    public required string Email { get; init; }
 
     internal ObservableCollection<FestivalsExtWorkersRelations> FestivalsExtWorkersRelations { get; } = new();
 

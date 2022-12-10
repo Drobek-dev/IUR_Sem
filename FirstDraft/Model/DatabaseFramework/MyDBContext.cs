@@ -23,10 +23,6 @@ public class MyDBContext : DbContext
     {
         TypeOfDatabase = t;
     }
-    public MyDBContext()
-    {
-        TypeOfDatabase = TypeOfDatabase.LocalSQLite;
-    }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

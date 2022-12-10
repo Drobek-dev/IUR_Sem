@@ -2,11 +2,51 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="FirstDraft.View.SingleFestivalPage"
-             Title="SingleFestivalPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to SingleFestivalPage"
+             Title="SingleFestivalPage"
+             xmlns:entities="clr-namespace:FirstDraft.Model.DatabaseFramework.Entities"
+             xmlns:viewModel="clr-namespace:FirstDraft.ViewModel"
+             xmlns:support="clr-namespace:FirstDraft.Support"
+             x:DataType="viewModel:SingleFestivalPageVM">
+
+    <ContentPage.Resources>
+        <support:DateOnlyToString x:Key="dateToString"/>
+    </ContentPage.Resources>
+    
+    <Grid>
+       
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <Entry Grid.Row="0"
+            Text="{Binding Festival.Name}"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
-    </VerticalStackLayout>
+        <HorizontalStackLayout Grid.Row="1">
+            
+            <Entry
+                x:Name="StartDateEntry"
+                Text="{Binding Festival.StartDate, Converter={StaticResource dateToString}}"
+                VerticalOptions="Center" 
+                HorizontalOptions="StartAndExpand" />
+            <Entry
+                x:Name="EndDateEntry"
+                Text="{Binding Festival.EndDate, Converter={StaticResource dateToString}}"
+                VerticalOptions="Center" 
+                HorizontalOptions="EndAndExpand" />
+           
+                     
+
+        </HorizontalStackLayout>
+
+        <HorizontalStackLayout Grid.Row="3">
+        <Button Text="Externí pracovníci" Command="{Binding NavigateToExternalWorkersCommand}" CommandParameter="{Binding Festival.FestivalsExtWorkersRelations}"/>
+        <Button Text="Uložit změny" Command="{Binding SaveChangesCommand}"/>
+        <Button Text="Smazat" Command="{Binding DeleteFestivalCommand}"/>
+        </HorizontalStackLayout>
+    </Grid>
 </ContentPage>

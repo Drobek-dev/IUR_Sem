@@ -4,16 +4,17 @@ namespace FirstDraft.View;
 
 public partial class AllFestivalsPage : ContentPage
 {
-	public AllFestivalsPage(AllFestivalsPageVM vm)
+	public AllFestivalsPage()
 	{
 		InitializeComponent();
-		BindingContext = vm;
+		BindingContext = new AllFestivalsPageVM();
 	}
 
     protected override void OnAppearing()
     {
         base.OnAppearing();
 		BindingContext = new AllFestivalsPageVM();
+		
     }
 
 }

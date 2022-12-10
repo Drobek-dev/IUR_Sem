@@ -20,8 +20,6 @@ public static class MauiProgram
 #if DEBUG
 		builder.Logging.AddDebug();
 #endif
-		builder.Services.AddSingleton<AllFestivalsPage>();
-		builder.Services.AddSingleton<AllFestivalsPageVM>();
 		return builder.Build();
 	}
 }

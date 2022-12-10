@@ -4,17 +4,36 @@
              x:Class="FirstDraft.View.AllFestivalsPage"
              xmlns:viewModel="clr-namespace:FirstDraft.ViewModel"
              xmlns:entities="clr-namespace:FirstDraft.Model.DatabaseFramework.Entities"
+             xmlns:support="clr-namespace:FirstDraft.Support"
              
              x:DataType="viewModel:AllFestivalsPageVM"
              Title="AllFestivalsPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to AllFestivalsPage"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-        <Button Text="Festival A" Command="{Binding NavigateCommand}"/>
-        <CollectionView x:Name="festivalsCollection" ItemsSource="{Binding ActiveFestivals}">
+
+    <ContentPage.Resources>
+        <support:DateOnlyToString x:Key="dateToString" />
+   
+    </ContentPage.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+
+        <CollectionView x:Name="festivalsCollection" 
+                        Grid.Row="1" Grid.Column="2" 
+                        Grid.RowSpan="4"  
+                        ItemsSource="{Binding ActiveFestivals}">
+            
             <CollectionView.ItemTemplate>
+                
                 <DataTemplate x:DataType="entities:Festival">
                     <Grid Padding="10">
                         <Grid.RowDefinitions>
@@ -25,10 +44,61 @@
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <Button Text="{Binding Name}" Command="{Binding Source={RelativeSource AncestorType={x:Type viewModel:AllFestivalsPageVM}},Path=NavigateCommand}"/>
+                        <Button Text="{Binding Name}" 
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewModel:AllFestivalsPageVM}},Path=NavToFestivalSinglePageCommand}"
+                                CommandParameter="{Binding .}"/>
                     </Grid>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-    </VerticalStackLayout>
+
+        <Grid Grid.Column="1" Grid.Row="1"
+              Grid.RowSpan="3"
+              IsVisible="true">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Label Text="Festival Name"
+                   Grid.Row="0" Grid.Column="0"
+                   Padding="10"/>
+            <Entry Text="{Binding NewFestivalName}" 
+                   Grid.Row="0" Grid.Column="1" 
+                   Margin="10"/>
+                
+            <Label Text="Start date"
+                   Grid.Row="1" Grid.Column="0"
+                   Padding="10"/>
+            <Entry Text="{Binding NewStartDate, Converter={StaticResource dateToString}}"
+                   Grid.Row="1" Grid.Column="1"
+                   Margin="10"/>
+                
+            <Label Text="End date" 
+                   Grid.Row="2" Grid.Column="0"
+                   Padding="10"/>
+            <Entry Text="{Binding NewEndDate, Converter={StaticResource dateToString}}" 
+                   Grid.Row="2" Grid.Column="1"
+                   Margin="10"/>
+             
+            <Label Text="Location"
+                   Grid.Row="3" Grid.Column="0"
+                   Padding="10"/>
+            <Entry Text="{Binding Location}"
+                   Grid.Row="3" Grid.Column="1"
+                   Margin="10"/>
+                
+            <Button Text="Přidat"
+                    Command="{Binding AddNewFestivalCommand}"
+                    Grid.Row="4" Grid.Column="0"
+                    Padding="10"/>
+
+        </Grid>
+    </Grid>
 </ContentPage>

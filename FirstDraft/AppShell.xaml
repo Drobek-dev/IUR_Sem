@@ -8,17 +8,17 @@
     xmlns:viewModel="clr-namespace:FirstDraft.ViewModel">
 
 
-    <ShellContent
+    <!--<ShellContent
         Title="Home"
         ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
-    <!--<FlyoutItem Title="Database">
+        Route="MainPage" />-->
+    <FlyoutItem Title="Database">
         <ShellContent Title="Festivals" ContentTemplate="{DataTemplate view:AllFestivalsPage}"/>
         <ShellContent Title="Bin" ContentTemplate="{DataTemplate view:BinPage}"/>
     </FlyoutItem>
 
     <FlyoutItem Title="Extras">
         <ShellContent Title="About" ContentTemplate="{DataTemplate view:About}"/>
-    </FlyoutItem>-->
+    </FlyoutItem>
 
 </Shell>

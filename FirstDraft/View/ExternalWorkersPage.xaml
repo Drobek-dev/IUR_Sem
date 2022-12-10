@@ -1,12 +1,67 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="FirstDraft.Views.ExternalWorkersPage"
+             x:Class="FirstDraft.View.ExternalWorkersPage"
+             xmlns:viewModel ="clr-namespace:FirstDraft.ViewModel"
+             xmlns:entities ="clr-namespace:FirstDraft.Model.DatabaseFramework.Entities"
+             x:DataType="viewModel:ExternalWorkersVM"
              Title="ExternalWorkersPage">
     <VerticalStackLayout>
-        <Label 
-            Text="Welcome to External Workers!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+        <ListView x:Name="ExternalWorkersView" Grid.Row="2" ItemsSource="{Binding ExternalWorkers}">
+            <ListView.ItemTemplate>
+                <DataTemplate  x:DataType="entities:FestivalsExtWorkersRelations">
+                    <ViewCell >
+                        <Grid Padding="10" BackgroundColor="Grey">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+
+                            </Grid.ColumnDefinitions>
+
+                            <Label Grid.Column="0" Grid.Row="0" Text="Name: " Padding="10"/>
+                            <Entry Grid.Column="1" Grid.Row="0"
+                                   Text="{Binding ExternalWorker.FirstName}"
+                                   FontAttributes="Bold"
+                                   />
+
+                            <Entry Grid.Column="2" Grid.Row="0"
+                                   Text="{Binding ExternalWorker.LastName}"
+                                   FontAttributes="Bold"
+                                   />
+
+
+                            <Label Grid.Column="0" Grid.Row="1" Text="Function: " Padding="10"/>
+                            <Entry Grid.Column="1" Grid.Row="1"
+                                   Text="{Binding ExternalWorker.Function}"
+                                   FontAttributes="Bold"
+                                   />
+
+                            <Label Grid.Column="0" Grid.Row="2" Text="Phone number: " Padding="10"/>
+                            <Entry Grid.Column="1" Grid.Row="2"
+                                   Text="{Binding ExternalWorker.PhoneNumber}"
+                                   FontAttributes="Bold"
+                                   />
+
+                            <Label Grid.Column="0" Grid.Row="3" Text="Name" Padding="10"/>
+                            <Entry Grid.Column="1" Grid.Row="3"
+                                   Text="{Binding ExternalWorker.Email}"
+                                   FontAttributes="Bold"
+                                   />
+
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </VerticalStackLayout>
 </ContentPage>
