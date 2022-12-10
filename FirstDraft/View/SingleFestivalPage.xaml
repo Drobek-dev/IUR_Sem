@@ -15,9 +15,7 @@
     <Grid>
        
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="50"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
@@ -43,8 +41,8 @@
 
         </HorizontalStackLayout>
 
-        <HorizontalStackLayout Grid.Row="3">
-        <Button Text="Externí pracovníci" Command="{Binding NavigateToExternalWorkersCommand}" CommandParameter="{Binding Festival.FestivalsExtWorkersRelations}"/>
+        <HorizontalStackLayout Grid.Row="2">
+        <Button Text="Externí pracovníci" Command="{Binding NavigateToExternalWorkersCommand}" />
         <Button Text="Uložit změny" Command="{Binding SaveChangesCommand}"/>
         <Button Text="Smazat" Command="{Binding DeleteFestivalCommand}"/>
         </HorizontalStackLayout>

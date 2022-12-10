@@ -26,32 +26,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
-
-        <CollectionView x:Name="festivalsCollection" 
-                        Grid.Row="1" Grid.Column="2" 
-                        Grid.RowSpan="4"  
-                        ItemsSource="{Binding ActiveFestivals}">
-            
-            <CollectionView.ItemTemplate>
-                
-                <DataTemplate x:DataType="entities:Festival">
-                    <Grid Padding="10">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        <Button Text="{Binding Name}" 
-                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewModel:AllFestivalsPageVM}},Path=NavToFestivalSinglePageCommand}"
-                                CommandParameter="{Binding .}"/>
-                    </Grid>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-
+        
         <Grid Grid.Column="1" Grid.Row="1"
               Grid.RowSpan="3"
               IsVisible="true">
@@ -100,5 +75,31 @@
                     Padding="10"/>
 
         </Grid>
+
+        <CollectionView x:Name="festivalsCollection" 
+                        Grid.Row="1" Grid.Column="2" 
+                        Grid.RowSpan="4"  
+                        ItemsSource="{Binding ActiveFestivals}">
+            
+            <CollectionView.ItemTemplate>
+                
+                <DataTemplate x:DataType="entities:Festival">
+                    <Grid Padding="10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Text="{Binding Name}" 
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewModel:AllFestivalsPageVM}},Path=NavToFestivalSinglePageCommand}"
+                                CommandParameter="{Binding .}"/>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
     </Grid>
 </ContentPage>

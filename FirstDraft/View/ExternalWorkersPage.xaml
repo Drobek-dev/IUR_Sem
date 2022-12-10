@@ -6,14 +6,66 @@
              xmlns:entities ="clr-namespace:FirstDraft.Model.DatabaseFramework.Entities"
              x:DataType="viewModel:ExternalWorkersVM"
              Title="ExternalWorkersPage">
-    <VerticalStackLayout>
-        <ListView x:Name="ExternalWorkersView" Grid.Row="2" ItemsSource="{Binding ExternalWorkers}">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid BackgroundColor="BlueViolet" Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Label Text="First name: "
+                       Grid.Row="1" Grid.Column="1"/>
+            <Entry Text="{Binding FirstName}"
+                       Grid.Row="1" Grid.Column="2"/>
+
+            <Label Text="Last name: "
+                       Grid.Row="2" Grid.Column="1"/>
+            <Entry Text="{Binding LastName}"
+                       Grid.Row="2" Grid.Column="2"/>
+
+            <Label Text="Function: "
+                       Grid.Row="3" Grid.Column="1"/>
+            <Entry Text="{Binding Function}"
+                       Grid.Row="3" Grid.Column="2"/>
+
+            <Label Text="Phone number: "
+                       Grid.Row="4" Grid.Column="1"/>
+            <Entry Text="{Binding PhoneNumber}"
+                       Grid.Row="4" Grid.Column="2"/>
+
+            <Label Text="Email: "
+                       Grid.Row="5" Grid.Column="1"/>
+            <Entry Text="{Binding Email}"
+                       Grid.Row="5" Grid.Column="2"/>
+            <Button Text="Přidat"
+                        Grid.Row="5" Grid.Column="3"
+                        HorizontalOptions="End"
+                        Command="{Binding AddWorkerCommand}"/>
+
+        </Grid>
+        <ListView x:Name="ExternalWorkersView" Grid.Row="1"
+                  ItemsSource="{Binding ExternalWorkers}">
             <ListView.ItemTemplate>
                 <DataTemplate  x:DataType="entities:FestivalsExtWorkersRelations">
                     <ViewCell >
-                        <Grid Padding="10" BackgroundColor="Grey">
+                        <Grid Padding="10" BackgroundColor="DarkViolet">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="50" />
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
@@ -21,47 +73,59 @@
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50" />
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+
 
                             </Grid.ColumnDefinitions>
 
-                            <Label Grid.Column="0" Grid.Row="0" Text="Name: " Padding="10"/>
-                            <Entry Grid.Column="1" Grid.Row="0"
+                            <Label Grid.Column="1" Grid.Row="1" Text="Name: " Padding="10"/>
+                            <Entry Grid.Column="2" Grid.Row="1"
                                    Text="{Binding ExternalWorker.FirstName}"
                                    FontAttributes="Bold"
                                    />
 
-                            <Entry Grid.Column="2" Grid.Row="0"
+                            <Entry Grid.Column="3" Grid.Row="1"
                                    Text="{Binding ExternalWorker.LastName}"
                                    FontAttributes="Bold"
                                    />
 
 
-                            <Label Grid.Column="0" Grid.Row="1" Text="Function: " Padding="10"/>
-                            <Entry Grid.Column="1" Grid.Row="1"
+                            <Label Grid.Column="1" Grid.Row="2" Text="Function: " Padding="10"/>
+                            <Entry Grid.Column="2" Grid.Row="2"
                                    Text="{Binding ExternalWorker.Function}"
                                    FontAttributes="Bold"
                                    />
 
-                            <Label Grid.Column="0" Grid.Row="2" Text="Phone number: " Padding="10"/>
-                            <Entry Grid.Column="1" Grid.Row="2"
+                            <Label Grid.Column="1" Grid.Row="3" Text="Phone number: " Padding="10"/>
+                            <Entry Grid.Column="2" Grid.Row="3"
                                    Text="{Binding ExternalWorker.PhoneNumber}"
                                    FontAttributes="Bold"
                                    />
 
-                            <Label Grid.Column="0" Grid.Row="3" Text="Name" Padding="10"/>
-                            <Entry Grid.Column="1" Grid.Row="3"
+                            <Label Grid.Column="1" Grid.Row="4" Text="Name" Padding="10"/>
+                            <Entry Grid.Column="2" Grid.Row="4"
                                    Text="{Binding ExternalWorker.Email}"
                                    FontAttributes="Bold"
                                    />
 
+                            <Button Text="Uložit"
+                                    Grid.Row="2" Grid.Column="5"
+                                    HorizontalOptions="EndAndExpand"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewModel:ExternalWorkersVM}},Path=UpdateWorkerCommand}"
+                                    CommandParameter="{Binding ExternalWorker}"/>
+                            <Button Text="Smazat"
+                                    Grid.Row="3" Grid.Column="5"
+                                    HorizontalOptions="End"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewModel:ExternalWorkersVM}},Path=DeleteWorkerCommand}"
+                                    CommandParameter="{Binding ExternalWorker}"/>
                         </Grid>
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-    </VerticalStackLayout>
+    </Grid>
 </ContentPage>

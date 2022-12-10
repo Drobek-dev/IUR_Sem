@@ -16,27 +16,28 @@ namespace FirstDraft.ViewModel;
 [QueryProperty(nameof(Festival), nameof(Festival))]
 public partial class SingleFestivalPageVM : ObservableObject
 {
-    Task _saveChangesTask;
 
     [ObservableProperty]
     Festival _festival;
-    
+
+
 
     [RelayCommand]
-    async Task NavigateToExternalWorkers(ObservableCollection<FestivalsExtWorkersRelations> ews)
+    async Task NavigateToExternalWorkers()
     {
         await Shell.Current.GoToAsync(nameof(ExternalWorkersPage), new Dictionary<string, object>
         {
-            ["ExternalWorkers"] = ews
+            ["Festival"] = _festival,
+            ["ExternalWorkers"] = _festival.FestivalsExtWorkersRelations
         });
     }
 
-    bool CanExecute()
+ /*   bool CanExecute()
     {
         if (_saveChangesTask is not null && _saveChangesTask.Status == TaskStatus.Running)
             return false;
         return true;    
-    }
+    }*/
     [RelayCommand]
     async Task SaveChanges()
     {
@@ -60,6 +61,7 @@ public partial class SingleFestivalPageVM : ObservableObject
         }
         c.Festivals.Remove(_festival);
         await c.SaveChangesAsync();
+        await Shell.Current.GoToAsync("..");
     }
     
 }
