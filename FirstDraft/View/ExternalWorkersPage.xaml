@@ -7,7 +7,7 @@
              x:DataType="viewModel:ExternalWorkersVM"
              Title="ExternalWorkersPage">
 
-    <Grid>
+    <Grid MaximumHeightRequest="600">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
@@ -19,8 +19,8 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="50"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="50"/>
@@ -61,7 +61,7 @@
         <ListView x:Name="ExternalWorkersView" Grid.Row="1"
                   ItemsSource="{Binding ExternalWorkers}">
             <ListView.ItemTemplate>
-                <DataTemplate  x:DataType="entities:FestivalsExtWorkersRelations">
+                <DataTemplate x:DataType="entities:FestivalsExtWorkersRelations"  >
                     <ViewCell >
                         <Grid Padding="10" BackgroundColor="DarkViolet">
                             <Grid.RowDefinitions>
@@ -71,6 +71,7 @@
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
+                                <RowDefinition Height="50" />
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="50" />

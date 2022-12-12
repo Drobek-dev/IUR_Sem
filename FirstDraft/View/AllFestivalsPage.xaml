@@ -35,43 +35,45 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="50"/>
             </Grid.RowDefinitions>
             <Label Text="Festival Name"
-                   Grid.Row="0" Grid.Column="0"
+                   Grid.Row="1" Grid.Column="0"
                    Padding="10"/>
             <Entry Text="{Binding NewFestivalName}" 
-                   Grid.Row="0" Grid.Column="1" 
+                   Grid.Row="1" Grid.Column="1" 
                    Margin="10"/>
                 
             <Label Text="Start date"
-                   Grid.Row="1" Grid.Column="0"
+                   Grid.Row="2" Grid.Column="0"
                    Padding="10"/>
             <Entry Text="{Binding NewStartDate, Converter={StaticResource dateToString}}"
-                   Grid.Row="1" Grid.Column="1"
+                   Grid.Row="2" Grid.Column="1"
                    Margin="10"/>
                 
             <Label Text="End date" 
-                   Grid.Row="2" Grid.Column="0"
+                   Grid.Row="3" Grid.Column="0"
                    Padding="10"/>
             <Entry Text="{Binding NewEndDate, Converter={StaticResource dateToString}}" 
-                   Grid.Row="2" Grid.Column="1"
+                   Grid.Row="3" Grid.Column="1"
                    Margin="10"/>
              
             <Label Text="Location"
-                   Grid.Row="3" Grid.Column="0"
+                   Grid.Row="4" Grid.Column="0"
                    Padding="10"/>
             <Entry Text="{Binding Location}"
-                   Grid.Row="3" Grid.Column="1"
+                   Grid.Row="4" Grid.Column="1"
                    Margin="10"/>
                 
             <Button Text="Přidat"
                     Command="{Binding AddNewFestivalCommand}"
-                    Grid.Row="4" Grid.Column="0"
+                    Grid.Row="5" Grid.Column="0"
                     Padding="10"/>
 
         </Grid>

@@ -62,11 +62,12 @@ public partial class ExternalWorkersVM : ObservableObject
 
     }
     [RelayCommand]
-    static async Task DeleteWorker(ExternalWorker ew)
+    async Task DeleteWorker(ExternalWorker ew)
     {
         MyDBContext c = new(Support.TypeOfDatabase.CloudPostgreSQL);
         c.ExternalWorkers.Remove(ew);
         await c.SaveChangesAsync();
+        ExternalWorkers.Remove(ExternalWorkers.Where(few=> few.IDExternalWorker == ew.ID).First()); // Shady, but dunno how to
        
     }
 }

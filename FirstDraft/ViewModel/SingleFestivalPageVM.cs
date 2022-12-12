@@ -59,7 +59,9 @@ public partial class SingleFestivalPageVM : ObservableObject
         {
             c.ExternalWorkers.Remove(ew.ExternalWorker);
         }
-        c.Festivals.Remove(_festival);
+        c.Constructions.Remove(Festival.Construction);
+        c.Deconstructions.Remove(Festival.Deconstruction);
+        c.Festivals.Remove(Festival);
         await c.SaveChangesAsync();
         await Shell.Current.GoToAsync("..");
     }

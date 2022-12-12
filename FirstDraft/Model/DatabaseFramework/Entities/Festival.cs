@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -15,7 +16,7 @@ namespace FirstDraft.Model.DatabaseFramework.Entities;
 public class Festival : INotifyPropertyChanged
 {
 
-
+    
     public Guid ID { get; private init; }
 
     private string _name;
@@ -34,7 +35,17 @@ public class Festival : INotifyPropertyChanged
     public required DateOnly EndDate { get; init; }
     public required string Location {  get; init; }
 
-    public ObservableCollection<FestivalsExtWorkersRelations> FestivalsExtWorkersRelations { get; init; }
+    [ForeignKey(nameof(Construction))]
+    public Guid IDConstruction { get; init; }
+
+    public Construction Construction { get; init; } = new();
+
+    [ForeignKey(nameof(Deconstruction))]
+    public Guid IDDeconstruction { get; init; }
+    public Deconstruction Deconstruction { get; init; } = new();
+
+
+    public ObservableCollection<FestivalsExtWorkersRelations> FestivalsExtWorkersRelations { get; init; } = new();
 
     public event PropertyChangedEventHandler PropertyChanged;
     void OnPropertyChanged(string name)

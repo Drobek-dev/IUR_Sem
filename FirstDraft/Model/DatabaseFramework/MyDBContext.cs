@@ -18,6 +18,8 @@ public class MyDBContext : DbContext
     public DbSet<Festival> Festivals { get; private set; }
     public DbSet<FestivalsExtWorkersRelations> FestivalsExtWorkersRelations { get; private set; }
     public DbSet<ExternalWorker> ExternalWorkers { get; private set; }
+    public DbSet<Construction> Constructions { get; private set; }
+    public DbSet<Deconstruction> Deconstructions { get; private set; }
 
     public MyDBContext(TypeOfDatabase t)
     {
@@ -61,6 +63,20 @@ public class MyDBContext : DbContext
             .HasOne(few => few.ExternalWorker)
             .WithMany(w => w.FestivalsExtWorkersRelations)
             .HasForeignKey(few => few.IDExternalWorker);
+
+        modelBuilder.Entity<ConstructionDaysRelations>().HasKey(cdr => new { cdr.IDConstruction, cdr.IDDay });
+
+        modelBuilder.Entity<ConstructionDaysRelations>()
+            .HasOne(cdr => cdr.Construction)
+            .WithMany(c => c.ConstructionDaysRelations)
+            .HasForeignKey(cdr => cdr.IDConstruction);
+
+        modelBuilder.Entity<DeconstructionDaysRelations>().HasKey(cdr => new { cdr.IDDeconstruction, cdr.IDDay });
+        modelBuilder.Entity<DeconstructionDaysRelations>()
+            .HasOne(cdr => cdr.Deconstruction)
+            .WithMany(c => c.DeconstructionDaysRelations)
+            .HasForeignKey(cdr => cdr.IDDeconstruction);
+
     }
 
     public override void Dispose()

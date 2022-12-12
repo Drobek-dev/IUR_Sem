@@ -47,7 +47,9 @@ public partial class AllFestivalsPageVM : ObservableObject, INotifyPropertyChang
         context.Database.EnsureCreated();
         ActiveFestivals = new(context.Festivals
             .Include(f => f.FestivalsExtWorkersRelations)
-            .ThenInclude(few => few.ExternalWorker)           
+            .ThenInclude(few => few.ExternalWorker)  
+            .Include(f => f.Construction)
+            .Include(f => f.Deconstruction)
             .AsNoTracking());
         context.Dispose();
     }
