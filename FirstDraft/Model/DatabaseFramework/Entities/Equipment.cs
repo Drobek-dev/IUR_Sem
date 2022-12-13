@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FirstDraft.Model.DatabaseFramework.Entities;
 
-class PieceOfEquipment
+public class Equipment
 {
     public Guid ID { get; init; }
     public required string Name { get; init; }  

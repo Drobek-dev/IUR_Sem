@@ -5,7 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 //using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
@@ -30,7 +30,7 @@ public partial class AllFestivalsPageVM : ObservableObject, INotifyPropertyChang
 
     [ObservableProperty]
     string _newFestivalName;
-    
+
     [ObservableProperty]
     string _location;
 
@@ -40,48 +40,75 @@ public partial class AllFestivalsPageVM : ObservableObject, INotifyPropertyChang
     [ObservableProperty]
     DateOnly _newEndDate = DateOnly.FromDateTime(DateTime.Now.AddDays(1));
 
+    [ObservableProperty]
+    ObservableCollection<Festival> _searchResults;
 
-    public AllFestivalsPageVM() 
+    [ObservableProperty]
+    string dummyString;
+
+
+    public AllFestivalsPageVM()
     {
         MyDBContext context = new(TypeOfDatabase.CloudPostgreSQL);
-        context.Database.EnsureCreated();
+
         ActiveFestivals = new(context.Festivals
             .Include(f => f.FestivalsExtWorkersRelations)
-            .ThenInclude(few => few.ExternalWorker)  
+            .ThenInclude(few => few.ExternalWorker)
+            
             .Include(f => f.Construction)
             .Include(f => f.Deconstruction)
             .AsNoTracking());
         context.Dispose();
+
+        SearchResults = ActiveFestivals;
     }
 
-    [RelayCommand]
-    static Task NavToFestivalSinglePage(Festival f)=>
-        Shell.Current.GoToAsync(nameof(SingleFestivalPage), new Dictionary<string, object>
+
+    public ICommand NavToFestivalSinglePage => new Command<Festival>(async (Festival f)=>
+    {
+        await Shell.Current.GoToAsync(nameof(SingleFestivalPage), new Dictionary<string, object>
         {
             ["Festival"] = f
         });
 
-    bool CanExecute()
-    {
-        
-        if (_saveNewFestival == null || _saveNewFestival.Status != TaskStatus.Running)
-            return true;
-        return false;
-    }
+    });
 
-    [RelayCommand(CanExecute =nameof(CanExecute))]
-    async Task AddNewFestival()
+
+    public ICommand AddNewFestival => new Command(
+        execute: async () =>
     {
-        Festival f = new() { Name = NewFestivalName , StartDate = NewStartDate , EndDate = NewEndDate, Location = Location, FestivalsExtWorkersRelations = new() };
+        Festival f = new() { Name = NewFestivalName, StartDate = NewStartDate, EndDate = NewEndDate, Location = Location, FestivalsExtWorkersRelations = new() };
 
         MyDBContext c = new(TypeOfDatabase.CloudPostgreSQL);
         c.Festivals.Update(f);
         _saveNewFestival = c.SaveChangesAsync();
         await _saveNewFestival;
-        //c.SaveChanges();
 
         _activeFestivals.Add(f);
+    },
+        canExecute: () => // in this case it is unnecessary as simultaneous adding of festivals does not produce any errors
+        {
+            
+            if(_saveNewFestival is not null && _saveNewFestival.Status == TaskStatus.Running)
+            {
+                return false;
+            }
+            return true;
+        });
         
-    }      
-    
+
+    public ICommand PerformSearch => new Command<string>((string query) =>
+    {
+        if (string.IsNullOrWhiteSpace(query))
+        {
+            SearchResults = ActiveFestivals;
+        }
+        else
+        {
+
+        SearchResults = new(ActiveFestivals.Where(f => f.Name.Equals(query)).ToList());
+        }
+    });
+
+
 }

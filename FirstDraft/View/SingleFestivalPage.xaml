@@ -107,6 +107,7 @@
                      
         <HorizontalStackLayout Grid.Row="2">
         <Button Text="Externí pracovníci" Command="{Binding NavigateToExternalWorkersCommand}" />
+        <Button Text="Vybavení" Command="{Binding NavToEquipment}" />
         <Button Text="Uložit změny" Command="{Binding SaveChangesCommand}"/>
         <Button Text="Smazat" Command="{Binding DeleteFestivalCommand}"/>
         </HorizontalStackLayout>

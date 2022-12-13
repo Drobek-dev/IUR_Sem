@@ -17,9 +17,11 @@ public class MyDBContext : DbContext
 
     public DbSet<Festival> Festivals { get; private set; }
     public DbSet<FestivalsExtWorkersRelations> FestivalsExtWorkersRelations { get; private set; }
+    public DbSet<EquipmentInFestival> EquipmentInFestivals { get; private set; }
     public DbSet<ExternalWorker> ExternalWorkers { get; private set; }
     public DbSet<Construction> Constructions { get; private set; }
     public DbSet<Deconstruction> Deconstructions { get; private set; }
+    public DbSet<Equipment> Equipment { get; private set; }
 
     public MyDBContext(TypeOfDatabase t)
     {
@@ -76,6 +78,12 @@ public class MyDBContext : DbContext
             .HasOne(cdr => cdr.Deconstruction)
             .WithMany(c => c.DeconstructionDaysRelations)
             .HasForeignKey(cdr => cdr.IDDeconstruction);
+
+        /*modelBuilder.Entity<EquipmentInFestival>().HasKey(eif => new { eif.IDFestival,eif.IDEquipment });
+        modelBuilder.Entity<EquipmentInFestival>()
+            .HasOne(eir => eir.Festival)
+            .WithMany(f => f.EquipmentInFestival)
+            .HasForeignKey(eir => eir.IDEquipment);*/
 
     }
 

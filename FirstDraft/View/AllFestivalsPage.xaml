@@ -13,7 +13,7 @@
         <support:DateOnlyToString x:Key="dateToString" />
    
     </ContentPage.Resources>
-    <Grid>
+    <!--<Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="100"/>
             <ColumnDefinition Width="*"/>
@@ -25,9 +25,10 @@
             <RowDefinition Height="100"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="50"/>
-        </Grid.RowDefinitions>
-        
-        <Grid Grid.Column="1" Grid.Row="1"
+        </Grid.RowDefinitions>-->
+
+    <VerticalStackLayout>
+    <Grid Grid.Column="1" Grid.Row="1"
               Grid.RowSpan="3"
               IsVisible="true">
             <Grid.ColumnDefinitions>
@@ -72,36 +73,47 @@
                    Margin="10"/>
                 
             <Button Text="Přidat"
-                    Command="{Binding AddNewFestivalCommand}"
+                    Command="{Binding AddNewFestival}"
                     Grid.Row="5" Grid.Column="0"
                     Padding="10"/>
 
         </Grid>
+        <Label Text="{Binding DummyString}"/>
+        <SearchBar x:Name="searchBar"
+                   SearchCommand="{Binding PerformSearch}"
+                   SearchCommandParameter="{Binding Text, Source={x:Reference searchBar}}"/>
 
         <CollectionView x:Name="festivalsCollection" 
-                        Grid.Row="1" Grid.Column="2" 
-                        Grid.RowSpan="4"  
-                        ItemsSource="{Binding ActiveFestivals}">
+                         
+                        ItemsSource="{Binding SearchResults}">
             
             <CollectionView.ItemTemplate>
                 
                 <DataTemplate x:DataType="entities:Festival">
-                    <Grid Padding="10">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
+                    
                         <Button Text="{Binding Name}" 
-                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewModel:AllFestivalsPageVM}},Path=NavToFestivalSinglePageCommand}"
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewModel:AllFestivalsPageVM}},Path=NavToFestivalSinglePage}"
                                 CommandParameter="{Binding .}"/>
-                    </Grid>
+                    
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
 
-    </Grid>
+        <!--<CollectionView x:Name="allFestivalsCollection" 
+                         
+                        ItemsSource="{Binding ActiveFestivals}">
+
+            <CollectionView.ItemTemplate>
+
+                <DataTemplate x:DataType="entities:Festival">
+
+                    <Button Text="{Binding Name}" 
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewModel:AllFestivalsPageVM}},Path=NavToFestivalSinglePageCommand}"
+                                CommandParameter="{Binding .}"/>
+
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>-->
+
+    </VerticalStackLayout>
 </ContentPage>

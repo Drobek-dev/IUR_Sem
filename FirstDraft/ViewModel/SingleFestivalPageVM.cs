@@ -10,6 +10,7 @@ using CommunityToolkit.Mvvm.Input;
 using FirstDraft.Support;
 using FirstDraft.View;
 using System.Collections.ObjectModel;
+using System.Windows.Input;
 
 namespace FirstDraft.ViewModel;
 
@@ -65,5 +66,14 @@ public partial class SingleFestivalPageVM : ObservableObject
         await c.SaveChangesAsync();
         await Shell.Current.GoToAsync("..");
     }
+
+    public ICommand NavToEquipment => new Command(async() =>
+    {
+        await Shell.Current.GoToAsync($"{nameof(EquipmentPage)}",
+            new Dictionary<string, object>
+            {
+                ["IDFestival"] = Festival.ID
+            });
+    });
     
 }
