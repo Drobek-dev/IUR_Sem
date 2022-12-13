@@ -48,6 +48,7 @@ public class Festival : INotifyPropertyChanged
     public ObservableCollection<FestivalsExtWorkersRelations> FestivalsExtWorkersRelations { get; init; } = new();
     public ObservableCollection<EquipmentInFestival> EquipmentInFestival { get; init; } = new();
 
+
     public event PropertyChangedEventHandler PropertyChanged;
     void OnPropertyChanged(string name)
     {

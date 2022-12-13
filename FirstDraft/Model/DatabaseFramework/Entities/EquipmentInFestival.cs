@@ -11,10 +11,11 @@ namespace FirstDraft.Model.DatabaseFramework.Entities;
 [PrimaryKey(nameof(IDFestival), nameof(IDEquipment))]
 public class EquipmentInFestival
 {
-    [Column("IDEquipment")]
+    //[ForeignKey(nameof(Equipment))]
     public Guid IDEquipment { get; set; }
-    [Column("IDFestival")]
-    public Guid IDFestival { get; set; }
-  
+    public Equipment Equipment { get; set; }    
 
+    //[Column(nameof(Festival))]
+    public Guid IDFestival { get; set; }
+    public Festival Festival { get; set; }
 }

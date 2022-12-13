@@ -4,6 +4,7 @@ using FirstDraft.Model.DatabaseFramework;
 using FirstDraft.Model.DatabaseFramework.Entities;
 using FirstDraft.Support;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -27,16 +28,14 @@ public partial class EquipmentPageVM : ObservableObject
 
         FestivalEquipment = new(f.EquipmentInFestival);
     }*/
-
+   
     public ICommand RefreshEquipment => new Command(
-      execute:async () =>
+      execute: () =>
       {
           MyDBContext c = new(TypeOfDatabase.CloudPostgreSQL);
+          var f = c.Festivals.Include(f => f.EquipmentInFestival).ThenInclude(eif => eif.Equipment).Where(f=> f.ID.Equals(IDFestival)).First();
+          FestivalEquipment = new(f.EquipmentInFestival);
 
-          var e = c.Equipment;
-          var f = c.Festivals.ToList();
-          var eif = c.EquipmentInFestivals.ToList();
-          FestivalEquipment = new(c.EquipmentInFestivals.ToList());
       },
       canExecute: () => // in this case it is unnecessary as simultaneous adding of festivals does not produce any errors
       {

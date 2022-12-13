@@ -11,6 +11,7 @@ namespace FirstDraft.Model.DatabaseFramework.Entities;
 [PrimaryKey(nameof(IDFestival), nameof(IDExternalWorker))]
 public class FestivalsExtWorkersRelations
 {
+
     public Guid IDFestival { get; set; }
     public Festival Festival { get; set; }
 

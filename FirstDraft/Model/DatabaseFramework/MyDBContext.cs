@@ -43,6 +43,7 @@ public class MyDBContext : DbContext
             "Database=vhbvixhu;" +
             "Username=vhbvixhu;" +
             "Password=y1DwR8W4lNuGyWIAwMl2NfhFbygEIU_a");
+            optionsBuilder.LogTo((string m)=>System.Diagnostics.Debug.WriteLine(m), Microsoft.Extensions.Logging.LogLevel.Information);
         }
         else
             throw new ArgumentException($"This app does not recognize database type {TypeOfDatabase}");
@@ -79,11 +80,18 @@ public class MyDBContext : DbContext
             .WithMany(c => c.DeconstructionDaysRelations)
             .HasForeignKey(cdr => cdr.IDDeconstruction);
 
-        /*modelBuilder.Entity<EquipmentInFestival>().HasKey(eif => new { eif.IDFestival,eif.IDEquipment });
+        modelBuilder.Entity<EquipmentInFestival>().HasKey(eif => new { eif.IDEquipment, eif.IDFestival });
         modelBuilder.Entity<EquipmentInFestival>()
-            .HasOne(eir => eir.Festival)
+            .HasOne(eif => eif.Festival)
             .WithMany(f => f.EquipmentInFestival)
-            .HasForeignKey(eir => eir.IDEquipment);*/
+            .HasForeignKey(eif => eif.IDFestival);
+        modelBuilder.Entity<EquipmentInFestival>()
+            .HasOne(eif => eif.Equipment)
+            .WithMany(e => e.EquipmentInFestival)
+            .HasForeignKey(eif => eif.IDEquipment);
+
+
+
 
     }
 
