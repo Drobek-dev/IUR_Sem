@@ -83,12 +83,12 @@ public class MyDBContext : DbContext
         modelBuilder.Entity<EquipmentInFestival>().HasKey(eif => new { eif.IDEquipment, eif.IDFestival });
         modelBuilder.Entity<EquipmentInFestival>()
             .HasOne(eif => eif.Festival)
-            .WithMany(f => f.EquipmentInFestival)
+            .WithMany(f => f.LocalEquipmentRelation)
             .HasForeignKey(eif => eif.IDFestival);
         modelBuilder.Entity<EquipmentInFestival>()
             .HasOne(eif => eif.Equipment)
             .WithMany(e => e.EquipmentInFestival)
-            .HasForeignKey(eif => eif.IDEquipment);
+            .HasForeignKey(eif=> eif.IDEquipment);
 
 
 

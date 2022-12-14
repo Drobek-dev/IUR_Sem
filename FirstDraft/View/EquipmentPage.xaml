@@ -11,32 +11,63 @@
         <support:DateOnlyToString x:Key="dateToString" />
 
     </ContentPage.Resources>
-    <VerticalStackLayout>
-        <Label 
-            Text="{Binding IDFestival}"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-        <Button Text="Load Equipment" Command="{Binding RefreshEquipment}"/>
+    <HorizontalStackLayout>
+        <VerticalStackLayout>
+            <Label 
+                Text="Equipment Page"
+                VerticalOptions="Center" 
+                HorizontalOptions="Center" />
+            <Button Text="Load Equipment" Command="{Binding RefreshEquipment}"/>
 
-        
-            
-        <ListView ItemsSource="{Binding FestivalEquipment}">
-            <ListView.ItemTemplate>
-                <DataTemplate  x:DataType="entities:EquipmentInFestival">
-                    <ViewCell>
-                        <Grid ColumnDefinitions="Auto,Auto,Auto,*">
-                            <Label Grid.Column="0" Text="{Binding Equipment.Name}"/>
-                            <Label Grid.Column="1" Text="{Binding Equipment.Quantity}"/>
-                            <Label Grid.Column="2" Text="{Binding Equipment.DayOfPurchase,Converter={StaticResource dateToString}}"/>
-                            <Label Grid.Column="3" Text="{Binding Equipment.Location}"/>
 
-                        </Grid>
-                       
+            <ListView ItemsSource="{Binding LocalEquipment}">
+                <ListView.ItemTemplate>
+                    <DataTemplate  x:DataType="entities:Equipment">
+                        <ViewCell>
+
+                            <Frame>
+                                <Grid ColumnDefinitions="Auto,Auto,Auto,*">
+                                    <Label Grid.Column="0" Text="{Binding Quantity}" Padding="10"/>
+                                    <Label Grid.Column="1" Text="{Binding Name}" Padding="10"/>
+                                    <Label Grid.Column="2" Text="{Binding DayOfPurchase,Converter={StaticResource dateToString}}" Padding="10"/>
+                                    <Label Grid.Column="3" Text="{Binding Location}" Padding="10"/>
+                                </Grid>
+                                <Frame.GestureRecognizers >
+                                    <DragGestureRecognizer 
+                                            DragStartingCommand="{Binding Source={x:RelativeSource AncestorType={x:Type viewModel:EquipmentPageVM}},Path=DragEquipment}" 
+                                            DragStartingCommandParameter="{Binding .}"/>
+                                </Frame.GestureRecognizers>
+                            </Frame>
+
+
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </VerticalStackLayout>
+
+        <VerticalStackLayout>
+            <Frame>
+                <Grid RowDefinitions="Auto,*">
+                    <Label Text="Equipment To transfer" Grid.Row="0"/>
+                    <ListView ItemsSource="{Binding EquipmentToTransfer}" Grid.Row="1">
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="entities:Equipment">
+                                <ViewCell>
+                                    <Label Text="{Binding Name}"/>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
                         
-                    </ViewCell>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-      
-    </VerticalStackLayout>
+                    </ListView>
+                </Grid>
+                <Frame.GestureRecognizers>
+                    <DropGestureRecognizer 
+                        DropCommand="{Binding Source={x:RelativeSource AncestorType={x:Type viewModel:EquipmentPageVM}},Path=DropEquipment}"/>
+
+                </Frame.GestureRecognizers>
+            </Frame>
+        </VerticalStackLayout>
+    </HorizontalStackLayout>
+
 </ContentPage>

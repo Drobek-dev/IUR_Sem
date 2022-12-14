@@ -13,28 +13,56 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
+
 namespace FirstDraft.ViewModel;
-[QueryProperty(nameof(IDFestival),nameof(IDFestival))]
+[QueryProperty(nameof(IDLocation),nameof(IDLocation))]
+[QueryProperty(nameof(Location),nameof(Location))]
 public partial class EquipmentPageVM : ObservableObject
 {
     [ObservableProperty]
-    Guid _iDFestival;
+    ObservableCollection<Equipment> _equipmentToTransfer = new();
 
     [ObservableProperty]
-    ObservableCollection<EquipmentInFestival> festivalEquipment;
-    /*async Task getEquipment(MyDBContext c)
-    {
-        var f =c.Festivals.Include(f => f.EquipmentInFestival).ThenInclude(eif => eif.Equipment).Where(f => f.ID.Equals(IDFestival)).First();
+    Equipment _draggedEquipment;
 
-        FestivalEquipment = new(f.EquipmentInFestival);
-    }*/
-   
+    [ObservableProperty]
+    Guid _iDLocation;
+
+    [ObservableProperty]
+    string _location;
+
+    [ObservableProperty]
+    ObservableCollection<Equipment> _localEquipment;
+
+    void FillLocalEquipment(object storage)
+    {
+        LocalEquipment = new();
+        if (Location.Equals(nameof(Festival)))
+            {
+                Festival f = (Festival)storage;
+                foreach (var localRelation in f.LocalEquipmentRelation)
+                {
+                    LocalEquipment.Add(localRelation.Equipment);
+                }
+            }
+
+    }
     public ICommand RefreshEquipment => new Command(
       execute: () =>
       {
-          MyDBContext c = new(TypeOfDatabase.CloudPostgreSQL);
-          var f = c.Festivals.Include(f => f.EquipmentInFestival).ThenInclude(eif => eif.Equipment).Where(f=> f.ID.Equals(IDFestival)).First();
-          FestivalEquipment = new(f.EquipmentInFestival);
+          using MyDBContext c = new(TypeOfDatabase.CloudPostgreSQL);
+          LocalEquipment = new();
+
+          if (Location.Equals(nameof(Festival)))
+          {
+            var Festival = c.Festivals.Include(f => f.LocalEquipmentRelation).ThenInclude(eif => eif.Equipment).Where(f=> f.ID.Equals(IDLocation)).First();
+              
+              foreach (var localRelation in Festival.LocalEquipmentRelation)
+              {
+                  LocalEquipment.Add(localRelation.Equipment);
+              }
+
+          }
 
       },
       canExecute: () => // in this case it is unnecessary as simultaneous adding of festivals does not produce any errors
@@ -42,5 +70,16 @@ public partial class EquipmentPageVM : ObservableObject
 
           return true;
       });
+
+    public ICommand DragEquipment => new Command<Equipment>((Equipment e) => 
+    {
+        _draggedEquipment = e;
+    });
+
+    public ICommand DropEquipment => new Command(() => 
+    {
+        EquipmentToTransfer.Add(DraggedEquipment);
+        //_draggedEquipment = null;
+    });
 
 }

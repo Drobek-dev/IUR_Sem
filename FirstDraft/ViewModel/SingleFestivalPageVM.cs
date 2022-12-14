@@ -21,8 +21,6 @@ public partial class SingleFestivalPageVM : ObservableObject
     [ObservableProperty]
     Festival _festival;
 
-
-
     [RelayCommand]
     async Task NavigateToExternalWorkers()
     {
@@ -33,12 +31,6 @@ public partial class SingleFestivalPageVM : ObservableObject
         });
     }
 
- /*   bool CanExecute()
-    {
-        if (_saveChangesTask is not null && _saveChangesTask.Status == TaskStatus.Running)
-            return false;
-        return true;    
-    }*/
     [RelayCommand]
     async Task SaveChanges()
     {
@@ -72,7 +64,8 @@ public partial class SingleFestivalPageVM : ObservableObject
         await Shell.Current.GoToAsync($"{nameof(EquipmentPage)}",
             new Dictionary<string, object>
             {
-                ["IDFestival"] = Festival.ID
+                ["IDLocation"] = Festival.ID,
+                ["Location"] = $"{nameof(Model.DatabaseFramework.Entities.Festival)}"
             });
     });
     
