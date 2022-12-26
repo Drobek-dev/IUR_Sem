@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,4 +32,8 @@ public class Equipment
         }
     }
     public ObservableCollection<EquipmentInFestival> EquipmentInFestival { get; init; }
+    public ObservableCollection<EquipmentInWarehouse> EquipmentInWarehouse { get; init; }
+
+    //public EquipmentInTransport EquipmentInTransport { get; init; }
+    public ObservableCollection<EquipmentInTransport> EquipmentInTransport { get;init; }
 }

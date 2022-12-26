@@ -22,6 +22,10 @@ public class MyDBContext : DbContext
     public DbSet<Construction> Constructions { get; private set; }
     public DbSet<Deconstruction> Deconstructions { get; private set; }
     public DbSet<Equipment> Equipment { get; private set; }
+    
+    public DbSet<Warehouse> Warehouses { get; private set; }
+    public DbSet<Transport> Transports { get; private set; }
+    public DbSet<EquipmentInBin> Bin { get; private set; }
 
     public MyDBContext(TypeOfDatabase t)
     {
@@ -90,6 +94,26 @@ public class MyDBContext : DbContext
             .WithMany(e => e.EquipmentInFestival)
             .HasForeignKey(eif=> eif.IDEquipment);
 
+        modelBuilder.Entity<EquipmentInWarehouse>().HasKey(eiw => new { eiw.IDEquipment, eiw.IDWarehouse });
+        modelBuilder.Entity<EquipmentInWarehouse>()
+            .HasOne(eiw => eiw.Warehouse)
+            .WithMany(w => w.LocalEquipmentRelations)
+            .HasForeignKey(eiw => eiw.IDWarehouse);
+        modelBuilder.Entity<EquipmentInWarehouse>()
+            .HasOne(eiw => eiw.Equipment)
+            .WithMany(e => e.EquipmentInWarehouse)
+            .HasForeignKey(eiw => eiw.IDEquipment);
+
+        modelBuilder.Entity<EquipmentInTransport>().HasKey(eit => new { eit.IDEquipment, eit.IDTransport });
+        modelBuilder.Entity<EquipmentInTransport>()
+            .HasOne(eit=> eit.Transport)
+            .WithMany(t => t.LocalEquipmentRelations)
+            .HasForeignKey(eit => eit.IDTransport);
+
+        modelBuilder.Entity<EquipmentInTransport>()
+            .HasOne(eit => eit.Equipment)
+            .WithMany(e => e.EquipmentInTransport)
+            .HasForeignKey(eit => eit.IDEquipment);
 
 
 

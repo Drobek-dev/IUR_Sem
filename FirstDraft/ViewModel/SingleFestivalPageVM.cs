@@ -34,7 +34,7 @@ public partial class SingleFestivalPageVM : ObservableObject
     [RelayCommand]
     async Task SaveChanges()
     {
-        MyDBContext c = new(TypeOfDatabase.CloudPostgreSQL);
+        using MyDBContext c = new(TypeOfDatabase.CloudPostgreSQL);
         
         c.Festivals.Update(_festival);
 
@@ -46,12 +46,17 @@ public partial class SingleFestivalPageVM : ObservableObject
     [RelayCommand]
     async Task DeleteFestival()
     {
-        MyDBContext c = new(TypeOfDatabase.CloudPostgreSQL);
+        using MyDBContext c = new(TypeOfDatabase.CloudPostgreSQL);
 
         foreach(var ew in Festival.FestivalsExtWorkersRelations)
         {
             c.ExternalWorkers.Remove(ew.ExternalWorker);
         }
+        foreach(var ler in Festival.LocalEquipmentRelation)
+        {
+            c.Equipment.Remove(await c.Equipment.FindAsync(ler.IDEquipment));
+        }
+
         c.Constructions.Remove(Festival.Construction);
         c.Deconstructions.Remove(Festival.Deconstruction);
         c.Festivals.Remove(Festival);
@@ -68,5 +73,7 @@ public partial class SingleFestivalPageVM : ObservableObject
                 ["Location"] = $"{nameof(Model.DatabaseFramework.Entities.Festival)}"
             });
     });
-    
+
+
+
 }

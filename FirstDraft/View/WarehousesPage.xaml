@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FirstDraft.View.WarehousesPage"
+             xmlns:entities="clr-namespace:FirstDraft.Model.DatabaseFramework.Entities"
+             xmlns:viewModel="clr-namespace:FirstDraft.ViewModel"
+             xmlns:support="clr-namespace:FirstDraft.Support"
+             x:DataType="viewModel:WarehousesPageVM"
+             Title="WarehousePage">
+
+    <VerticalStackLayout>
+        <Grid Grid.Column="1" Grid.Row="1"
+              Grid.RowSpan="3"
+              IsVisible="true">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
+            <Label Text="Festival Name"
+                   Grid.Row="1" Grid.Column="0"
+                   Padding="10"/>
+            <Entry Text="{Binding NewWarehouseName}" 
+                   Grid.Row="1" Grid.Column="1" 
+                   Margin="10"/>
+
+            <Label Text="Warehouse address:"
+                   Grid.Row="2" Grid.Column="0"
+                   Padding="10"/>
+            <Entry Text="{Binding NewWarehouseAddress}"
+                   Grid.Row="2" Grid.Column="1"
+                   Margin="10"/>
+
+
+            <Button Text="Přidat"
+                    Command="{Binding AddNewWarehouse}"
+                    Grid.Row="3" Grid.Column="0"
+                    Padding="10"/>
+
+        </Grid>
+
+        <SearchBar x:Name="searchBar"
+                   SearchCommand="{Binding PerformSearch}"
+                   SearchCommandParameter="{Binding Text, Source={x:Reference searchBar}}"/>
+
+        <CollectionView ItemsSource="{Binding SearchResults}">
+
+            <CollectionView.ItemTemplate>
+
+                <DataTemplate x:DataType="entities:Warehouse">
+
+                    <Button Text="{Binding Name}"
+                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewModel:WarehousesPageVM}},Path=NavToSingleWarehousePageCommand}"
+                                CommandParameter="{Binding .}"/>
+                    
+
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+    </VerticalStackLayout>
+</ContentPage>

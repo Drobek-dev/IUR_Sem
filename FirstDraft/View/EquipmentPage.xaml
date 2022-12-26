@@ -46,11 +46,10 @@
             </ListView>
         </VerticalStackLayout>
 
-        <VerticalStackLayout>
-            <Frame>
-                <Grid RowDefinitions="Auto,*">
-                    <Label Text="Equipment To transfer" Grid.Row="0"/>
-                    <ListView ItemsSource="{Binding EquipmentToTransfer}" Grid.Row="1">
+        <Grid RowDefinitions="Auto, 1000">
+        <Label Text="Equipment To transfer" Grid.Row="0"/>
+        <Frame Grid.Row="1">
+            <ListView ItemsSource="{Binding EquipmentToTransfer}" VerticalScrollBarVisibility="Always">
                         <ListView.ItemTemplate>
                             <DataTemplate x:DataType="entities:Equipment">
                                 <ViewCell>
@@ -58,16 +57,17 @@
                                 </ViewCell>
                             </DataTemplate>
                         </ListView.ItemTemplate>
-                        
+
                     </ListView>
-                </Grid>
+       
                 <Frame.GestureRecognizers>
                     <DropGestureRecognizer 
                         DropCommand="{Binding Source={x:RelativeSource AncestorType={x:Type viewModel:EquipmentPageVM}},Path=DropEquipment}"/>
 
                 </Frame.GestureRecognizers>
             </Frame>
-        </VerticalStackLayout>
+        </Grid>
+
     </HorizontalStackLayout>
 
 </ContentPage>

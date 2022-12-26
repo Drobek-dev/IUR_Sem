@@ -20,7 +20,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         
-        <Entry Grid.Row="0"
+        <Label Grid.Row="0"
             Text="{Binding Festival.Name}"
             
             VerticalOptions="Center" 

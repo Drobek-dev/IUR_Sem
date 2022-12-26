@@ -14,9 +14,9 @@
         Route="MainPage" />-->
     <FlyoutItem Title="Database">
         <ShellContent Title="Festivaly" ContentTemplate="{DataTemplate view:AllFestivalsPage}"/>
-        <ShellContent Title="Sklad" ContentTemplate="{DataTemplate view:WarehousePage}"/>
-        <ShellContent Title="Transport" ContentTemplate="{DataTemplate view:TransportPage}"/>
-        <ShellContent Title="Koš" ContentTemplate="{DataTemplate view:BinPage}"/>
+        <ShellContent Title="Sklady" ContentTemplate="{DataTemplate view:WarehousesPage}"/>
+        <ShellContent Title="Transporty" ContentTemplate="{DataTemplate view:TransportsPage}"/>
+        <ShellContent Title="Koš" ContentTemplate="{DataTemplate view:EquipmentPage}" />
     </FlyoutItem>
 
     <FlyoutItem Title="Extras">

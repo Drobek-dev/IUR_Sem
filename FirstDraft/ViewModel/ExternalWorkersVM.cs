@@ -33,7 +33,7 @@ public partial class ExternalWorkersVM : ObservableObject
     async Task AddWorker()
     {
         ExternalWorker ew = new() { FirstName = FirstName, LastName = LastName, Function = Function, PhoneNumber = PhoneNumber, Email = Email };
-        MyDBContext c = new(Support.TypeOfDatabase.CloudPostgreSQL);
+        using MyDBContext c = new(Support.TypeOfDatabase.CloudPostgreSQL);
 
         c.ExternalWorkers.Add(ew);
         try
@@ -56,7 +56,7 @@ public partial class ExternalWorkersVM : ObservableObject
     [RelayCommand]
     static async Task UpdateWorker(ExternalWorker ew)
     {
-        MyDBContext c = new(Support.TypeOfDatabase.CloudPostgreSQL);
+        using MyDBContext c = new(Support.TypeOfDatabase.CloudPostgreSQL);
         c.ExternalWorkers.Update(ew);
         await c.SaveChangesAsync();
 
@@ -64,10 +64,18 @@ public partial class ExternalWorkersVM : ObservableObject
     [RelayCommand]
     async Task DeleteWorker(ExternalWorker ew)
     {
-        MyDBContext c = new(Support.TypeOfDatabase.CloudPostgreSQL);
+        using MyDBContext c = new(Support.TypeOfDatabase.CloudPostgreSQL);
+        ExternalWorkers.Remove(ExternalWorkers.Where(few => few.IDExternalWorker == ew.ID).First());
         c.ExternalWorkers.Remove(ew);
+        try
+        {
         await c.SaveChangesAsync();
-        ExternalWorkers.Remove(ExternalWorkers.Where(few=> few.IDExternalWorker == ew.ID).First()); // Shady, but dunno how to
+        
+        }
+        catch(Exception e)
+        {
+            Console.WriteLine(e.Message);
+        }
        
     }
 }

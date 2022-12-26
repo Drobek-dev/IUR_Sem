@@ -4,6 +4,7 @@
              x:Class="FirstDraft.View.ExternalWorkersPage"
              xmlns:viewModel ="clr-namespace:FirstDraft.ViewModel"
              xmlns:entities ="clr-namespace:FirstDraft.Model.DatabaseFramework.Entities"
+             xmlns:controls="clr-namespace:FirstDraft.Controls"
              x:DataType="viewModel:ExternalWorkersVM"
              Title="ExternalWorkersPage">
 
@@ -71,6 +72,7 @@
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
                                 <RowDefinition Height="50" />
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
@@ -123,6 +125,9 @@
                                     HorizontalOptions="End"
                                     Command="{Binding Source={RelativeSource AncestorType={x:Type viewModel:ExternalWorkersVM}},Path=DeleteWorkerCommand}"
                                     CommandParameter="{Binding ExternalWorker}"/>
+                           
+                                
+                            
                         </Grid>
                     </ViewCell>
                 </DataTemplate>

@@ -5,6 +5,7 @@ using FirstDraft.Model.DatabaseFramework.Entities;
 using FirstDraft.Support;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -34,26 +35,23 @@ public partial class EquipmentPageVM : ObservableObject
     [ObservableProperty]
     ObservableCollection<Equipment> _localEquipment;
 
-    void FillLocalEquipment(object storage)
-    {
-        LocalEquipment = new();
-        if (Location.Equals(nameof(Festival)))
-            {
-                Festival f = (Festival)storage;
-                foreach (var localRelation in f.LocalEquipmentRelation)
-                {
-                    LocalEquipment.Add(localRelation.Equipment);
-                }
-            }
 
-    }
     public ICommand RefreshEquipment => new Command(
       execute: () =>
       {
-          using MyDBContext c = new(TypeOfDatabase.CloudPostgreSQL);
           LocalEquipment = new();
+          using MyDBContext c = new(TypeOfDatabase.CloudPostgreSQL);
 
-          if (Location.Equals(nameof(Festival)))
+          if(string.IsNullOrWhiteSpace(Location))
+          {
+              var BinEquipment = c.Bin.Include(b => b.Equipment).ToList();
+              foreach (var localRelation in BinEquipment)
+              {
+                  LocalEquipment.Add(localRelation.Equipment);
+              }
+          }
+
+          else if (Location.Equals(nameof(Festival)))
           {
             var Festival = c.Festivals.Include(f => f.LocalEquipmentRelation).ThenInclude(eif => eif.Equipment).Where(f=> f.ID.Equals(IDLocation)).First();
               
@@ -63,12 +61,26 @@ public partial class EquipmentPageVM : ObservableObject
               }
 
           }
+          else if (Location.Equals(nameof(Warehouse)))
+          {
+              var Warehouse = c.Warehouses.Include(w => w.LocalEquipmentRelations).ThenInclude(ler => ler.Equipment).Where(w => w.ID.Equals(IDLocation)).First();
 
-      },
-      canExecute: () => // in this case it is unnecessary as simultaneous adding of festivals does not produce any errors
-      {
+              foreach (var localRelation in Warehouse.LocalEquipmentRelations)
+              {
+                  LocalEquipment.Add(localRelation.Equipment);
+              }
+          }
+          else if (Location.Equals(nameof(Transport)))
+          {
+              var Transport = c.Transports.Include(t => t.LocalEquipmentRelations).ThenInclude(ler => ler.Equipment).Where(t => t.ID.Equals(IDLocation)).First();
 
-          return true;
+              foreach (var localRelation in Transport.LocalEquipmentRelations)
+              {
+                  LocalEquipment.Add(localRelation.Equipment);
+              }
+          }
+          
+
       });
 
     public ICommand DragEquipment => new Command<Equipment>((Equipment e) => 
