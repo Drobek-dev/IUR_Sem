@@ -9,4 +9,5 @@ public partial class TransferPage : ContentPage
 		InitializeComponent();
 		BindingContext = new TransferPageVM();
 	}
+
 }

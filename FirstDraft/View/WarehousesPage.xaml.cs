@@ -4,11 +4,11 @@ namespace FirstDraft.View;
 
 public partial class WarehousesPage : ContentPage
 {
-	public WarehousesPage()
-	{
-		InitializeComponent();
-		BindingContext = new WarehousesPageVM();
-	}
+    public WarehousesPage()
+    {
+        InitializeComponent();
+        BindingContext = new WarehousesPageVM();
+    }
     protected override void OnAppearing()
     {
         base.OnAppearing();
@@ -16,3 +16,4 @@ public partial class WarehousesPage : ContentPage
 
     }
 }
+ 

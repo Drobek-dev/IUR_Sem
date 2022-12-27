@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using FirstDraft.Model.DatabaseFramework;
 using FirstDraft.Model.DatabaseFramework.Entities;
+using FirstDraft.View;
 using Microsoft.Maui.Controls;
 using System.Collections.ObjectModel;
 using System.Runtime.CompilerServices;
@@ -12,7 +13,7 @@ namespace FirstDraft.ViewModel;
 [QueryProperty(nameof(Festival), nameof(Festival))]
 [QueryProperty(nameof(ExternalWorkers), nameof(ExternalWorkers))]
 
-public partial class ExternalWorkersVM : ObservableObject
+public partial class ExternalWorkersVM : BaseVM
 {
 
     [ObservableProperty] string _function;
@@ -29,6 +30,7 @@ public partial class ExternalWorkersVM : ObservableObject
 
     public string AffiliatedFestivalID { get; set; }
 
+    
     [RelayCommand]
     async Task AddWorker()
     {
@@ -36,29 +38,22 @@ public partial class ExternalWorkersVM : ObservableObject
         using MyDBContext c = new(Support.TypeOfDatabase.CloudPostgreSQL);
 
         c.ExternalWorkers.Add(ew);
-        try
-        {
-        await c.SaveChangesAsync();
-
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.ToString());
-        }
+        await PerformContextSave(c);
 
         FestivalsExtWorkersRelations few = new() { IDFestival = Festival.ID, IDExternalWorker = ew.ID};
         c.FestivalsExtWorkersRelations.Add(few);
-        await c.SaveChangesAsync();
+        await PerformContextSave(c);
 
-        ExternalWorkers.Add(few);
+        if(_operationSucceeded)
+            ExternalWorkers.Add(few);
     }
 
     [RelayCommand]
-    static async Task UpdateWorker(ExternalWorker ew)
+    async Task UpdateWorker(ExternalWorker ew)
     {
         using MyDBContext c = new(Support.TypeOfDatabase.CloudPostgreSQL);
         c.ExternalWorkers.Update(ew);
-        await c.SaveChangesAsync();
+        await PerformContextSave(c);
 
     }
     [RelayCommand]
@@ -67,15 +62,8 @@ public partial class ExternalWorkersVM : ObservableObject
         using MyDBContext c = new(Support.TypeOfDatabase.CloudPostgreSQL);
         ExternalWorkers.Remove(ExternalWorkers.Where(few => few.IDExternalWorker == ew.ID).First());
         c.ExternalWorkers.Remove(ew);
-        try
-        {
-        await c.SaveChangesAsync();
-        
-        }
-        catch(Exception e)
-        {
-            Console.WriteLine(e.Message);
-        }
        
+        await PerformContextSave(c);
+
     }
 }

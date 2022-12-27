@@ -23,7 +23,7 @@ namespace FirstDraft.ViewModel;
 
 [QueryProperty(nameof(NewLocation), nameof(NewLocation))]
 [QueryProperty(nameof(Equipment), nameof(Equipment))]
-public partial class TransferPageVM : ObservableObject
+public partial class TransferPageVM : BaseVM
 {
     [ObservableProperty]
     string _originalLocation;
@@ -43,7 +43,7 @@ public partial class TransferPageVM : ObservableObject
     [ObservableProperty]
     ObservableCollection<TargetType> _target;
 
-    
+ 
 
     public ICommand PerformSearch => new Command<string>((string query) =>
     {
@@ -141,17 +141,9 @@ public partial class TransferPageVM : ObservableObject
         if (OriginalLocation.Equals(LocationTypes.festival))
         {
             foreach (var e in Equipment)
-            {
-                try
-                {
-
-                    context.EquipmentInFestivals.Remove(await context.EquipmentInFestivals.FindAsync(e.ID, OriginalLocationID));
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.ToString());
-                }
-
+           {
+                context.EquipmentInFestivals.Remove(await context.EquipmentInFestivals.FindAsync(e.ID, OriginalLocationID));
+   
             }
         }
         else if (OriginalLocation.Equals(LocationTypes.warehouse))
@@ -208,19 +200,11 @@ public partial class TransferPageVM : ObservableObject
         using MyDBContext context = new(TypeOfDatabase.CloudPostgreSQL);
 
         AssignEquipmentToNewLocation(context, IDTarget);
-        await DeleteOldEquipmentLocation(context);    
 
+        await DeleteOldEquipmentLocation(context);
 
-        try
-        {
-            await context.SaveChangesAsync();
-        }
-        catch (Exception ex) 
-        {
-            Console.WriteLine(ex.ToString());   
-        }
+        await PerformContextSave(context);
         
-
         await RedirectToParentShellPage();
     }
 

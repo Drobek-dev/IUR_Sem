@@ -9,4 +9,5 @@ public partial class SingleWarehousePage : ContentPage
 		InitializeComponent();
 		BindingContext = new SingleWarehousePageVM();
 	}
+  
 }

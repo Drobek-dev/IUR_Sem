@@ -13,19 +13,6 @@
         <support:DateOnlyToString x:Key="dateToString" />
    
     </ContentPage.Resources>
-    <!--<Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="100"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="50"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="100"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="50"/>
-        </Grid.RowDefinitions>-->
 
     <VerticalStackLayout>
     <Grid Grid.Column="1" Grid.Row="1"
@@ -78,7 +65,7 @@
                     Padding="10"/>
 
         </Grid>
-        <Label Text="{Binding DummyString}"/>
+
         <SearchBar x:Name="searchBar"
                    SearchCommand="{Binding PerformSearch}"
                    SearchCommandParameter="{Binding Text, Source={x:Reference searchBar}}"/>

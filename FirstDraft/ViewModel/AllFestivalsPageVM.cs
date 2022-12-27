@@ -22,9 +22,8 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 namespace FirstDraft.ViewModel;
 
 
-public partial class AllFestivalsPageVM : ObservableObject, INotifyPropertyChanged
+public partial class AllFestivalsPageVM : BaseVM, INotifyPropertyChanged
 {
-    Task _saveNewFestival = null;
 
     [ObservableProperty]
     ObservableCollection<Festival> _activeFestivals;
@@ -44,11 +43,8 @@ public partial class AllFestivalsPageVM : ObservableObject, INotifyPropertyChang
     [ObservableProperty]
     ObservableCollection<Festival> _searchResults;
 
-    [ObservableProperty]
-    string dummyString;
 
-    AllFestivalsPage _viewPage;
-    public AllFestivalsPageVM(AllFestivalsPage viewPage)
+    public AllFestivalsPageVM()
     {
         MyDBContext context = new(TypeOfDatabase.CloudPostgreSQL);
 
@@ -60,22 +56,19 @@ public partial class AllFestivalsPageVM : ObservableObject, INotifyPropertyChang
             .AsNoTracking());
 
         SearchResults = ActiveFestivals;
-        _viewPage = viewPage;
+       
       
     }
 
     [RelayCommand]
     async Task NavToFestivalSinglePage(Festival f)
     {
-        bool isPageNavConfirmed = await _viewPage.YesNoAlert($"Move to {f.Name}?");
-
-        if (isPageNavConfirmed)
-        {
+       
             await Shell.Current.GoToAsync(nameof(SingleFestivalPage), new Dictionary<string, object>
             {
                 ["Festival"] = f
             });
-        }
+        
 
     }
 
@@ -87,26 +80,16 @@ public partial class AllFestivalsPageVM : ObservableObject, INotifyPropertyChang
 
         using MyDBContext c = new(TypeOfDatabase.CloudPostgreSQL);
         c.Festivals.Update(f);
-        _saveNewFestival = c.SaveChangesAsync();
 
-        try
-        {
-            await _saveNewFestival;
-            _activeFestivals.Add(f);
-
-        }
-        catch (Exception ex) 
-        {
-            await _viewPage.DisplayNotification(
-                $"Thrown Exception: {ex.Message} {Environment.NewLine}{Environment.NewLine}" +
-                $"Task Exception: {_saveNewFestival.Exception?.Message}");
-        }
+        await PerformContextSave(c);
+        if(_operationSucceeded)
+            ActiveFestivals.Add(f);
 
     },
         canExecute: () => // in this case it is unnecessary as simultaneous adding of festivals does not produce any errors
         {
   
-            if(_saveNewFestival is not null && _saveNewFestival.Status == TaskStatus.Running)
+            if(_task is not null && _task.Status == TaskStatus.Running)
             {
                 return false;
             }
@@ -122,8 +105,7 @@ public partial class AllFestivalsPageVM : ObservableObject, INotifyPropertyChang
         }
         else
         {
-
-        SearchResults = new(ActiveFestivals.Where(f => f.Name.Equals(query)).ToList());
+            SearchResults = new(ActiveFestivals.Where(f => f.Name.Equals(query)).ToList());
         }
     });
 

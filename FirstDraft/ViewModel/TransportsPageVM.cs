@@ -16,7 +16,7 @@ using System.Windows.Input;
 
 namespace FirstDraft.ViewModel;
 
-public partial class TransportsPageVM : ObservableObject
+public partial class TransportsPageVM : BaseVM
 {
     [ObservableProperty]
     string _newTransportName;
@@ -42,7 +42,7 @@ public partial class TransportsPageVM : ObservableObject
     [ObservableProperty]
     ObservableCollection<Transport> _searchResults;
 
-    Task _saveNew = null;
+   
     public TransportsPageVM()
     {
         MyDBContext context = new(TypeOfDatabase.CloudPostgreSQL);
@@ -50,6 +50,8 @@ public partial class TransportsPageVM : ObservableObject
         ActiveTransports = new(context.Transports.Include(t=> t.LocalEquipmentRelations).OrderByDescending(t=> t.ID));
        
         SearchResults = ActiveTransports;
+
+    
     }
 
     [RelayCommand]
@@ -69,15 +71,16 @@ public partial class TransportsPageVM : ObservableObject
 
             MyDBContext c = new(TypeOfDatabase.CloudPostgreSQL);
             c.Transports.Update(t);
-            _saveNew = c.SaveChangesAsync();
-            await _saveNew;
 
-            _activeTransports.Add(t);
+            await PerformContextSave(c);
+
+            if(_operationSucceeded)
+                _activeTransports.Add(t);
         },
         canExecute: () => // in this case it is unnecessary as simultaneous adding of festivals does not produce any errors
         {
 
-            if (_saveNew is not null && _saveNew.Status == TaskStatus.Running)
+            if (_task is not null && _task.Status == TaskStatus.Running)
             {
                 return false;
             }

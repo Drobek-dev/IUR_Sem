@@ -15,11 +15,14 @@ using System.Windows.Input;
 namespace FirstDraft.ViewModel;
 
 [QueryProperty(nameof(Festival), nameof(Festival))]
-public partial class SingleFestivalPageVM : ObservableObject
+public partial class SingleFestivalPageVM : BaseVM
 {
 
     [ObservableProperty]
     Festival _festival;
+
+    SingleFestivalPage _viewPage;
+
 
     [RelayCommand]
     async Task NavigateToExternalWorkers()
@@ -38,30 +41,33 @@ public partial class SingleFestivalPageVM : ObservableObject
         
         c.Festivals.Update(_festival);
 
-        await c.SaveChangesAsync(); 
-        c.Dispose();
+        await PerformContextSave(c);
         
     }
 
     [RelayCommand]
     async Task DeleteFestival()
     {
-        using MyDBContext c = new(TypeOfDatabase.CloudPostgreSQL);
-
-        foreach(var ew in Festival.FestivalsExtWorkersRelations)
+        if (await YesNoAlert($"Proceed to delete {Festival.Name} festival?"))
         {
-            c.ExternalWorkers.Remove(ew.ExternalWorker);
-        }
-        foreach(var ler in Festival.LocalEquipmentRelation)
-        {
-            c.Equipment.Remove(await c.Equipment.FindAsync(ler.IDEquipment));
-        }
+            using MyDBContext c = new(TypeOfDatabase.CloudPostgreSQL);
 
-        c.Constructions.Remove(Festival.Construction);
-        c.Deconstructions.Remove(Festival.Deconstruction);
-        c.Festivals.Remove(Festival);
-        await c.SaveChangesAsync();
-        await Shell.Current.GoToAsync("..");
+            foreach(var ew in Festival.FestivalsExtWorkersRelations)
+            {
+                c.ExternalWorkers.Remove(ew.ExternalWorker);
+            }
+            foreach(var ler in Festival.LocalEquipmentRelation)
+            {
+                c.Equipment.Remove(await c.Equipment.FindAsync(ler.IDEquipment));
+            }
+
+            c.Constructions.Remove(Festival.Construction);
+            c.Deconstructions.Remove(Festival.Deconstruction);
+            c.Festivals.Remove(Festival);
+
+            await PerformContextSave(c);
+            await Shell.Current.GoToAsync("..");
+        }
     }
 
     public ICommand NavToEquipment => new Command(async() =>

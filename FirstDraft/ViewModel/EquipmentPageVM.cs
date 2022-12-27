@@ -21,7 +21,7 @@ using System.Windows.Input;
 namespace FirstDraft.ViewModel;
 [QueryProperty(nameof(IDLocation),nameof(IDLocation))]
 [QueryProperty(nameof(Location),nameof(Location))]
-public partial class EquipmentPageVM : ObservableObject, INotifyPropertyChanged
+public partial class EquipmentPageVM : BaseVM, INotifyPropertyChanged
 {
     [ObservableProperty]
     ObservableCollection<Equipment> _equipmentToTransfer = new();
@@ -38,82 +38,93 @@ public partial class EquipmentPageVM : ObservableObject, INotifyPropertyChanged
     [ObservableProperty]
     ObservableCollection<Equipment> _localEquipment;
 
-    
+    bool isPerformingLookup = false;
+
+    [ObservableProperty]
     string _selection;
-    public string Selection
+    
+    public void RefreshEquipmentMethod()
     {
-        get
+        LocalEquipment = new();
+        using MyDBContext c = new(TypeOfDatabase.CloudPostgreSQL);
+
+        if (string.IsNullOrWhiteSpace(Location))
         {
-            return _selection;
+            var BinEquipment = c.Bin.Include(b => b.Equipment).ToList();
+            foreach (var localRelation in BinEquipment)
+            {
+                LocalEquipment.Add(localRelation.Equipment);
+            }
         }
-        set
+
+        else if (Location.Equals(LocationTypes.festival))
         {
-            _selection = value;
-            OnPropertyChanged(nameof(Selection));
+            var Festival = c.Festivals.Include(f => f.LocalEquipmentRelation).ThenInclude(eif => eif.Equipment).Where(f => f.ID.Equals(IDLocation)).First();
+
+            foreach (var localRelation in Festival.LocalEquipmentRelation)
+            {
+                LocalEquipment.Add(localRelation.Equipment);
+            }
+
+        }
+        else if (Location.Equals(LocationTypes.warehouse))
+        {
+            var Warehouse = c.Warehouses.Include(w => w.LocalEquipmentRelations).ThenInclude(ler => ler.Equipment).Where(w => w.ID.Equals(IDLocation)).First();
+
+            foreach (var localRelation in Warehouse.LocalEquipmentRelations)
+            {
+                LocalEquipment.Add(localRelation.Equipment);
+            }
+        }
+        else if (Location.Equals(LocationTypes.transport))
+        {
+            var Transport = c.Transports.Include(t => t.LocalEquipmentRelations).ThenInclude(ler => ler.Equipment).Where(t => t.ID.Equals(IDLocation)).First();
+
+            foreach (var localRelation in Transport.LocalEquipmentRelations)
+            {
+                LocalEquipment.Add(localRelation.Equipment);
+            }
         }
     }
-
-
     public ICommand RefreshEquipment => new Command(
       execute: () =>
       {
-          LocalEquipment = new();
-          using MyDBContext c = new(TypeOfDatabase.CloudPostgreSQL);
-
-          if(string.IsNullOrWhiteSpace(Location))
-          {
-              var BinEquipment = c.Bin.Include(b => b.Equipment).ToList();
-              foreach (var localRelation in BinEquipment)
-              {
-                  LocalEquipment.Add(localRelation.Equipment);
-              }
-          }
-
-          else if (Location.Equals(LocationTypes.festival))
-          {
-            var Festival = c.Festivals.Include(f => f.LocalEquipmentRelation).ThenInclude(eif => eif.Equipment).Where(f=> f.ID.Equals(IDLocation)).First();
-              
-              foreach (var localRelation in Festival.LocalEquipmentRelation)
-              {
-                  LocalEquipment.Add(localRelation.Equipment);
-              }
-
-          }
-          else if (Location.Equals(LocationTypes.warehouse))
-          {
-              var Warehouse = c.Warehouses.Include(w => w.LocalEquipmentRelations).ThenInclude(ler => ler.Equipment).Where(w => w.ID.Equals(IDLocation)).First();
-
-              foreach (var localRelation in Warehouse.LocalEquipmentRelations)
-              {
-                  LocalEquipment.Add(localRelation.Equipment);
-              }
-          }
-          else if (Location.Equals(LocationTypes.transport))
-          {
-              var Transport = c.Transports.Include(t => t.LocalEquipmentRelations).ThenInclude(ler => ler.Equipment).Where(t => t.ID.Equals(IDLocation)).First();
-
-              foreach (var localRelation in Transport.LocalEquipmentRelations)
-              {
-                  LocalEquipment.Add(localRelation.Equipment);
-              }
-          }
-          
-
+         RefreshEquipmentMethod();  
       });
 
     public ICommand DragEquipment => new Command<Equipment>((Equipment e) => 
     {
-        _draggedEquipment = e;
+        if(!isPerformingLookup)
+            _draggedEquipment = e; // Unknown Error occurs here! Concurrency issue?
+    });
+
+    public ICommand ClearEquipmentToTransfer => new Command(() =>
+    {
+        EquipmentToTransfer = new();
     });
 
     public ICommand DropEquipment => new Command(() => 
     {
-        if (!EquipmentToTransfer.Contains(DraggedEquipment))
+        if (!isPerformingLookup)
         {
-        EquipmentToTransfer.Add(DraggedEquipment);
-        _draggedEquipment = null;
+            isPerformingLookup = true;
+            bool canTransfer = true;
+            foreach (var e in EquipmentToTransfer) 
+            {
+                if (e.ID.Equals(DraggedEquipment.ID))
+                {
+                    canTransfer = false;
+                }
+            }
 
+            if (canTransfer)
+            {
+                EquipmentToTransfer.Add(DraggedEquipment);
+                _draggedEquipment = null;
+            }
+            isPerformingLookup = false;
         }
+     
     });
 
     [RelayCommand]
@@ -126,6 +137,17 @@ public partial class EquipmentPageVM : ObservableObject, INotifyPropertyChanged
             ["OriginalLocationID"] = IDLocation,
             ["NewLocation"] = Selection,
             ["Equipment"] = EquipmentToTransfer
+        });
+    }
+
+    [RelayCommand]
+    async Task NavToAddEquipmentPage()
+    {
+        string equipmentLocation = string.IsNullOrWhiteSpace(Location) ? LocationTypes.bin : Location;
+        await Shell.Current.GoToAsync(nameof(AddEquipmentPage), new Dictionary<string, object>
+        {
+            ["Location"] = equipmentLocation,
+            ["LocationID"] = IDLocation
         });
     }
 

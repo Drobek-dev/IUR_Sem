@@ -10,5 +10,5 @@ public partial class SingleTransportPage : ContentPage
 		InitializeComponent();
 		BindingContext = new SingleTransportPageVM();
 	}
-	
+
 }

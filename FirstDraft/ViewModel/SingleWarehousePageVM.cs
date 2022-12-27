@@ -14,7 +14,7 @@ using System.Windows.Input;
 namespace FirstDraft.ViewModel;
 
 [QueryProperty(nameof(Warehouse), nameof(Warehouse))]
-public partial class SingleWarehousePageVM : ObservableObject
+public partial class SingleWarehousePageVM : BaseVM
 {
     [ObservableProperty]
     Warehouse _warehouse;
@@ -23,11 +23,8 @@ public partial class SingleWarehousePageVM : ObservableObject
     async Task SaveChanges()
     {
         using MyDBContext c = new(TypeOfDatabase.CloudPostgreSQL);
-
         c.Warehouses.Update(_warehouse);
-
-        await c.SaveChangesAsync();
-       
+        await PerformContextSave(c);
 
     }
 
@@ -41,7 +38,7 @@ public partial class SingleWarehousePageVM : ObservableObject
             c.Equipment.Remove(await c.Equipment.FindAsync(ler.IDEquipment));
         }
         c.Warehouses.Remove(_warehouse);
-        await c.SaveChangesAsync();
+        await PerformContextSave(c);
         await Shell.Current.GoToAsync("..");
     }
 

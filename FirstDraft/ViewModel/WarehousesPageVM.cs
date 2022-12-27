@@ -15,9 +15,9 @@ using System.Windows.Input;
 
 namespace FirstDraft.ViewModel;
 
-public partial class WarehousesPageVM : ObservableObject
+public partial class WarehousesPageVM : BaseVM
 {
-    Task _saveNewWarehouse = null;
+    Task _taskWarehouse = null;
     [ObservableProperty]
     string _newWarehouseName;
 
@@ -30,14 +30,16 @@ public partial class WarehousesPageVM : ObservableObject
     [ObservableProperty]
     ObservableCollection<Warehouse> _searchResults;
 
+
     public WarehousesPageVM()
     {
-        MyDBContext context = new(TypeOfDatabase.CloudPostgreSQL);
+        using MyDBContext context = new(TypeOfDatabase.CloudPostgreSQL);
 
         ActiveWarehouses = new(context.Warehouses.Include(w=>w.LocalEquipmentRelations));
-        context.Dispose();
+        
 
         SearchResults = ActiveWarehouses;
+  
     }
 
     [RelayCommand]
@@ -54,17 +56,17 @@ public partial class WarehousesPageVM : ObservableObject
         {
             Warehouse w = new() { Name = NewWarehouseName, Address = NewWarehouseAddress};
 
-            MyDBContext c = new(TypeOfDatabase.CloudPostgreSQL);
+            using MyDBContext c = new(TypeOfDatabase.CloudPostgreSQL);
             c.Warehouses.Update(w);
-            _saveNewWarehouse = c.SaveChangesAsync();
-            await _saveNewWarehouse;
+            await PerformContextSave(c);
 
-            _activeWarehouses.Add(w);
+            if(_operationSucceeded)
+                _activeWarehouses.Add(w);
         },
         canExecute: () => // in this case it is unnecessary as simultaneous adding of festivals does not produce any errors
         {
 
-            if (_saveNewWarehouse is not null && _saveNewWarehouse.Status == TaskStatus.Running)
+            if (_taskWarehouse is not null && _taskWarehouse.Status == TaskStatus.Running)
             {
                 return false;
             }

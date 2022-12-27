@@ -72,10 +72,10 @@
 	  <MauiXaml Update="View\About.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="View\AllFestivalsPage.xaml">
+	  <MauiXaml Update="View\AddEquipmentPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="View\BinPage.xaml">
+	  <MauiXaml Update="View\AllFestivalsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="View\EquipmentPage.xaml">

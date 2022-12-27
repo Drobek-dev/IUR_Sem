@@ -7,13 +7,8 @@ public partial class SingleFestivalPage : ContentPage
 	public SingleFestivalPage()
 	{
 		InitializeComponent();
-		var vm = new SingleFestivalPageVM();
-		BindingContext = vm;
+		BindingContext = new SingleFestivalPageVM();
+
 		
-	}
-    protected override void OnNavigatedTo(NavigatedToEventArgs args)
-    {
-        base.OnNavigatedTo(args);
-	
-    }
+	} 
 }

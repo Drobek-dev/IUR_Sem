@@ -13,10 +13,11 @@ using System.Threading.Tasks;
 namespace FirstDraft.ViewModel;
 
 [QueryProperty(nameof(Transport), nameof(Transport))]
-public partial class SingleTransportPageVM : ObservableObject
+public partial class SingleTransportPageVM : BaseVM
 {
     [ObservableProperty]
     Transport _transport;
+
 
     [RelayCommand]
     async Task SaveChanges()
@@ -25,7 +26,7 @@ public partial class SingleTransportPageVM : ObservableObject
         
         c.Transports.Update(_transport);
 
-        await c.SaveChangesAsync();
+        await PerformContextSave(c);
 
 
     }
@@ -40,7 +41,7 @@ public partial class SingleTransportPageVM : ObservableObject
             c.Equipment.Remove(await c.Equipment.FindAsync(ler.IDEquipment));
         }
         c.Transports.Remove(Transport);
-        await c.SaveChangesAsync();
+        await PerformContextSave(c);
         await Shell.Current.GoToAsync("..");
     }
 

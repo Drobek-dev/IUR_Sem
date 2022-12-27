@@ -24,14 +24,14 @@
                 
                 <RowDefinition Height="50"/>
             </Grid.RowDefinitions>
-            <Label Text="Festival Name"
+            <Label Text="Název skladu: "
                    Grid.Row="1" Grid.Column="0"
                    Padding="10"/>
             <Entry Text="{Binding NewWarehouseName}" 
                    Grid.Row="1" Grid.Column="1" 
                    Margin="10"/>
 
-            <Label Text="Warehouse address:"
+            <Label Text="Adresa skladu:"
                    Grid.Row="2" Grid.Column="0"
                    Padding="10"/>
             <Entry Text="{Binding NewWarehouseAddress}"

@@ -4,12 +4,18 @@ namespace FirstDraft.View;
 
 public partial class EquipmentPage : ContentPage
 {
-
+	EquipmentPageVM viewModel;
 	public EquipmentPage()
 	{
 		InitializeComponent();
-		
-		BindingContext = new EquipmentPageVM();
+
+		viewModel = new EquipmentPageVM();
+		BindingContext = viewModel;
 	}
- 
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+		viewModel.RefreshEquipmentMethod();
+    }
 }
