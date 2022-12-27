@@ -15,7 +15,7 @@ public static class LocationTypes
 {
     public static readonly string warehouse = "warehouse";
     public static readonly string festival = "festival";
-    public static readonly string transport = "trnasport";
+    public static readonly string transport = "transport";
     public static readonly string bin = "bin";
 
 }

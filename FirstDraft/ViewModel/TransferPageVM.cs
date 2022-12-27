@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.Input;
 using FirstDraft.Model.DatabaseFramework;
 using FirstDraft.Model.DatabaseFramework.Entities;
 using FirstDraft.Support;
+using FirstDraft.View;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Maui.Controls;
 using System;
@@ -53,7 +54,6 @@ public partial class TransferPageVM : ObservableObject
         }
         else
         {
-
             SearchResults = new(Target.Where(t => t.Name.Equals(query)).ToList());
         }
     });
@@ -92,19 +92,12 @@ public partial class TransferPageVM : ObservableObject
         {
             Target.Add(new() { Name = "Bin" });
         }
+        SearchResults = Target;
     }
 
-    [RelayCommand]
-    async Task TransferEquipment(Guid IDTarget)
+
+    void AssignEquipmentToNewLocation(MyDBContext context, Guid IDTarget)
     {
-
-        if (IDTarget.Equals(OriginalLocationID))
-            return;
-
-        using MyDBContext context = new(TypeOfDatabase.CloudPostgreSQL);
-
-        // assign equipment to new location
-
         if (NewLocation.Equals(LocationTypes.festival))
         {
             foreach (var e in Equipment)
@@ -141,40 +134,82 @@ public partial class TransferPageVM : ObservableObject
                 e.Location = NewLocation;
             }
         }
+    }
 
-        
-        // remove from original location
-
+    async Task DeleteOldEquipmentLocation(MyDBContext context)
+    {
         if (OriginalLocation.Equals(LocationTypes.festival))
         {
             foreach (var e in Equipment)
             {
-                context.EquipmentInFestivals.Remove(new() { IDEquipment = e.ID, IDFestival = OriginalLocationID });
-               
+                try
+                {
+
+                    context.EquipmentInFestivals.Remove(await context.EquipmentInFestivals.FindAsync(e.ID, OriginalLocationID));
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                }
+
             }
         }
         else if (OriginalLocation.Equals(LocationTypes.warehouse))
         {
             foreach (var e in Equipment)
             {
-                context.EquipmentInWarehouses.Remove(new() { IDEquipment = e.ID, IDWarehouse = OriginalLocationID });
-              
+                context.EquipmentInWarehouses.Remove(await context.EquipmentInWarehouses.FindAsync(e.ID, OriginalLocationID));
+
             }
         }
         else if (OriginalLocation.Equals(LocationTypes.transport))
         {
             foreach (var e in Equipment)
             {
-                context.EquipmentInTransports.Remove(new() { IDEquipment = e.ID, IDTransport = OriginalLocationID });
+                context.EquipmentInTransports.Remove(await context.EquipmentInTransports.FindAsync(e.ID, OriginalLocationID));
             }
         }
         else if (OriginalLocation.Equals(LocationTypes.bin))
         {
             foreach (var e in Equipment)
             {
-                context.Bin.Remove(new() { IDEquipment = e.ID });
+                context.Bin.Remove(await context.Bin.FindAsync(e.ID));
             }
         }
+    }
+
+    async Task RedirectToParentShellPage()
+    {
+        if (OriginalLocation.Equals(LocationTypes.festival))
+        {
+            await Shell.Current.GoToAsync(nameof(AllFestivalsPage));
+
+        }
+        else if (OriginalLocation.Equals(LocationTypes.warehouse))
+        {
+            await Shell.Current.GoToAsync(nameof(WarehousesPage));
+        }
+        else if (OriginalLocation.Equals(LocationTypes.transport))
+        {
+            await Shell.Current.GoToAsync(nameof(TransportsPage));
+        }
+        else if (OriginalLocation.Equals(LocationTypes.bin))
+        {
+            await Shell.Current.GoToAsync(nameof(EquipmentPage));
+        }
+    }
+    [RelayCommand]
+    async Task TransferEquipment(Guid IDTarget)
+    {
+
+        if (IDTarget.Equals(OriginalLocationID))
+            return;
+
+        using MyDBContext context = new(TypeOfDatabase.CloudPostgreSQL);
+
+        AssignEquipmentToNewLocation(context, IDTarget);
+        await DeleteOldEquipmentLocation(context);    
+
 
         try
         {
@@ -184,10 +219,10 @@ public partial class TransferPageVM : ObservableObject
         {
             Console.WriteLine(ex.ToString());   
         }
-    }
+        
 
-   
- 
+        await RedirectToParentShellPage();
+    }
 
 
 }

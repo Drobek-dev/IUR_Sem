@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+
 using CommunityToolkit.Mvvm.ComponentModel;
 //using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
@@ -46,32 +47,37 @@ public partial class AllFestivalsPageVM : ObservableObject, INotifyPropertyChang
     [ObservableProperty]
     string dummyString;
 
-
-    public AllFestivalsPageVM()
+    AllFestivalsPage _viewPage;
+    public AllFestivalsPageVM(AllFestivalsPage viewPage)
     {
         MyDBContext context = new(TypeOfDatabase.CloudPostgreSQL);
 
-        ActiveFestivals = new(context.Festivals
+        ActiveFestivals = new(context.Festivals.OrderByDescending(f=>f.ID)
             .Include(f => f.FestivalsExtWorkersRelations)
             .ThenInclude(few => few.ExternalWorker)
-            
             .Include(f => f.Construction)
             .Include(f => f.Deconstruction)
             .AsNoTracking());
-        context.Dispose();
 
         SearchResults = ActiveFestivals;
+        _viewPage = viewPage;
+      
     }
 
-
-    public ICommand NavToFestivalSinglePage => new Command<Festival>(async (Festival f)=>
+    [RelayCommand]
+    async Task NavToFestivalSinglePage(Festival f)
     {
-        await Shell.Current.GoToAsync(nameof(SingleFestivalPage), new Dictionary<string, object>
-        {
-            ["Festival"] = f
-        });
+        bool isPageNavConfirmed = await _viewPage.YesNoAlert($"Move to {f.Name}?");
 
-    });
+        if (isPageNavConfirmed)
+        {
+            await Shell.Current.GoToAsync(nameof(SingleFestivalPage), new Dictionary<string, object>
+            {
+                ["Festival"] = f
+            });
+        }
+
+    }
 
 
     public ICommand AddNewFestival => new Command(
@@ -79,16 +85,27 @@ public partial class AllFestivalsPageVM : ObservableObject, INotifyPropertyChang
     {
         Festival f = new() { Name = NewFestivalName, StartDate = NewStartDate, EndDate = NewEndDate, Location = Location, FestivalsExtWorkersRelations = new() };
 
-        MyDBContext c = new(TypeOfDatabase.CloudPostgreSQL);
+        using MyDBContext c = new(TypeOfDatabase.CloudPostgreSQL);
         c.Festivals.Update(f);
         _saveNewFestival = c.SaveChangesAsync();
-        await _saveNewFestival;
 
-        _activeFestivals.Add(f);
+        try
+        {
+            await _saveNewFestival;
+            _activeFestivals.Add(f);
+
+        }
+        catch (Exception ex) 
+        {
+            await _viewPage.DisplayNotification(
+                $"Thrown Exception: {ex.Message} {Environment.NewLine}{Environment.NewLine}" +
+                $"Task Exception: {_saveNewFestival.Exception?.Message}");
+        }
+
     },
         canExecute: () => // in this case it is unnecessary as simultaneous adding of festivals does not produce any errors
         {
-            
+  
             if(_saveNewFestival is not null && _saveNewFestival.Status == TaskStatus.Running)
             {
                 return false;

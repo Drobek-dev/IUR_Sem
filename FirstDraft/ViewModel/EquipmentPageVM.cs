@@ -108,8 +108,12 @@ public partial class EquipmentPageVM : ObservableObject, INotifyPropertyChanged
 
     public ICommand DropEquipment => new Command(() => 
     {
+        if (!EquipmentToTransfer.Contains(DraggedEquipment))
+        {
         EquipmentToTransfer.Add(DraggedEquipment);
-        //_draggedEquipment = null;
+        _draggedEquipment = null;
+
+        }
     });
 
     [RelayCommand]

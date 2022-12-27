@@ -92,7 +92,7 @@
                 <DataTemplate x:DataType="entities:Festival">
                     
                         <Button Text="{Binding Name}" 
-                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewModel:AllFestivalsPageVM}},Path=NavToFestivalSinglePage}"
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewModel:AllFestivalsPageVM}},Path=NavToFestivalSinglePageCommand}"
                                 CommandParameter="{Binding .}"/>
                     
                 </DataTemplate>

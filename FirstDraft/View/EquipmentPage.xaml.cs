@@ -8,6 +8,8 @@ public partial class EquipmentPage : ContentPage
 	public EquipmentPage()
 	{
 		InitializeComponent();
+		
 		BindingContext = new EquipmentPageVM();
 	}
+ 
 }
