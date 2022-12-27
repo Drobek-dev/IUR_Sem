@@ -18,6 +18,8 @@ public class MyDBContext : DbContext
     public DbSet<Festival> Festivals { get; private set; }
     public DbSet<FestivalsExtWorkersRelations> FestivalsExtWorkersRelations { get; private set; }
     public DbSet<EquipmentInFestival> EquipmentInFestivals { get; private set; }
+    public DbSet<EquipmentInWarehouse> EquipmentInWarehouses { get; private set; }
+    public DbSet<EquipmentInTransport> EquipmentInTransports { get; private set; }
     public DbSet<ExternalWorker> ExternalWorkers { get; private set; }
     public DbSet<Construction> Constructions { get; private set; }
     public DbSet<Deconstruction> Deconstructions { get; private set; }

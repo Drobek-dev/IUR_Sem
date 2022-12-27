@@ -52,7 +52,7 @@ public partial class SingleWarehousePageVM : ObservableObject
             new Dictionary<string, object>
             {
                 ["IDLocation"] = Warehouse.ID,
-                ["Location"] = $"{nameof(Model.DatabaseFramework.Entities.Warehouse)}"
+                ["Location"] = LocationTypes.warehouse
             });
     }
 

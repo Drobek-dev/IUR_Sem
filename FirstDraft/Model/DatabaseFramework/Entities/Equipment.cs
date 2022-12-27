@@ -18,7 +18,7 @@ public class Equipment
     public required string Location
     {
         get => _location;
-        init
+        set
         {
             if (value.Equals("festival") ||
                 value.Equals("transport") ||

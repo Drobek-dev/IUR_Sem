@@ -51,7 +51,7 @@ public partial class SingleTransportPageVM : ObservableObject
             new Dictionary<string, object>
             {
                 ["IDLocation"] = Transport.ID,
-                ["Location"] = $"{nameof(Model.DatabaseFramework.Entities.Transport)}"
+                ["Location"] = LocationTypes.transport
             });
     }
 }

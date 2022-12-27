@@ -11,16 +11,22 @@
         <support:DateOnlyToString x:Key="dateToString" />
 
     </ContentPage.Resources>
-    <HorizontalStackLayout>
-        <VerticalStackLayout>
+    <Grid ColumnDefinitions="50,Auto,Auto,50"
+          RowDefinitions="50,500,Auto,Auto,Auto,50">
+
+        <Grid Grid.Column="1" Grid.Row="1"
+              RowDefinitions="50,Auto,Auto,300">
             <Label 
+                Grid.Row="1"
                 Text="Equipment Page"
                 VerticalOptions="Center" 
                 HorizontalOptions="Center" />
-            <Button Text="Load Equipment" Command="{Binding RefreshEquipment}"/>
+            <Button 
+                Grid.Row="2"
+                Text="Load Equipment" Command="{Binding RefreshEquipment}"/>
 
 
-            <ListView ItemsSource="{Binding LocalEquipment}">
+            <ListView Grid.Row="3"  ItemsSource="{Binding LocalEquipment}">
                 <ListView.ItemTemplate>
                     <DataTemplate  x:DataType="entities:Equipment">
                         <ViewCell>
@@ -44,11 +50,12 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-        </VerticalStackLayout>
+        </Grid>
 
-        <Grid RowDefinitions="Auto, 1000">
-        <Label Text="Equipment To transfer" Grid.Row="0"/>
-        <Frame Grid.Row="1">
+        <Grid Grid.Column="2" Grid.Row="1" 
+            RowDefinitions="50,Auto,300">
+        <Label Text="Equipment To transfer" Grid.Row="1"/>
+        <Frame Grid.Row="2">
             <ListView ItemsSource="{Binding EquipmentToTransfer}" VerticalScrollBarVisibility="Always">
                         <ListView.ItemTemplate>
                             <DataTemplate x:DataType="entities:Equipment">
@@ -68,6 +75,35 @@
             </Frame>
         </Grid>
 
-    </HorizontalStackLayout>
+        <Label
+            Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="2"
+            Text="Přemístit vybrané vybavení do kategorie:"/>
+        <HorizontalStackLayout
+            x:Name="RadioButtons"
+            Grid.Column="1" Grid.Row="3" 
+            RadioButtonGroup.GroupName="Kategorie"
+            RadioButtonGroup.SelectedValue="{Binding Selection}">
+            <RadioButton Content="transport" Value="transport"/>
+            <RadioButton Content="festival" Value="festival"/>
+            <RadioButton Content="sklad" Value="warehouse"/>
+            <RadioButton Content="koš" Value="bin"/>
+            
+        </HorizontalStackLayout>
+        <Label x:Name="animalLabel"
+               Grid.Column="1"
+               Grid.Row="4">
+            <Label.FormattedText>
+                <FormattedString>
+                    <Span Text="You have chosen:" />
+                    <Span Text="{Binding Selection}" />
+                </FormattedString>
+            </Label.FormattedText>
+        </Label>
+        <Button 
+            Text="Vybrat zástupce v kategorii: "
+            Grid.Column="2" Grid.Row="3" 
+            Command="{Binding NavToTransferPageCommand}"/>
 
+
+    </Grid>
 </ContentPage>

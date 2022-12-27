@@ -15,8 +15,11 @@ public partial class AppShell : Shell
 		Routing.RegisterRoute(nameof(SingleFestivalPage), typeof(SingleFestivalPage));
 		Routing.RegisterRoute(nameof(SingleWarehousePage), typeof(SingleWarehousePage));
 		Routing.RegisterRoute(nameof(SingleTransportPage), typeof(SingleTransportPage));
+
 		Routing.RegisterRoute(nameof(ExternalWorkersPage), typeof(ExternalWorkersPage));
+
 		Routing.RegisterRoute(nameof(EquipmentPage), typeof(EquipmentPage));
+		Routing.RegisterRoute(nameof(TransferPage), typeof(TransferPage));
 		Routing.RegisterRoute(nameof(MainPage), typeof(MainPage));
 	}
 }

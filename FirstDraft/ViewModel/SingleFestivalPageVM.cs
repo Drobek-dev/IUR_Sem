@@ -70,7 +70,7 @@ public partial class SingleFestivalPageVM : ObservableObject
             new Dictionary<string, object>
             {
                 ["IDLocation"] = Festival.ID,
-                ["Location"] = $"{nameof(Model.DatabaseFramework.Entities.Festival)}"
+                ["Location"] = LocationTypes.festival
             });
     });
 
