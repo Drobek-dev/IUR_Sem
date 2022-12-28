@@ -43,12 +43,14 @@ public partial class EquipmentPageVM : BaseVM, INotifyPropertyChanged
     [ObservableProperty]
     string _selection;
     
+      
+    
     public void RefreshEquipmentMethod()
     {
         LocalEquipment = new();
         using MyDBContext c = new(TypeOfDatabase.CloudPostgreSQL);
 
-        if (string.IsNullOrWhiteSpace(Location))
+        if (Location.Equals(LocationTypes.bin))
         {
             var BinEquipment = c.Bin.Include(b => b.Equipment).ToList();
             foreach (var localRelation in BinEquipment)
@@ -151,4 +153,51 @@ public partial class EquipmentPageVM : BaseVM, INotifyPropertyChanged
         });
     }
 
+    [RelayCommand]
+    async Task DeleteSelectedEquipment()
+    {
+        if (await YesNoAlert($"Opravdu chcete vysypat z koše vybrané vybavení? {Environment.NewLine}" +
+            $"{EquipmentToTransfer.Count} položek vybavení bude nenávratně ztraceno."))
+        {
+            using MyDBContext c = new(Support.TypeOfDatabase.CloudPostgreSQL);
+            foreach(var e in EquipmentToTransfer)
+            {
+                c.Bin.Remove(await c.Bin.FindAsync(e.ID));
+                c.Equipment.Remove(await c.Equipment.FindAsync(e.ID));
+
+            }
+
+            await PerformContextSave(c);
+
+            if (_operationSucceeded)
+            {
+                EquipmentToTransfer = new();
+                RefreshEquipmentMethod();
+            }
+        }
+    }
+
+    [RelayCommand]
+    async Task DeleteAllEquipment()
+    {
+        if (await YesNoAlert($"Opravdu chcete vysypat koš? {Environment.NewLine}" +
+            $"{LocalEquipment.Count} položek vybavení bude nenávratně ztraceno."))
+            {
+                using MyDBContext c = new(Support.TypeOfDatabase.CloudPostgreSQL);
+                foreach (var e in LocalEquipment)
+                {
+                    c.Bin.Remove(await c.Bin.FindAsync(e.ID));
+                    c.Equipment.Remove(await c.Equipment.FindAsync(e.ID));
+
+                }
+
+                await PerformContextSave(c);
+
+                if (_operationSucceeded)
+                {
+                    EquipmentToTransfer = new();
+                    RefreshEquipmentMethod();
+                }
+            }
+    }
 }

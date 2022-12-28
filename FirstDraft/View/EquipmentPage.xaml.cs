@@ -11,11 +11,18 @@ public partial class EquipmentPage : ContentPage
 
 		viewModel = new EquipmentPageVM();
 		BindingContext = viewModel;
+		
 	}
 
     protected override void OnAppearing()
     {
         base.OnAppearing();
 		viewModel.RefreshEquipmentMethod();
+    }
+    protected override void OnNavigatedTo(NavigatedToEventArgs args)
+    {
+        base.OnNavigatedTo(args);
+		DeleteSelectedEquipmentButton.IsVisible = viewModel.Location.Equals(Support.LocationTypes.bin) ? true:false;
+		DeleteAllEquipmentButton.IsVisible = viewModel.Location.Equals(Support.LocationTypes.bin) ? true : false;
     }
 }

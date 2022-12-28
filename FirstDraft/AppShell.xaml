@@ -16,7 +16,7 @@
         <ShellContent Title="Festivaly" ContentTemplate="{DataTemplate view:AllFestivalsPage}"/>
         <ShellContent Title="Sklady" ContentTemplate="{DataTemplate view:WarehousesPage}"/>
         <ShellContent Title="Transporty" ContentTemplate="{DataTemplate view:TransportsPage}"/>
-        <ShellContent Title="Koš" ContentTemplate="{DataTemplate view:EquipmentPage}" />
+        <ShellContent Title="Koš" ContentTemplate="{DataTemplate view:BinPage}" />
     </FlyoutItem>
 
     <FlyoutItem Title="Extras">

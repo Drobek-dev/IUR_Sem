@@ -9,13 +9,14 @@
              Title="EquipmentPage">
     <ContentPage.Resources>
         <support:DateOnlyToString x:Key="dateToString" />
+        <support:LocationToBoolConverter x:Key="locationToBool"/>
 
     </ContentPage.Resources>
     <Grid ColumnDefinitions="50,Auto,Auto,50"
           RowDefinitions="50,500,Auto,Auto,50">
 
         <Grid Grid.Column="1" Grid.Row="1"
-              RowDefinitions="50,Auto,Auto,300,*">
+              RowDefinitions="50,Auto,Auto,Auto,300,*">
             <Label 
                 Grid.Row="1"
                 Text="Dostupné vybavení"
@@ -24,9 +25,14 @@
             <Button 
                 Grid.Row="2"
                 Text="Načíst dostupné vybavení" Command="{Binding RefreshEquipment}"/>
+            <Button
+                x:Name="DeleteAllEquipmentButton"
+                Grid.Row="3"
+                Text="Vysypat koš"
+                Command="{Binding DeleteAllEquipmentCommand}"/>
 
 
-            <ListView Grid.Row="3"  ItemsSource="{Binding LocalEquipment}">
+            <ListView Grid.Row="4"  ItemsSource="{Binding LocalEquipment}">
                 <ListView.ItemTemplate>
                     <DataTemplate  x:DataType="entities:Equipment">
                         <ViewCell>
@@ -51,19 +57,25 @@
                 </ListView.ItemTemplate>
             </ListView>
             <Button 
-                Grid.Row="4"
+                Grid.Row="5"
                 Text="+"
                 Command="{Binding NavToAddEquipmentPageCommand}"/>
         </Grid>
 
         <Grid Grid.Column="2" Grid.Row="1" 
-            RowDefinitions="50,Auto,Auto,300">
-        <Label Text="Vybavení pro přesun: " Grid.Row="1"/>
+            RowDefinitions="50,Auto,Auto,Auto,300">
+        <Label Text="Vybrané vybavení: " Grid.Row="1"/>
             <Button
                 Grid.Row="2"
-                Text="Resetovat vybavení pro přesun"
+                Text="Resetovat vybranévybavení"
                 Command="{Binding ClearEquipmentToTransfer}"/>
-            <Frame Grid.Row="3">
+            <Button
+                x:Name="DeleteSelectedEquipmentButton"
+                Grid.Row="3"
+                Text="Vysypat vybrané vybavení"
+                Command="{Binding DeleteSelectedEquipmentCommand}"
+                IsVisible="{Binding Location, Converter={StaticResource locationToBool}}"/>
+            <Frame Grid.Row="4">
             <ListView ItemsSource="{Binding EquipmentToTransfer}" VerticalScrollBarVisibility="Always">
                         <ListView.ItemTemplate>
                             <DataTemplate x:DataType="entities:Equipment">

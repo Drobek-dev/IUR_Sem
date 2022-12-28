@@ -187,7 +187,7 @@ public partial class TransferPageVM : BaseVM
         }
         else if (OriginalLocation.Equals(LocationTypes.bin))
         {
-            await Shell.Current.GoToAsync(nameof(EquipmentPage));
+            await Shell.Current.GoToAsync(nameof(BinPage));
         }
     }
     [RelayCommand]
