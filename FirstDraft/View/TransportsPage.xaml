@@ -6,101 +6,94 @@
              xmlns:viewModel="clr-namespace:FirstDraft.ViewModel"
              xmlns:support="clr-namespace:FirstDraft.Support"
              x:DataType="viewModel:TransportsPageVM"
-             Title="TransportPage">
+             Title="Transporty">
 
     <ContentPage.Resources>
-        <support:DateTimeToString x:Key="dateToString" />
+        <Style x:Key="transportAddButtonStyle" TargetType="Button" BasedOn="{StaticResource addButtonStyle}">
+            <Setter Property="TextColor" Value="{StaticResource textColor}"/>
+
+        </Style>
+
+        <Style x:Key="transportButtonBorderStyle" TargetType="Border" BasedOn="{StaticResource addButtonBorderStyle}">
+
+            <Setter Property="Stroke" Value="{StaticResource transportColor}"/>
+        </Style>
+
+        <Style x:Key="singleTransportButtonBorderStyle" TargetType="Border" BasedOn="{StaticResource selectionButttonBorderStyle}">
+
+            <Setter Property="Stroke" Value="{StaticResource transportColor}"/>
+        </Style>
+
+        <Style x:Key="singleTransportButtonStyle" TargetType="Button" BasedOn="{StaticResource selectionButtonStyle}">
+            <Setter Property="TextColor" Value="{StaticResource transportTextColor}"/>
+
+        </Style>
+
+        <Style x:Key="transportLabelStyle" TargetType="Label" BasedOn="{StaticResource baseCreateLabelStyle}">
+            <Setter Property="TextColor" Value="{StaticResource textColor}"/>
+            <Setter Property="BackgroundColor" Value="{StaticResource transportColor}"/>
+        </Style>
+
+        <Style x:Key="transportBorderStyle" TargetType="Border" BasedOn="{StaticResource baseCreateBorderStyle}">
+            <Setter Property="Background" Value="{StaticResource transportColor}"/>
+        </Style>
+
 
     </ContentPage.Resources>
 
     <VerticalStackLayout>
-        <Grid Grid.Column="1" Grid.Row="1"
-              Grid.RowSpan="3"
-              IsVisible="true">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="50"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="50"/>
-            </Grid.RowDefinitions>
-            <Label Text="Nazev transportu: "
-                   Grid.Row="1" Grid.Column="0"
-                   Padding="10"/>
-            <Entry Text="{Binding NewTransportName}"
-                   Grid.Row="1" Grid.Column="1"
-                   Margin="10"/>
-            
-            <Label Text="Počáteční lokace: "
-                   Grid.Row="2" Grid.Column="0"
-                   Padding="10"/>
-            <Entry Text="{Binding NewTransportStartingPosition}" 
-                   Grid.Row="2" Grid.Column="1" 
-                   Margin="10"/>
 
-            <Label Text="Destinace: "
-                   Grid.Row="3" Grid.Column="0"
-                   Padding="10"/>
-            <Entry Text="{Binding NewTransportDestination}"
-                   Grid.Row="3" Grid.Column="1"
-                   Margin="10"/>
+        <Grid
+            RowDefinitions="Auto,Auto"
+            x:Name="InternetLostGrid"
+            IsVisible="{Binding InternetAvailable, Converter={StaticResource internetLostConverter} }">
 
-
-            <Label Text="Odhadovaný čas příjezdu: " 
-                   Grid.Row="4" Grid.Column="0"
-                   Padding="10"/>
-            <Entry Text="{Binding NewTransportEstimatedArrivalTime}" 
-                   Grid.Row="4" Grid.Column="1"
-                   Margin="10"/>
-
-            <Label Text="Celé jméno řidiče: "
-                   Grid.Row="5" Grid.Column="0"
-                   Padding="10"/>
-            <Entry Text="{Binding NewTransportDriverFullName}"
-                   Grid.Row="5" Grid.Column="1"
-                   Margin="10"/>
-
-            <Label Text="Telefon na řidiče: "
-                   Grid.Row="6" Grid.Column="0"
-                   Padding="10"/>
-            <Entry Text="{Binding NewTransportDriverPhone}"
-                   Grid.Row="6" Grid.Column="1"
-                   Margin="10"/>
-
-            <Button Text="Přidat"
-                    Command="{Binding AddNew}"
-                    Grid.Row="7" Grid.Column="0"
-                    Padding="10"/>
+            <Label 
+                Grid.Row="0"
+                Text="Connection Lost"                 
+                HorizontalOptions="Center"
+                />
+            <Image
+                Grid.Row="1"
+                Source="connection_lost.png"
+                HeightRequest="200"
+                HorizontalOptions="Center"
+                />
 
         </Grid>
-        
+
         <SearchBar x:Name="searchBar"
                    SearchCommand="{Binding PerformSearch}"
-                   SearchCommandParameter="{Binding Text, Source={x:Reference searchBar}}"/>
+                   SearchCommandParameter="{Binding Text, Source={x:Reference searchBar}}"
+                   IsVisible="{Binding InternetAvailable}"
+                   MaximumWidthRequest="500"/>
 
-        <CollectionView x:Name="festivalsCollection" 
+        <Grid RowDefinitions="300">    
+            <CollectionView x:Name="festivalsCollection" 
                          
-                        ItemsSource="{Binding SearchResults}">
+                            ItemsSource="{Binding SearchResults}">
 
-            <CollectionView.ItemTemplate>
+                <CollectionView.ItemTemplate>
 
-                <DataTemplate x:DataType="entities:Transport">
+                    <DataTemplate x:DataType="entities:Transport">
 
-                    <Button Text="{Binding TransportName}"
-                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewModel:TransportsPageVM}},Path=NavToSingleTransportPageCommand}"
-                                CommandParameter="{Binding .}"/>
+                        <Button Text="{Binding TransportName}"
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewModel:TransportsPageVM}},Path=NavToSingleTransportPageCommand}"
+                                    CommandParameter="{Binding .}"
+                                Style="{StaticResource singleTransportButtonStyle}"/>
                     
 
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Grid>
+        <Border
+            IsVisible="{Binding InternetAvailable}"
+            Style="{StaticResource transportButtonBorderStyle}">
+
+            <Button Text="+"
+                    Command="{Binding NavToAddTransportPageCommand}"
+                    Style="{StaticResource transportAddButtonStyle}"/>
+        </Border>
     </VerticalStackLayout>
 </ContentPage>

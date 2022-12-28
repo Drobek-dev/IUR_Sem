@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FirstDraft.View.AddTransportPage"
+             xmlns:viewModel="clr-namespace:FirstDraft.ViewModel"
+             xmlns:entities="clr-namespace:FirstDraft.Model.DatabaseFramework.Entities"
+             xmlns:support="clr-namespace:FirstDraft.Support"          
+             x:DataType="viewModel:TransportsPageVM"
+             Title="Přidání nového transportu">
+
+        <ContentPage.Resources>
+
+            <Style x:Key="transportAddButtonStyle" TargetType="Button" BasedOn="{StaticResource addButtonStyle}">
+                <Setter Property="TextColor" Value="{StaticResource textColor}"/>
+
+            </Style>
+
+            <Style x:Key="transportButtonBorderStyle" TargetType="Border" BasedOn="{StaticResource addButtonBorderStyle}">
+
+                <Setter Property="Stroke" Value="{StaticResource transportColor}"/>
+            </Style>
+
+            <Style x:Key="singleTransportButtonBorderStyle" TargetType="Border" BasedOn="{StaticResource selectionButttonBorderStyle}">
+
+                <Setter Property="Stroke" Value="{StaticResource transportColor}"/>
+            </Style>
+
+            <Style x:Key="singleTransportButtonStyle" TargetType="Button" BasedOn="{StaticResource selectionButtonStyle}">
+                <Setter Property="TextColor" Value="{StaticResource transportTextColor}"/>
+
+            </Style>
+
+            <Style x:Key="transportLabelStyle" TargetType="Label" BasedOn="{StaticResource baseCreateLabelStyle}">
+                <Setter Property="TextColor" Value="{StaticResource textColor}"/>
+                <Setter Property="BackgroundColor" Value="{StaticResource transportColor}"/>
+            </Style>
+
+            <Style x:Key="transportBorderStyle" TargetType="Border" BasedOn="{StaticResource baseCreateBorderStyle}">
+                <Setter Property="Background" Value="{StaticResource transportColor}"/>
+            </Style>
+
+
+        </ContentPage.Resources>
+
+        <VerticalStackLayout>
+        <Grid
+            RowDefinitions="Auto,Auto"
+            x:Name="InternetLostGrid"
+            IsVisible="{Binding InternetAvailable, Converter={StaticResource internetLostConverter} }">
+
+            <Label 
+                Grid.Row="0"
+                Text="Connection Lost"                 
+                HorizontalOptions="Center"
+                />
+            <Image
+                Grid.Row="1"
+                Source="connection_lost.png"
+                HeightRequest="200"
+                HorizontalOptions="Center"
+                />
+
+        </Grid>
+
+        <Grid
+                HorizontalOptions="Center"
+                Grid.Column="1" Grid.Row="1"
+                Grid.RowSpan="3"
+                IsVisible="{Binding InternetAvailable}">
+                
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="50"/>
+                </Grid.RowDefinitions>
+
+                <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                        Style="{StaticResource transportBorderStyle}">
+                    <HorizontalStackLayout>
+                        <Label Text="Název transportu: "
+                                Style="{StaticResource transportLabelStyle}"/>
+
+                        <Entry Text="{Binding NewTransportName}" 
+                                Style="{StaticResource baseCreateEntryStyle}"/>
+                    </HorizontalStackLayout>
+                </Border>
+
+                <Border Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+                        Style="{StaticResource transportBorderStyle}">
+                    <HorizontalStackLayout>
+                        <Label Text="Počáteční lokace: "
+                           Style="{StaticResource transportLabelStyle}"/>
+                        <Entry Text="{Binding NewTransportStartingPosition}"
+                                Style="{StaticResource baseCreateEntryStyle}"/>
+                    </HorizontalStackLayout>
+                </Border>
+
+            <Border Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
+                        Style="{StaticResource transportBorderStyle}">
+                    <HorizontalStackLayout>
+                        <Label Text="Destinace: " 
+                           Style="{StaticResource transportLabelStyle}"/>
+                        <Entry Text="{Binding NewTransportDestination}" 
+                                Style="{StaticResource baseCreateEntryStyle}"/>
+                    </HorizontalStackLayout>
+                </Border>
+
+            <Border Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"
+                        Style="{StaticResource transportBorderStyle}">
+                    <HorizontalStackLayout>
+                    <Label Text="Odhadovaný čas příjezdu: "
+                           Style="{StaticResource transportLabelStyle}"/>
+                        <Entry Text="{Binding NewTransportEstimatedArrivalTime, Converter={StaticResource dateTimeToString}}"
+                                Style="{StaticResource baseCreateEntryStyle}"/>
+                    </HorizontalStackLayout>
+                </Border>
+
+            <Border Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2"
+                        Style="{StaticResource transportBorderStyle}">
+                <HorizontalStackLayout>
+                    <Label Text="Celé jméno řidiče: "
+                           Style="{StaticResource transportLabelStyle}"/>
+                    <Entry Text="{Binding NewTransportDriverFullName}"
+                                Style="{StaticResource baseCreateEntryStyle}"/>
+                </HorizontalStackLayout>
+            </Border>
+
+            <Border Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2"
+                        Style="{StaticResource transportBorderStyle}">
+                <HorizontalStackLayout>
+                    <Label Text="Telefon na řidiče: "
+                           Style="{StaticResource transportLabelStyle}"/>
+                    <Entry Text="{Binding NewTransportDriverPhone}"
+                                Style="{StaticResource baseCreateEntryStyle}"/>
+                </HorizontalStackLayout>
+            </Border>
+
+            <Border Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2"
+                        Style="{StaticResource transportButtonBorderStyle}">
+                    <Button Text="+"
+                    Command="{Binding AddNew}"
+                    Style="{StaticResource transportAddButtonStyle}"/>
+                </Border>
+            </Grid>
+        </VerticalStackLayout>
+  
+</ContentPage>

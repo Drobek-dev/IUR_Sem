@@ -52,7 +52,8 @@ public partial class SingleTransportPageVM : BaseVM
             new Dictionary<string, object>
             {
                 ["IDLocation"] = Transport.ID,
-                ["Location"] = LocationTypes.transport
+                ["Location"] = LocationTypes.transport,
+                ["LocationName"] = Transport.TransportName
             });
     }
 }

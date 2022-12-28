@@ -1,13 +1,22 @@
+
 using FirstDraft.ViewModel;
 
 namespace FirstDraft.View;
 
 public partial class SingleWarehousePage : ContentPage
 {
+	SingleWarehousePageVM vm;
 	public SingleWarehousePage()
 	{
 		InitializeComponent();
-		BindingContext = new SingleWarehousePageVM();
+		vm = new SingleWarehousePageVM();
+		BindingContext = vm;
 	}
-  
+
+    protected override void OnNavigatedTo(NavigatedToEventArgs args)
+    {
+        base.OnNavigatedTo(args);
+        Title = vm.Warehouse is not null ? $"Sklad {vm.Warehouse.Name}" : Title;
+    }
+
 }

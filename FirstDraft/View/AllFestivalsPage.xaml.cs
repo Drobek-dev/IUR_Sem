@@ -8,7 +8,6 @@ public partial class AllFestivalsPage : ContentPage
 	public AllFestivalsPage()
 	{
 		InitializeComponent();
-		BindingContext = new AllFestivalsPageVM();
 	}
 
     protected override void OnAppearing()
@@ -17,6 +16,4 @@ public partial class AllFestivalsPage : ContentPage
 		BindingContext = new AllFestivalsPageVM();
 		
     }
-
-
 }

@@ -2,13 +2,87 @@
 <Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:FirstDraft"
+             xmlns:support="clr-namespace:FirstDraft.Support"
              x:Class="FirstDraft.App">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
+      
             </ResourceDictionary.MergedDictionaries>
+            
+            <support:DateOnlyToString x:Key="dateOnlyToString" />
+            <support:InternetConnectionToVisibilityConverter x:Key="internetLostConverter" />
+            <support:DateTimeToString x:Key="dateTimeToString"/>
+            
+            <Color x:Key="textColor">Black</Color>
+            <Color x:Key="festivalColor">#E3D122</Color>
+            <Color x:Key="warehouseColor">#FF00E4</Color>
+            <Color x:Key="transportColor">#00E0FF</Color>
+            <Color x:Key="binColor">#FF8B00</Color>
+
+            <Style x:Key="baseCreateBorderStyle" TargetType="Border">
+                <Setter Property="StrokeThickness" Value="4" />
+                <Setter Property="StrokeShape" Value="RoundRectangle 10,10,10,10" />
+                <Setter Property="Padding" Value="5,5,5,5"/>
+                <Setter Property="Background" Value="White"/>
+            </Style>
+            
+            <Style x:Key="baseCreateLabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="Medium" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="Padding" Value="10"/>
+                <Setter Property="FontFamily" Value="Times New Roman"/>
+                <Setter Property="MinimumWidthRequest" Value="200"/>
+            </Style>
+
+            <Style x:Key="baseCreateEntryStyle" TargetType="Entry">
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="BackgroundColor" Value="Black"/>
+                <Setter Property="Margin" Value="0,5,5,0"/>
+                <Setter Property="MinimumWidthRequest" Value="150"/>
+            </Style>
+
+            <Style x:Key="baseButtonStyle" TargetType="Button">
+                <Setter Property="FontAttributes" Value="Bold"/>
+                
+                <Setter Property="Margin" Value="20"/>
+            </Style>
+
+            <Style x:Key="selectionButtonStyle" TargetType="Button" BasedOn="{StaticResource baseButtonStyle}">
+                <Setter Property="FontSize" Value="Body"/>
+                <Setter Property="MaximumWidthRequest" Value="200"/>
+                <Setter Property="MaximumHeightRequest" Value="50"/>
+                <Setter Property="Margin" Value="0"/>
+            </Style>
+
+            <Style x:Key="addButtonStyle" TargetType="Button" BasedOn="{StaticResource baseButtonStyle}">
+                <Setter Property="FontSize" Value="Header"/>
+                <Setter Property="MaximumWidthRequest" Value="100"/>
+                <Setter Property="MaximumHeightRequest" Value="100"/>
+            </Style>
+
+            <Style x:Key="selectionButttonBorderStyle" TargetType="Border" BasedOn="{StaticResource baseCreateBorderStyle}">
+                <Setter Property="MaximumWidthRequest" Value="210"/>
+                <Setter Property="MaximumHeightRequest" Value="60"/>
+                <Setter Property="StrokeThickness" Value="5" />
+                <Setter Property="StrokeShape" Value="RoundRectangle 40" />
+                <Setter Property="Margin" Value="3"/>
+            </Style>
+
+            <Style x:Key="addButtonBorderStyle" TargetType="Border" BasedOn="{StaticResource baseCreateBorderStyle}">
+                <Setter Property="MaximumWidthRequest" Value="110"/>
+                <Setter Property="MaximumHeightRequest" Value="110"/>
+                <Setter Property="StrokeThickness" Value="5" />
+                <Setter Property="StrokeShape" Value="RoundRectangle 40" />
+                <Setter Property="Margin" Value="10"/>
+            </Style>
+
+
+
+
         </ResourceDictionary>
+
     </Application.Resources>
 </Application>

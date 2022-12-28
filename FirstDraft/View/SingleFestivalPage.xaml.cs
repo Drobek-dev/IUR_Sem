@@ -4,11 +4,17 @@ namespace FirstDraft.View;
 
 public partial class SingleFestivalPage : ContentPage
 {
+	SingleFestivalPageVM vm;
 	public SingleFestivalPage()
 	{
 		InitializeComponent();
-		BindingContext = new SingleFestivalPageVM();
+		vm = new SingleFestivalPageVM();
+		BindingContext= vm;	
+	}
 
-		
-	} 
+    protected override void OnNavigatedTo(NavigatedToEventArgs args)
+    {
+        base.OnNavigatedTo(args);
+        Title = vm.Festival is not null ? $"Festival {vm.Festival.Name}" : Title;
+    }
 }

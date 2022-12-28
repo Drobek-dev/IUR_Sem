@@ -6,7 +6,7 @@
              xmlns:viewModel ="clr-namespace:FirstDraft.ViewModel"
              xmlns:entities ="clr-namespace:FirstDraft.Model.DatabaseFramework.Entities"
              x:DataType="viewModel:EquipmentPageVM"
-             Title="EquipmentPage">
+             Title="Vybavení">
     <ContentPage.Resources>
         <support:DateOnlyToString x:Key="dateToString" />
         <support:LocationToBoolConverter x:Key="locationToBool"/>

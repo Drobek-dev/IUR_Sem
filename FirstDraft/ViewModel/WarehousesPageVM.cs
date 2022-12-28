@@ -30,17 +30,33 @@ public partial class WarehousesPageVM : BaseVM
     [ObservableProperty]
     ObservableCollection<Warehouse> _searchResults;
 
+    [RelayCommand]
+    async Task NavToAddWarehousePage()
+    {
+        await Shell.Current.GoToAsync(nameof(AddWarehousePage));
+    }
+
 
     public WarehousesPageVM()
     {
-        using MyDBContext context = new(TypeOfDatabase.CloudPostgreSQL);
-
-        ActiveWarehouses = new(context.Warehouses.Include(w=>w.LocalEquipmentRelations));
-        
-
-        SearchResults = ActiveWarehouses;
-  
+        Init();
     }
+
+    private void Init()
+    {
+        if (!InternetAvailable)
+            return;
+        using MyDBContext context = new(TypeOfDatabase.CloudPostgreSQL);
+        ActiveWarehouses = new(context.Warehouses.Include(w=>w.LocalEquipmentRelations));
+        SearchResults = ActiveWarehouses;
+    }
+
+    protected override void Connectivity_ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
+    {
+        base.Connectivity_ConnectivityChanged(sender, e);
+        Init();
+    }
+
 
     [RelayCommand]
     async Task NavToSingleWarehousePage(Warehouse w)
@@ -60,8 +76,11 @@ public partial class WarehousesPageVM : BaseVM
             c.Warehouses.Update(w);
             await PerformContextSave(c);
 
-            if(_operationSucceeded)
+            if (_operationSucceeded)
+            {
                 _activeWarehouses.Add(w);
+                await Shell.Current.GoToAsync("..");
+            }
         },
         canExecute: () => // in this case it is unnecessary as simultaneous adding of festivals does not produce any errors
         {

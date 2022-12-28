@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FirstDraft.View.AddWarehousePage"
+             xmlns:viewModel="clr-namespace:FirstDraft.ViewModel"
+             xmlns:entities="clr-namespace:FirstDraft.Model.DatabaseFramework.Entities"
+             xmlns:support="clr-namespace:FirstDraft.Support"          
+             x:DataType="viewModel:WarehousesPageVM"
+             Title="Přidání nového festivalu">
+    <ContentPage.Resources>
+        <Style x:Key="warehouseAddButtonStyle" TargetType="Button" BasedOn="{StaticResource addButtonStyle}">
+            <Setter Property="TextColor" Value="{StaticResource textColor}"/>
+
+        </Style>
+
+        <Style x:Key="warehouseButtonBorderStyle" TargetType="Border" BasedOn="{StaticResource addButtonBorderStyle}">
+
+            <Setter Property="Stroke" Value="{StaticResource warehouseColor}"/>
+        </Style>
+
+        <Style x:Key="singleWarehouseButtonBorderStyle" TargetType="Border" BasedOn="{StaticResource selectionButttonBorderStyle}">
+
+            <Setter Property="Stroke" Value="{StaticResource warehouseColor}"/>
+        </Style>
+
+        <Style x:Key="singleWarehouseButtonStyle" TargetType="Button" BasedOn="{StaticResource selectionButtonStyle}">
+            <Setter Property="TextColor" Value="{StaticResource textColor}"/>
+
+        </Style>
+
+        <Style x:Key="warehouseLabelStyle" TargetType="Label" BasedOn="{StaticResource baseCreateLabelStyle}">
+            <Setter Property="TextColor" Value="{StaticResource textColor}"/>
+            <Setter Property="BackgroundColor" Value="{StaticResource warehouseColor}"/>
+        </Style>
+
+        <Style x:Key="warehouseBorderStyle" TargetType="Border" BasedOn="{StaticResource baseCreateBorderStyle}">
+            <Setter Property="Background" Value="{StaticResource warehouseColor}"/>
+        </Style>
+    </ContentPage.Resources>
+
+    <VerticalStackLayout>
+
+        <Grid
+            RowDefinitions="Auto,Auto"
+            x:Name="InternetLostGrid"
+            IsVisible="{Binding InternetAvailable, Converter={StaticResource internetLostConverter} }">
+
+            <Label 
+                Grid.Row="0"
+                Text="Connection Lost"                 
+                HorizontalOptions="Center"
+                />
+            <Image
+                Grid.Row="1"
+                Source="connection_lost.png"
+                HeightRequest="200"
+                HorizontalOptions="Center"
+                />
+
+        </Grid>
+        
+        <Grid 
+            HorizontalOptions="Center"
+            Grid.Column="1" Grid.Row="1"
+            Grid.RowSpan="3"
+            IsVisible="{Binding InternetAvailable}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="1" Grid.Column="0"
+                    Style="{StaticResource warehouseBorderStyle}">
+                <HorizontalStackLayout>
+                    <Label 
+                        Text="Název skladu: "
+                        Style="{StaticResource warehouseLabelStyle}"    
+                        />
+                    <Entry Text="{Binding NewWarehouseName}" 
+                        Style="{StaticResource baseCreateEntryStyle}"/>
+                </HorizontalStackLayout>
+            </Border>
+
+            <Border Grid.Row="2" Grid.Column="0"
+                    Style="{StaticResource warehouseBorderStyle}">
+                <HorizontalStackLayout>
+                    <Label 
+                        Text="Adresa skladu:"
+                        Style="{StaticResource warehouseLabelStyle}"    
+                        />
+                    <Entry Text="{Binding NewWarehouseAddress}" 
+                        Style="{StaticResource baseCreateEntryStyle}"/>
+                </HorizontalStackLayout>
+            </Border>
+
+
+            <Border Grid.Row="3" Grid.Column="0"
+                        Style="{StaticResource warehouseButtonBorderStyle}">
+                <Button Text="+"
+                    Command="{Binding AddNewWarehouse}"
+                    Style="{StaticResource warehouseAddButtonStyle}"/>
+            </Border>
+        
+
+        </Grid>
+    </VerticalStackLayout>
+</ContentPage>

@@ -21,7 +21,7 @@ public partial class SingleFestivalPageVM : BaseVM
     [ObservableProperty]
     Festival _festival;
 
-    SingleFestivalPage _viewPage;
+   
 
 
     [RelayCommand]
@@ -76,7 +76,8 @@ public partial class SingleFestivalPageVM : BaseVM
             new Dictionary<string, object>
             {
                 ["IDLocation"] = Festival.ID,
-                ["Location"] = LocationTypes.festival
+                ["Location"] = LocationTypes.festival,
+                ["LocationName"] = Festival.Name
             });
     });
 

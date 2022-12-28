@@ -39,7 +39,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <Label Text="Název festivalu: " Grid.Column="1" Grid.Row="1"/>
+                <Label Text="Název skladu: " Grid.Column="1" Grid.Row="1"/>
                 <Entry Grid.Column="2" Grid.Row="1"
                     Text="{Binding Warehouse.Name}"
             
@@ -52,8 +52,6 @@
                     x:Name="Location"
                     Text="{Binding Warehouse.Address}"
                   />
-
-               
 
             </Grid>
 

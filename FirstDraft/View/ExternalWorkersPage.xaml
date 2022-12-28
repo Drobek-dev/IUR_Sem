@@ -6,7 +6,7 @@
              xmlns:entities ="clr-namespace:FirstDraft.Model.DatabaseFramework.Entities"
              xmlns:controls="clr-namespace:FirstDraft.Controls"
              x:DataType="viewModel:ExternalWorkersVM"
-             Title="ExternalWorkersPage">
+             Title="Externí pracovníci">
 
     <Grid MaximumHeightRequest="600">
         <Grid.RowDefinitions>

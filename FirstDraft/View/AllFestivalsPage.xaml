@@ -7,100 +7,102 @@
              xmlns:support="clr-namespace:FirstDraft.Support"
              
              x:DataType="viewModel:AllFestivalsPageVM"
-             Title="AllFestivalsPage">
+             Title="Festivaly">
 
     <ContentPage.Resources>
         <support:DateOnlyToString x:Key="dateToString" />
-   
+        <support:InternetConnectionToVisibilityConverter x:Key="internetLostConverter" />
+
+        <Style x:Key="festivalAddButtonStyle" TargetType="Button" BasedOn="{StaticResource addButtonStyle}">
+            <Setter Property="TextColor" Value="{StaticResource textColor}"/>
+            
+        </Style>
+
+        <Style x:Key="festivalButtonBorderStyle" TargetType="Border" BasedOn="{StaticResource addButtonBorderStyle}">
+            
+            <Setter Property="Stroke" Value="{StaticResource festivalColor}"/>
+        </Style>
+
+        <Style x:Key="singleFestivalButtonBorderStyle" TargetType="Border" BasedOn="{StaticResource selectionButttonBorderStyle}">
+            
+            <Setter Property="Stroke" Value="{StaticResource festivalColor}"/>
+        </Style>
+
+        <Style x:Key="singleFestivalButtonStyle" TargetType="Button" BasedOn="{StaticResource selectionButtonStyle}">
+            <Setter Property="TextColor" Value="{StaticResource textColor}"/>
+            
+        </Style>
+
+        <Style x:Key="festivalLabelStyle" TargetType="Label" BasedOn="{StaticResource baseCreateLabelStyle}">
+            <Setter Property="TextColor" Value="{StaticResource textColor}"/>
+            <Setter Property="BackgroundColor" Value="{StaticResource festivalColor}"/>
+        </Style>
+
+        <Style x:Key="festivalBorderStyle" TargetType="Border" BasedOn="{StaticResource baseCreateBorderStyle}">
+            <Setter Property="Background" Value="{StaticResource festivalColor}"/>
+        </Style>
+        
     </ContentPage.Resources>
+    
+    
 
     <VerticalStackLayout>
-    <Grid Grid.Column="1" Grid.Row="1"
-              Grid.RowSpan="3"
-              IsVisible="true">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="50"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="50"/>
-            </Grid.RowDefinitions>
-            <Label Text="Festival Name"
-                   Grid.Row="1" Grid.Column="0"
-                   Padding="10"/>
-            <Entry Text="{Binding NewFestivalName}" 
-                   Grid.Row="1" Grid.Column="1" 
-                   Margin="10"/>
-                
-            <Label Text="Start date"
-                   Grid.Row="2" Grid.Column="0"
-                   Padding="10"/>
-            <Entry Text="{Binding NewStartDate, Converter={StaticResource dateToString}}"
-                   Grid.Row="2" Grid.Column="1"
-                   Margin="10"/>
-                
-            <Label Text="End date" 
-                   Grid.Row="3" Grid.Column="0"
-                   Padding="10"/>
-            <Entry Text="{Binding NewEndDate, Converter={StaticResource dateToString}}" 
-                   Grid.Row="3" Grid.Column="1"
-                   Margin="10"/>
-             
-            <Label Text="Location"
-                   Grid.Row="4" Grid.Column="0"
-                   Padding="10"/>
-            <Entry Text="{Binding Location}"
-                   Grid.Row="4" Grid.Column="1"
-                   Margin="10"/>
-                
-            <Button Text="Přidat"
-                    Command="{Binding AddNewFestival}"
-                    Grid.Row="5" Grid.Column="0"
-                    Padding="10"/>
+        <Grid
+            RowDefinitions="Auto,Auto"
+            x:Name="InternetLostGrid"
+            IsVisible="{Binding InternetAvailable, Converter={StaticResource internetLostConverter} }">
+
+            <Label 
+                Grid.Row="0"
+                Text="Connection Lost"                 
+                HorizontalOptions="Center"
+                />
+            <Image
+                Grid.Row="1"
+                Source="connection_lost.png"
+                HeightRequest="200"
+                HorizontalOptions="Center"
+                />
 
         </Grid>
+        
 
-        <SearchBar x:Name="searchBar"
-                   SearchCommand="{Binding PerformSearch}"
-                   SearchCommandParameter="{Binding Text, Source={x:Reference searchBar}}"/>
+        <SearchBar 
+            x:Name="searchBar"
+            SearchCommand="{Binding PerformSearch}"
+            SearchCommandParameter="{Binding Text, Source={x:Reference searchBar}}"
+            IsVisible="{Binding InternetAvailable}"
+            MaximumWidthRequest="500"/>
 
-        <CollectionView x:Name="festivalsCollection" 
-                         
-                        ItemsSource="{Binding SearchResults}">
+        <Grid RowDefinitions="300">
+        <CollectionView Grid.Row="0"
+            x:Name="festivalsCollection" 
+            ItemsSource="{Binding SearchResults}"
+            IsVisible="{Binding InternetAvailable}">
             
             <CollectionView.ItemTemplate>
                 
                 <DataTemplate x:DataType="entities:Festival">
-                    
+
+                    <Border
+                        Style="{StaticResource singleFestivalButtonBorderStyle}">
                         <Button Text="{Binding Name}" 
                                 Command="{Binding Source={RelativeSource AncestorType={x:Type viewModel:AllFestivalsPageVM}},Path=NavToFestivalSinglePageCommand}"
-                                CommandParameter="{Binding .}"/>
-                    
+                                CommandParameter="{Binding .}"
+                                Style="{StaticResource singleFestivalButtonStyle}"/>
+                    </Border>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
+        </Grid>
 
-        <!--<CollectionView x:Name="allFestivalsCollection" 
-                         
-                        ItemsSource="{Binding ActiveFestivals}">
-
-            <CollectionView.ItemTemplate>
-
-                <DataTemplate x:DataType="entities:Festival">
-
-                    <Button Text="{Binding Name}" 
-                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewModel:AllFestivalsPageVM}},Path=NavToFestivalSinglePageCommand}"
-                                CommandParameter="{Binding .}"/>
-
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>-->
-
+        <Border
+            IsVisible="{Binding InternetAvailable}"
+            Style="{StaticResource festivalButtonBorderStyle}">
+            
+            <Button Text="+"
+                    Command="{Binding NavToAddFestivalPageCommand}"
+                    Style="{StaticResource festivalAddButtonStyle}"/>
+        </Border>
     </VerticalStackLayout>
 </ContentPage>

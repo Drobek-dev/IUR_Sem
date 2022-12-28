@@ -45,13 +45,30 @@ public partial class TransportsPageVM : BaseVM
    
     public TransportsPageVM()
     {
-        MyDBContext context = new(TypeOfDatabase.CloudPostgreSQL);
-
-        ActiveTransports = new(context.Transports.Include(t=> t.LocalEquipmentRelations).OrderByDescending(t=> t.ID));
-       
-        SearchResults = ActiveTransports;
-
+        Init();
     
+    }
+
+    private void Init()
+    {
+        if (!InternetAvailable)
+            return;
+        MyDBContext context = new(TypeOfDatabase.CloudPostgreSQL);
+        ActiveTransports = new(context.Transports.Include(t=> t.LocalEquipmentRelations).OrderByDescending(t=> t.ID));
+        SearchResults = ActiveTransports;
+    }
+
+    protected override void Connectivity_ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
+    {
+        base.Connectivity_ConnectivityChanged(sender, e);
+        Init();
+    }
+
+
+    [RelayCommand]
+    async Task NavToAddTransportPage()
+    {
+        await Shell.Current.GoToAsync(nameof(AddTransportPage));
     }
 
     [RelayCommand]
@@ -74,8 +91,13 @@ public partial class TransportsPageVM : BaseVM
 
             await PerformContextSave(c);
 
-            if(_operationSucceeded)
+            if (_operationSucceeded)
+            {
                 _activeTransports.Add(t);
+                await Shell.Current.GoToAsync("..");
+            }
+
+           
         },
         canExecute: () => // in this case it is unnecessary as simultaneous adding of festivals does not produce any errors
         {

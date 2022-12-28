@@ -16,6 +16,7 @@ using FirstDraft.Model.DatabaseFramework;
 using FirstDraft.Model.DatabaseFramework.Entities;
 using FirstDraft.Support;
 using FirstDraft.View;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
@@ -46,9 +47,23 @@ public partial class AllFestivalsPageVM : BaseVM, INotifyPropertyChanged
 
     public AllFestivalsPageVM()
     {
-        MyDBContext context = new(TypeOfDatabase.CloudPostgreSQL);
+        Init();
+    }
 
-        ActiveFestivals = new(context.Festivals.OrderByDescending(f=>f.ID)
+    protected override void Connectivity_ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
+    {
+        base.Connectivity_ConnectivityChanged(sender, e);    
+        Init();
+    }
+
+    private void Init()
+    {
+        if (!InternetAvailable)
+            return;
+
+        using MyDBContext context = new(TypeOfDatabase.CloudPostgreSQL);
+
+        ActiveFestivals = new(context.Festivals.OrderByDescending(f => f.ID)
             .Include(f => f.FestivalsExtWorkersRelations)
             .ThenInclude(few => few.ExternalWorker)
             .Include(f => f.Construction)
@@ -56,8 +71,12 @@ public partial class AllFestivalsPageVM : BaseVM, INotifyPropertyChanged
             .AsNoTracking());
 
         SearchResults = ActiveFestivals;
-       
-      
+    }
+
+    [RelayCommand]
+    async Task NavToAddFestivalPage()
+    {
+        await Shell.Current.GoToAsync(nameof(AddFestivalPage));
     }
 
     [RelayCommand]
@@ -82,8 +101,11 @@ public partial class AllFestivalsPageVM : BaseVM, INotifyPropertyChanged
         c.Festivals.Update(f);
 
         await PerformContextSave(c);
-        if(_operationSucceeded)
+        if (_operationSucceeded)
+        {
             ActiveFestivals.Add(f);
+            await Shell.Current.GoToAsync("..");
+        }
 
     },
         canExecute: () => // in this case it is unnecessary as simultaneous adding of festivals does not produce any errors

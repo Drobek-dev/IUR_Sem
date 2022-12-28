@@ -49,7 +49,8 @@ public partial class SingleWarehousePageVM : BaseVM
             new Dictionary<string, object>
             {
                 ["IDLocation"] = Warehouse.ID,
-                ["Location"] = LocationTypes.warehouse
+                ["Location"] = LocationTypes.warehouse,
+                ["LocationName"] = Warehouse.Name
             });
     }
 

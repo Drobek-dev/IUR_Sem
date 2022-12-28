@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FirstDraft.View.AddFestivalPage"
+             xmlns:viewModel="clr-namespace:FirstDraft.ViewModel"
+             xmlns:entities="clr-namespace:FirstDraft.Model.DatabaseFramework.Entities"
+             xmlns:support="clr-namespace:FirstDraft.Support"          
+             x:DataType="viewModel:AllFestivalsPageVM"
+             Title="Přidání nového festivalu">
+
+    <ContentPage.Resources>
+        
+        <Style x:Key="festivalAddButtonStyle" TargetType="Button" BasedOn="{StaticResource addButtonStyle}">
+            <Setter Property="TextColor" Value="{StaticResource textColor}"/>
+
+        </Style>
+
+        <Style x:Key="festivalButtonBorderStyle" TargetType="Border" BasedOn="{StaticResource addButtonBorderStyle}">
+
+            <Setter Property="Stroke" Value="{StaticResource festivalColor}"/>
+        </Style>
+
+        <Style x:Key="singleFestivalButtonBorderStyle" TargetType="Border" BasedOn="{StaticResource selectionButttonBorderStyle}">
+
+            <Setter Property="Stroke" Value="{StaticResource festivalColor}"/>
+        </Style>
+
+        <Style x:Key="singleFestivalButtonStyle" TargetType="Button" BasedOn="{StaticResource selectionButtonStyle}">
+            <Setter Property="TextColor" Value="{StaticResource textColor}"/>
+
+        </Style>
+
+        <Style x:Key="festivalLabelStyle" TargetType="Label" BasedOn="{StaticResource baseCreateLabelStyle}">
+            <Setter Property="TextColor" Value="{StaticResource textColor}"/>
+            <Setter Property="BackgroundColor" Value="{StaticResource festivalColor}"/>
+        </Style>
+
+        <Style x:Key="festivalBorderStyle" TargetType="Border" BasedOn="{StaticResource baseCreateBorderStyle}">
+            <Setter Property="Background" Value="{StaticResource festivalColor}"/>
+        </Style>
+
+
+    </ContentPage.Resources>
+    
+    <VerticalStackLayout>
+        <Grid
+            RowDefinitions="Auto,Auto"
+            x:Name="InternetLostGrid"
+            IsVisible="{Binding InternetAvailable, Converter={StaticResource internetLostConverter} }">
+
+            <Label 
+                Grid.Row="0"
+                Text="Connection Lost"                 
+                HorizontalOptions="Center"
+                />
+            <Image
+                Grid.Row="1"
+                Source="connection_lost.png"
+                HeightRequest="200"
+                HorizontalOptions="Center"
+                />
+
+        </Grid>
+
+        <Grid
+        HorizontalOptions="Center"
+        Grid.Column="1" Grid.Row="1"
+              Grid.RowSpan="3"
+              IsVisible="{Binding InternetAvailable}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                        Style="{StaticResource festivalBorderStyle}">
+            <HorizontalStackLayout>
+                <Label Text="Název festivalu: "
+                                Style="{StaticResource festivalLabelStyle}"/>
+
+                <Entry Text="{Binding NewFestivalName}" 
+                                Style="{StaticResource baseCreateEntryStyle}"/>
+            </HorizontalStackLayout>
+        </Border>
+
+        <Border Grid.Row="2" Grid.Column="0"
+                        Style="{StaticResource festivalBorderStyle}">
+            <HorizontalStackLayout>
+                <Label Text="Začátek festivalu: "
+                           Style="{StaticResource festivalLabelStyle}"/>
+                <Entry Text="{Binding NewStartDate, Converter={StaticResource dateToString}}"
+                                Style="{StaticResource baseCreateEntryStyle}"/>
+            </HorizontalStackLayout>
+        </Border>
+
+        <Border Grid.Row="3" Grid.Column="0"
+                        Style="{StaticResource festivalBorderStyle}">
+            <HorizontalStackLayout>
+                <Label Text="Konec festivalu:" 
+                           Style="{StaticResource festivalLabelStyle}"/>
+                <Entry Text="{Binding NewEndDate, Converter={StaticResource dateToString}}" 
+                                Style="{StaticResource baseCreateEntryStyle}"/>
+            </HorizontalStackLayout>
+        </Border>
+
+        <Border Grid.Row="4" Grid.Column="0"
+                        Style="{StaticResource festivalBorderStyle}">
+            <HorizontalStackLayout>
+                <Label Text="Lokace: "
+                           Style="{StaticResource festivalLabelStyle}"/>
+                <Entry Text="{Binding Location}"
+                                Style="{StaticResource baseCreateEntryStyle}"/>
+            </HorizontalStackLayout>
+        </Border>
+
+        <Border Grid.Row="5" Grid.Column="0"
+                        Style="{StaticResource festivalButtonBorderStyle}">
+            <Button Text="+"
+                    Command="{Binding AddNewFestival}"
+                    Style="{StaticResource festivalAddButtonStyle}"/>
+        </Border>
+    </Grid>
+    </VerticalStackLayout>
+</ContentPage>

@@ -21,6 +21,7 @@ using System.Windows.Input;
 namespace FirstDraft.ViewModel;
 [QueryProperty(nameof(IDLocation),nameof(IDLocation))]
 [QueryProperty(nameof(Location),nameof(Location))]
+[QueryProperty(nameof(LocationName),nameof(LocationName))]
 public partial class EquipmentPageVM : BaseVM, INotifyPropertyChanged
 {
     [ObservableProperty]
@@ -28,6 +29,9 @@ public partial class EquipmentPageVM : BaseVM, INotifyPropertyChanged
 
     [ObservableProperty]
     Equipment _draggedEquipment;
+
+    [ObservableProperty]
+    string _locationName;
 
     [ObservableProperty]
     Guid _iDLocation;
