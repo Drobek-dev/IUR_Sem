@@ -133,7 +133,8 @@ public partial class EquipmentPageVM : BaseVM, INotifyPropertyChanged
             ["OriginalLocation"] = originalLocation,
             ["OriginalLocationID"] = IDLocation,
             ["NewLocation"] = Selection,
-            ["Equipment"] = EquipmentToTransfer
+            ["Equipment"] = EquipmentToTransfer,
+            ["OriginalLocationName"] =LocationName
         });
     }
 

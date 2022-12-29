@@ -36,6 +36,8 @@ public partial class AddEquipmentPage : ContentPage
             addEqpButtonBorder.Style = (Style)buttonBorderStyle;
         }
 
+        
+
         Title = vm?.LocationName is not null ? $"Přidat vybavení do {GetLocInCzech()} \"{vm.LocationName}\"" : Title;
         Title = vm?.Location?.Equals(LocationTypes.bin)?? false ? $"Přidat vybavení do Koše" : Title;
     }

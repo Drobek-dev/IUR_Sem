@@ -68,7 +68,9 @@
         
 
         <SearchBar 
-            x:Name="searchBar"
+            x:Name="searchBar"  
+            BackgroundColor="{StaticResource festivalColor}"
+            TextColor="{StaticResource textColor}"
             SearchCommand="{Binding PerformSearch}"
             SearchCommandParameter="{Binding Text, Source={x:Reference searchBar}}"
             IsVisible="{Binding InternetAvailable}"

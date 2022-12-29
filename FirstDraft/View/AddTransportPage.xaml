@@ -86,7 +86,7 @@
             <Border Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"
                         Style="{StaticResource transportBorderStyle}">
                     <HorizontalStackLayout>
-                    <Label Text="Odhadovaný čas příjezdu: "
+                    <Label Text="Čas příjezdu: "
                            Style="{StaticResource transportLabelStyle}"/>
                         <Entry Text="{Binding NewTransportEstimatedArrivalTime, Converter={StaticResource dateTimeToString}}"
                                 Style="{StaticResource baseCreateEntryStyle}"/>

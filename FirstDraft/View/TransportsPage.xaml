@@ -31,6 +31,8 @@
         </Grid>
 
         <SearchBar x:Name="searchBar"
+                   BackgroundColor="{StaticResource transportColor}"
+            TextColor="{StaticResource textColor}"
                    SearchCommand="{Binding PerformSearch}"
                    SearchCommandParameter="{Binding Text, Source={x:Reference searchBar}}"
                    IsVisible="{Binding InternetAvailable}"

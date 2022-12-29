@@ -47,7 +47,7 @@
                 <Setter Property="BackgroundColor" Value="Black"/>
                 <Setter Property="Margin" Value="0,5,5,0"/>
                 <Setter Property="MinimumWidthRequest" Value="150"/>
-                <Setter Property="MaxLength" Value="50"/>
+                <Setter Property="MaxLength" Value="25"/>
             </Style>
 
             <Style x:Key="baseButtonStyle" TargetType="Button">

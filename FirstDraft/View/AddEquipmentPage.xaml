@@ -9,23 +9,13 @@
              Title="AddEquipmentPage">
 
 
-   
 
-    <Grid ColumnDefinitions="Auto">
-        
-     
-        <Grid.RowDefinitions>
-            <RowDefinition Height="50"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="50"/>
-        </Grid.RowDefinitions>
+
+    <VerticalStackLayout Margin="0,50,0,0">
 
         <Border 
             x:Name="eqpNameBorder"
-            Grid.Row="1" 
+       
                     Style="{StaticResource baseCreateBorderStyle}"
                MinimumWidthRequest="400">
             
@@ -42,7 +32,7 @@
 
         <Border 
             x:Name="eqpQuantityBorder"
-            Grid.Row="2" 
+            
                     Style="{StaticResource warehouseBorderStyle}"
                 MinimumWidthRequest="400">
 
@@ -59,7 +49,7 @@
 
         <Border
             x:Name="eqpDateBorder"
-            Grid.Row="3" 
+           
                     Style="{StaticResource warehouseBorderStyle}"
                 MinimumWidthRequest="400">
 
@@ -76,14 +66,16 @@
 
         <Border 
             x:Name="addEqpButtonBorder"
-            Grid.Row="4" Grid.Column="0"
+            Margin="0,50,0,0"
+          
                         Style="{StaticResource warehouseButtonBorderStyle}">
             <Button Text="+"
                     Command="{Binding AddNewEquipmentCommand}"
                     Style="{StaticResource warehouseAddButtonStyle}"/>
         </Border>
-       
-       
 
-    </Grid>
+    </VerticalStackLayout>
+
+
+
 </ContentPage>

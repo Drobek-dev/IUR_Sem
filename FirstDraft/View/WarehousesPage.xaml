@@ -31,6 +31,9 @@
         </Grid>
 
         <SearchBar x:Name="searchBar"
+                   BackgroundColor="{StaticResource warehouseColor}"
+                   
+            TextColor="{StaticResource textColor}"
                    SearchCommand="{Binding PerformSearch}"
                    SearchCommandParameter="{Binding Text, Source={x:Reference searchBar}}"
                    MaximumWidthRequest="500"

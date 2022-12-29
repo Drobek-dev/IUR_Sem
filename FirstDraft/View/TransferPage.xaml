@@ -4,22 +4,37 @@
              x:Class="FirstDraft.View.TransferPage"
              xmlns:entities="clr-namespace:FirstDraft.Model.DatabaseFramework.Entities"
              xmlns:viewModel="clr-namespace:FirstDraft.ViewModel"
+             xmlns:view="clr-namespace:FirstDraft.View"
              xmlns:support="clr-namespace:FirstDraft.Support"
              x:DataType="viewModel:TransferPageVM"
              Title="TransferPage">
-  
 
-    <Grid RowDefinitions="50, Auto,Auto, 500">
-        <Button 
-            Grid.Row="1"
-            Text="Načíst zástupce: " 
-            Command="{Binding LoadTargetInfoCommand}"/>
+
+    <VerticalStackLayout>
+
+        <Border 
+            x:Name="loadButtonBorder"
+            Margin="0,50,0,0"
+            Style="{Binding Source={RelativeSource AncestorType={x:Type view:TransferPage}},Path=ButtonBorderStyle}"
+            MinimumWidthRequest="200">
+            
+
+            <Button 
+                x:Name="loadButton"
+                Grid.Row="1"
+                Text="Načíst zástupce" 
+                Command="{Binding LoadTargetInfoCommand}"/>
+
+        </Border>
+
         <SearchBar 
-            Grid.Row="2"
+            TextColor="Black"
             x:Name="searchBar"
-                   SearchCommand="{Binding PerformSearch}"
-                   SearchCommandParameter="{Binding Text, Source={x:Reference searchBar}}"/>
-        
+            SearchCommand="{Binding PerformSearch}"
+            SearchCommandParameter="{Binding Text, Source={x:Reference searchBar}}"
+            WidthRequest="400"
+            Margin="0,10,0,0"/>
+  
         <CollectionView  
             Grid.Row="3"
             ItemsSource="{Binding SearchResults}">
@@ -28,13 +43,24 @@
 
                 <DataTemplate x:DataType="support:TargetType">
 
-                    <Button Text="{Binding Name}"
-                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewModel:TransferPageVM}},Path=TransferEquipmentCommand}"
-                                    CommandParameter="{Binding ID}"/>
+                    <Border 
+                        x:Name="viewButtonBorder"
+                        Margin="0,50,0,0"
+                        Style="{Binding Source={RelativeSource AncestorType={x:Type view:TransferPage}},Path=ButtonBorderStyle}"
+                        MinimumWidthRequest="200">
+
+                        <Button 
+                            x:Name="viewloadButton"
+                            Text="{Binding Name}"
+                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewModel:TransferPageVM}},Path=TransferEquipmentCommand}"
+                            CommandParameter="{Binding ID}"/>
+
+                    </Border>
+                    
 
 
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-    </Grid>
+    </VerticalStackLayout>
 </ContentPage>
