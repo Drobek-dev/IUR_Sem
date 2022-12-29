@@ -98,10 +98,18 @@ public partial class EquipmentPageVM : BaseVM, INotifyPropertyChanged
          RefreshEquipmentMethod();  
       });
 
-    public ICommand DragEquipment => new Command<Equipment>((Equipment e) => 
+    public ICommand DragEquipment => new Command<Equipment>(async (Equipment e) => 
     {
-        if(!isPerformingLookup)
-            _draggedEquipment = e; // Unknown Error occurs here! Concurrency issue?
+        try
+        {
+
+            if(!isPerformingLookup)
+                _draggedEquipment = e; // Unknown Error occurs here! Concurrency issue?
+        }
+        catch (Exception ex) 
+        {
+            await DisplayNotification($"{ex.Message}");
+        }
     });
 
     public ICommand ClearEquipmentToTransfer => new Command(() =>
@@ -109,26 +117,34 @@ public partial class EquipmentPageVM : BaseVM, INotifyPropertyChanged
         EquipmentToTransfer = new();
     });
 
-    public ICommand DropEquipment => new Command(() => 
+    public ICommand DropEquipment => new Command(async () => 
     {
-        if (!isPerformingLookup)
+        try
         {
-            isPerformingLookup = true;
-            bool canTransfer = true;
-            foreach (var e in EquipmentToTransfer) 
+            if (!isPerformingLookup)
             {
-                if (e.ID.Equals(DraggedEquipment.ID))
+                isPerformingLookup = true;
+                bool canTransfer = true;
+                foreach (var e in EquipmentToTransfer) 
                 {
-                    canTransfer = false;
+                    if (e.ID.Equals(DraggedEquipment.ID))
+                    {
+                        canTransfer = false;
+                    }
                 }
+
+                if (canTransfer)
+                {
+                    EquipmentToTransfer.Add(DraggedEquipment);
+                    _draggedEquipment = null;
+                }
+                isPerformingLookup = false;
             }
 
-            if (canTransfer)
-            {
-                EquipmentToTransfer.Add(DraggedEquipment);
-                _draggedEquipment = null;
-            }
-            isPerformingLookup = false;
+        }
+        catch(Exception ex) 
+        { 
+            await DisplayNotification($"{ex.Message}");
         }
      
     });

@@ -11,26 +11,84 @@
         <support:DateOnlyToString x:Key="dateToString" />
         <support:LocationToBoolConverter x:Key="locationToBool"/>
 
+
+        <Style x:Key="eqpLabelStyle" TargetType="Label">
+            <Setter Property="TextColor" Value="{StaticResource textColor}"/>
+            <Setter Property="VerticalTextAlignment" Value="Center"/>
+            <Setter Property="HorizontalTextAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="Subtitle"/>
+            <Setter Property="FontAttributes" Value="Bold"/>
+        </Style>
+
+        <Style x:Key="eqpBorderStyle" TargetType="Border" BasedOn="{StaticResource baseCreateBorderStyle}">
+            <Setter Property="HeightRequest" Value="50"/>
+            <Setter Property="BackgroundColor" Value="White"/>
+            <Setter Property="StrokeShape" Value="RoundRectangle 10"/>
+            <Setter Property="StrokeThickness" Value="4"/>
+        </Style>
+
+        <Style x:Key="eqpAddButtonBorderStyle" TargetType="Border">
+            <Setter Property="HeightRequest" Value="100"/>
+            <Setter Property="WidthRequest" Value="50"/>
+            <Setter Property="HorizontalOptions" Value="Start"/>
+            <Setter Property="StrokeShape" Value="RoundRectangle 40"/>
+            <Setter Property="StrokeThickness" Value="4"/>
+        </Style>
+
+        <Style x:Key="eqpAddButtonStyle" TargetType="Button">
+            <Setter Property="FontSize" Value="Medium"/>
+            <Setter Property="TextColor" Value="{StaticResource textColor}"/>
+        </Style>
+        
+        <Style x:Key="casualEqpButtonBorderStyle" TargetType="Border">
+            <Setter Property="HeightRequest" Value="50"/>
+            <Setter Property="WidthRequest" Value="100"/>
+            <Setter Property="BackgroundColor" Value="White"/>
+            <Setter Property="StrokeShape" Value="RoundRectangle 40"/>
+            <Setter Property="StrokeThickness" Value="4"/>
+            
+        
+        </Style>
+
+        <Style x:Key="casualEqpButtonStyle" TargetType="Button">
+            <Setter Property="TextColor" Value="{StaticResource textColor}"/>
+        </Style>
+
+
     </ContentPage.Resources>
     <Grid ColumnDefinitions="10,350,250,10"
           RowDefinitions="10,500,Auto,Auto,10">
 
         <Grid Grid.Column="1" Grid.Row="1"
-              ColumnDefinitions="250,50"
+              ColumnDefinitions="250,100"
               RowDefinitions="10,Auto,Auto,300,50">
-            <Label 
+            <Border
                 Grid.Row="1"
+                Style="{StaticResource eqpBorderStyle}">
+                <Label                   
                 Text="Dostupné vybavení"
-                VerticalOptions="Center" 
-                HorizontalOptions="Center" />
-            <Button 
-                Grid.Row="2"
-                Text="Načíst dostupné vybavení" Command="{Binding RefreshEquipment}"/>
-            <Button
-                x:Name="deleteAllEqpButton"
-                Grid.Row="4"
-                Text="Vysypat koš"
-                Command="{Binding DeleteAllEquipmentCommand}"/>
+                    Style="{StaticResource eqpLabelStyle}"/>
+            </Border>
+
+            <Border
+                Style="{StaticResource casualEqpButtonBorderStyle}"
+                Grid.Row="2">
+                <Button 
+                TextColor="{StaticResource textColor}"  
+                Text="Načíst" Command="{Binding RefreshEquipment}"/>
+            </Border>
+
+            <Border
+                Style="{StaticResource casualEqpButtonBorderStyle}"
+                IsVisible="{Binding Location, Converter={StaticResource locationToBool}}"
+                WidthRequest="150"
+                Grid.Row="4">
+                <Button
+                    x:Name="deleteAllEqpButton"
+                    Style="{StaticResource casualEqpButtonStyle}"
+                    Text="Vysypat koš"
+                    Command="{Binding DeleteAllEquipmentCommand}"/>
+            </Border>
 
 
             <ListView Grid.Row="3"  ItemsSource="{Binding LocalEquipment}">
@@ -56,29 +114,47 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <Button 
-                Grid.Row="3" Grid.Column="1"
+            <Border 
+                Style="{StaticResource eqpAddButtonBorderStyle}"
+                Grid.Row="3" Grid.Column="1">
+                <Button
                 Text="+"
-                Command="{Binding NavToAddEquipmentPageCommand}"
-                MaximumHeightRequest="100"
-                MaximumWidthRequest="50"/>
+                Style="{StaticResource eqpAddButtonStyle}"
+                Command="{Binding NavToAddEquipmentPageCommand}"/>
+            </Border>
         </Grid>
 
         <Grid Grid.Column="2" Grid.Row="1" 
             RowDefinitions="10,Auto,Auto,300,50">
-        <Label Text="Vybrané vybavení "
-               Grid.Row="1"
-               HorizontalOptions="Center"/>
-            <Button
+            <Border 
+                Grid.Row="1"
+                Style="{StaticResource eqpBorderStyle}">    
+                <Label Text="Vybrané vybavení "
+                       Style="{StaticResource eqpLabelStyle}"/>
+            </Border>
+
+            <Border
                 Grid.Row="2"
-                Text="Resetovat vybranévybavení"
-                Command="{Binding ClearEquipmentToTransfer}"/>
+                Style="{StaticResource casualEqpButtonBorderStyle}"
+                WidthRequest="170">
+                <Button
+                    Style="{StaticResource casualEqpButtonStyle}"
+                    Text="Resetovat vybrané"
+                    Command="{Binding ClearEquipmentToTransfer}"/>
+            </Border>
+
+            <Border
+                Grid.Row="4"
+                Style="{StaticResource casualEqpButtonBorderStyle}"
+                IsVisible="{Binding Location, Converter={StaticResource locationToBool}}"
+                WidthRequest="150">
             <Button
                 x:Name="deleteSelectedEqpButton"
-                Grid.Row="4"
-                Text="Vysypat vybrané vybavení"
+                Style="{StaticResource casualEqpButtonStyle}"
+                Text="Vysypat vybrané"
                 Command="{Binding DeleteSelectedEquipmentCommand}"
-                IsVisible="{Binding Location, Converter={StaticResource locationToBool}}"/>
+                />
+            </Border>
             <Frame Grid.Row="3">
             <ListView ItemsSource="{Binding EquipmentToTransfer}" VerticalScrollBarVisibility="Always">
                         <ListView.ItemTemplate>
@@ -113,12 +189,16 @@
             <RadioButton Content="koš" Value="bin"/>
             
         </HorizontalStackLayout>
-       
-        <Button 
-            Text="Vybrat zástupce v kategorii: "
-            Grid.Column="2" Grid.Row="3" 
-            Command="{Binding NavToTransferPageCommand}"/>
 
+        <Border
+            Grid.Column="2" Grid.Row="3" 
+            Style="{StaticResource casualEqpButtonBorderStyle}"
+            WidthRequest="240">
+        <Button 
+            Text="Vybrat zástupce v kategorii"
+            Style="{StaticResource casualEqpButtonStyle}"
+            Command="{Binding NavToTransferPageCommand}"/>
+        </Border>
 
     </Grid>
 </ContentPage>

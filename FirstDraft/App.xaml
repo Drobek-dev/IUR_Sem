@@ -170,28 +170,7 @@
                 <Setter Property="Background" Value="{StaticResource warehouseColor}"/>
             </Style>
 
-            <Style x:Key="binLabelStyle" TargetType="Label" BasedOn="{StaticResource baseCreateLabelStyle}">
-                <Setter Property="TextColor" Value="{StaticResource textColor}"/>
-                <Setter Property="BackgroundColor" Value="{StaticResource binColor}"/>
-            </Style>
-
-            <Style x:Key="binBorderStyle" TargetType="Border" BasedOn="{StaticResource baseCreateBorderStyle}">
-                <Setter Property="Background" Value="{StaticResource binColor}"/>
-            </Style>
-
-            <Style x:Key="binButtonBorderStyle" TargetType="Border" BasedOn="{StaticResource addButtonBorderStyle}">
-
-                <Setter Property="Stroke" Value="{StaticResource binColor}"/>
-            </Style>
-
-            <Style x:Key="singleBinButtonBorderStyle" TargetType="Border" BasedOn="{StaticResource selectionButttonBorderStyle}">
-
-                <Setter Property="Stroke" Value="{StaticResource binColor}"/>
-            </Style>
-
-            <Style x:Key="singleBinButtonStyle" TargetType="Button" BasedOn="{StaticResource selectionButtonStyle}">
-                <Setter Property="TextColor" Value="{StaticResource textColor}"/>
-            </Style>
+           
 
         </ResourceDictionary>
 
