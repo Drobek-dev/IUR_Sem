@@ -4,6 +4,7 @@
              x:Class="FirstDraft.View.EquipmentPage"
              xmlns:support ="clr-namespace:FirstDraft.Support"
              xmlns:viewModel ="clr-namespace:FirstDraft.ViewModel"
+             xmlns:view ="clr-namespace:FirstDraft.View"
              xmlns:entities ="clr-namespace:FirstDraft.Model.DatabaseFramework.Entities"
              x:DataType="viewModel:EquipmentPageVM"
              Title="Vybavení">
@@ -20,11 +21,16 @@
             <Setter Property="FontAttributes" Value="Bold"/>
         </Style>
 
-        <Style x:Key="eqpBorderStyle" TargetType="Border" BasedOn="{StaticResource baseCreateBorderStyle}">
+        <Style x:Key="eqpBorderStyle" TargetType="Border" >
             <Setter Property="HeightRequest" Value="50"/>
             <Setter Property="BackgroundColor" Value="White"/>
             <Setter Property="StrokeShape" Value="RoundRectangle 10"/>
             <Setter Property="StrokeThickness" Value="4"/>
+            <Setter Property="Stroke" Value="{Binding Source={RelativeSource AncestorType={x:Type view:EquipmentPage}},Path=LocationColor}"/>
+        </Style>
+
+        <Style x:Key="selectedEqpBorderStyle" TargetType="Border" BasedOn="{StaticResource eqpBorderStyle}">
+            <Setter Property="Stroke" Value="Gray"/>
         </Style>
 
         <Style x:Key="eqpAddButtonBorderStyle" TargetType="Border">
@@ -33,6 +39,7 @@
             <Setter Property="HorizontalOptions" Value="Start"/>
             <Setter Property="StrokeShape" Value="RoundRectangle 40"/>
             <Setter Property="StrokeThickness" Value="4"/>
+            <Setter Property="Stroke" Value="{Binding Source={RelativeSource AncestorType={x:Type view:EquipmentPage}},Path=LocationColor}"/>
         </Style>
 
         <Style x:Key="eqpAddButtonStyle" TargetType="Button">
@@ -46,8 +53,15 @@
             <Setter Property="BackgroundColor" Value="White"/>
             <Setter Property="StrokeShape" Value="RoundRectangle 40"/>
             <Setter Property="StrokeThickness" Value="4"/>
-            
-        
+            <Setter Property="Stroke" Value="{Binding Source={RelativeSource AncestorType={x:Type view:EquipmentPage}},Path=LocationColor}"/>
+
+
+        </Style>
+
+        <Style x:Key="selectionEqpButtonBorderStyle" TargetType="Border" BasedOn="{StaticResource casualEqpButtonBorderStyle}">
+            <Setter Property="Stroke" Value="Gray"/>           
+
+
         </Style>
 
         <Style x:Key="casualEqpButtonStyle" TargetType="Button">
@@ -57,12 +71,14 @@
 
     </ContentPage.Resources>
     <Grid ColumnDefinitions="10,350,250,10"
-          RowDefinitions="10,500,Auto,Auto,10">
+          RowDefinitions="10,500,Auto,Auto,Auto,10"
+          HorizontalOptions="Center">
 
-        <Grid Grid.Column="1" Grid.Row="1"
+        <Grid Grid.Column="1" Grid.Row="1" Grid.RowSpan="4"
               ColumnDefinitions="250,100"
-              RowDefinitions="10,Auto,Auto,300,50">
+              RowDefinitions="10,Auto,Auto,500,50">
             <Border
+                x:Name="availableEqpBorder"
                 Grid.Row="1"
                 Style="{StaticResource eqpBorderStyle}">
                 <Label                   
@@ -71,14 +87,16 @@
             </Border>
 
             <Border
+                x:Name="reloadAvailableEqpBorder"
                 Style="{StaticResource casualEqpButtonBorderStyle}"
                 Grid.Row="2">
                 <Button 
                 TextColor="{StaticResource textColor}"  
-                Text="Načíst" Command="{Binding RefreshEquipment}"/>
+                Text="Načíst" Command="{Binding RefreshEquipmentCommand}"/>
             </Border>
 
             <Border
+                x:Name="deleteAvailableEqpBorder"
                 Style="{StaticResource casualEqpButtonBorderStyle}"
                 IsVisible="{Binding Location, Converter={StaticResource locationToBool}}"
                 WidthRequest="150"
@@ -90,21 +108,28 @@
                     Command="{Binding DeleteAllEquipmentCommand}"/>
             </Border>
 
-
-            <ListView Grid.Row="3"  ItemsSource="{Binding LocalEquipment}">
+            <Border
+                Style="{StaticResource eqpBorderStyle}"
+                HeightRequest="500"
+                BackgroundColor="Black"
+                Grid.Row="3">
+            <ListView   ItemsSource="{Binding LocalEquipment}">
                 <ListView.ItemTemplate>
                     <DataTemplate  x:DataType="entities:Equipment">
-                        <ViewCell>
+                        <ViewCell >
 
-                            <Frame>
-                                <Grid ColumnDefinitions="Auto,Auto,Auto,*">
-                                    <Label Grid.Column="0" Text="{Binding Quantity}" Padding="10"/>
-                                    <Label Grid.Column="1" Text="{Binding Name}" Padding="10"/>
-                                   
-                                </Grid>
+                            <Frame >
+                                <Border
+                                    Style="{StaticResource eqpBorderStyle}">
+                                    <Grid  ColumnDefinitions="Auto,Auto,Auto,*">
+                                        <Label TextColor="Black" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Grid.Column="0" Text="{Binding Quantity}" Padding="10"/>
+                                        <Label TextColor="Black" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Grid.Column="1" Text="{Binding Name}" Padding="10"/>
+
+                                    </Grid>
+                                </Border>
                                 <Frame.GestureRecognizers >
                                     <DragGestureRecognizer 
-                                            DragStartingCommand="{Binding Source={x:RelativeSource AncestorType={x:Type viewModel:EquipmentPageVM}},Path=DragEquipment}" 
+                                            DragStartingCommand="{Binding Source={x:RelativeSource AncestorType={x:Type viewModel:EquipmentPageVM}},Path=DraqEquipmentCommand}" 
                                             DragStartingCommandParameter="{Binding .}"/>
                                 </Frame.GestureRecognizers>
                             </Frame>
@@ -114,7 +139,9 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+            </Border>
             <Border 
+                x:Name="addEqpBorder"
                 Style="{StaticResource eqpAddButtonBorderStyle}"
                 Grid.Row="3" Grid.Column="1">
                 <Button
@@ -128,24 +155,24 @@
             RowDefinitions="10,Auto,Auto,300,50">
             <Border 
                 Grid.Row="1"
-                Style="{StaticResource eqpBorderStyle}">    
+                Style="{StaticResource selectedEqpBorderStyle}">    
                 <Label Text="Vybrané vybavení "
                        Style="{StaticResource eqpLabelStyle}"/>
             </Border>
 
             <Border
                 Grid.Row="2"
-                Style="{StaticResource casualEqpButtonBorderStyle}"
+                Style="{StaticResource selectionEqpButtonBorderStyle}"
                 WidthRequest="170">
                 <Button
                     Style="{StaticResource casualEqpButtonStyle}"
                     Text="Resetovat vybrané"
-                    Command="{Binding ClearEquipmentToTransfer}"/>
+                    Command="{Binding ClearEquipmentToTransferCommand}"/>
             </Border>
 
             <Border
                 Grid.Row="4"
-                Style="{StaticResource casualEqpButtonBorderStyle}"
+                Style="{StaticResource selectionEqpButtonBorderStyle}"
                 IsVisible="{Binding Location, Converter={StaticResource locationToBool}}"
                 WidthRequest="150">
             <Button
@@ -155,12 +182,26 @@
                 Command="{Binding DeleteSelectedEquipmentCommand}"
                 />
             </Border>
-            <Frame Grid.Row="3">
+
+            <Border
+                Style="{StaticResource selectedEqpBorderStyle}"
+                HeightRequest="300"
+                BackgroundColor="Black"
+                Grid.Row="3">
+            <Frame >
             <ListView ItemsSource="{Binding EquipmentToTransfer}" VerticalScrollBarVisibility="Always">
                         <ListView.ItemTemplate>
                             <DataTemplate x:DataType="entities:Equipment">
                                 <ViewCell>
-                                    <Label Text="{Binding Name}"/>
+
+                                    <Border
+                                    Style="{StaticResource selectedEqpBorderStyle}">
+                                        <Grid  ColumnDefinitions="Auto,Auto,Auto,*">
+                                            <Label TextColor="Black" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Grid.Column="0" Text="{Binding Quantity}" Padding="10"/>
+                                            <Label TextColor="Black" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Grid.Column="1" Text="{Binding Name}" Padding="10"/>
+
+                                        </Grid>
+                                    </Border>
                                 </ViewCell>
                             </DataTemplate>
                         </ListView.ItemTemplate>
@@ -169,30 +210,31 @@
        
                 <Frame.GestureRecognizers>
                     <DropGestureRecognizer 
-                        DropCommand="{Binding Source={x:RelativeSource AncestorType={x:Type viewModel:EquipmentPageVM}},Path=DropEquipment}"/>
+                        DropCommand="{Binding Source={x:RelativeSource AncestorType={x:Type viewModel:EquipmentPageVM}},Path=DropEquipmentCommand}"/>
 
                 </Frame.GestureRecognizers>
             </Frame>
+            </Border>
         </Grid>
 
         <Label
-            Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="2"
+            Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="2"
             Text="Přemístit vybrané vybavení do kategorie:"/>
         <HorizontalStackLayout
             x:Name="RadioButtons"
-            Grid.Column="1" Grid.Row="3" 
+            Grid.Column="2" Grid.Row="3" 
             RadioButtonGroup.GroupName="Kategorie"
             RadioButtonGroup.SelectedValue="{Binding Selection}">
-            <RadioButton Content="transport" Value="transport"/>
             <RadioButton Content="festival" Value="festival"/>
             <RadioButton Content="sklad" Value="warehouse"/>
+            <RadioButton Content="transport" Value="transport"/>
             <RadioButton Content="koš" Value="bin"/>
             
         </HorizontalStackLayout>
 
         <Border
-            Grid.Column="2" Grid.Row="3" 
-            Style="{StaticResource casualEqpButtonBorderStyle}"
+            Grid.Column="2" Grid.Row="4" 
+            Style="{StaticResource selectionEqpButtonBorderStyle}"
             WidthRequest="240">
         <Button 
             Text="Vybrat zástupce v kategorii"

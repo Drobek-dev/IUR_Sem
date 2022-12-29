@@ -12,6 +12,7 @@
         <Style x:Key="festivalsPageStyle" TargetType="Element">
             <Setter Property="Shell.BackgroundColor" Value="Black" />
             <Setter Property="Shell.TitleColor" Value="{StaticResource festivalColor}" />
+            
         </Style>
         <Style x:Key="warehousePageStyle" TargetType="Element">
             <Setter Property="Shell.BackgroundColor" Value="Black" />

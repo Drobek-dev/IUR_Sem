@@ -9,35 +9,10 @@
              Title="SingleTransportPage">
 
 
-    <Grid>
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="50"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+        <VerticalStackLayout Margin="0,50, 0,0">
 
-        <VerticalStackLayout Grid.Row="1">
-
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="50"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="50"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="50"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
+            
 
                 <Border Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"
                         Style="{StaticResource transportBorderStyle}">
@@ -73,7 +48,7 @@
                 <Border Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2"
                         Style="{StaticResource transportBorderStyle}">
                     <HorizontalStackLayout>
-                        <Label Text="Odhadovaný čas příjezdu: "
+                        <Label Text="Čas příjezdu: "
                            Style="{StaticResource transportLabelStyle}"/>
                         <Entry Text="{Binding Transport.EstimatedArrivalTime, Converter={StaticResource dateTimeToString}}"
                                 Style="{StaticResource baseCreateEntryStyle}"/>
@@ -102,16 +77,27 @@
 
 
 
-            </Grid>
 
-            <HorizontalStackLayout Grid.Row="2">
+        <HorizontalStackLayout HorizontalOptions="Center" Margin="0,100,0,0">
+            <Border
+                        Style="{StaticResource singleTransportButtonBorderStyle}">
+                <Button Text="Vybavení" Command="{Binding NavToEquipmentCommand}" 
+                                Style="{StaticResource singleTransportButtonStyle}"/>
+            </Border>
+            <Border
+                        Style="{StaticResource singleTransportButtonBorderStyle}">
+                <Button Text="Uložit změny" Command="{Binding SaveChangesCommand}"
+                                Style="{StaticResource singleTransportButtonStyle}"/>
+            </Border>
+            <Border
+                        Style="{StaticResource singleTransportButtonBorderStyle}">
+                <Button Text="Smazat" Command="{Binding DeleteCommand}"
+                                Style="{StaticResource singleTransportButtonStyle}"/>
+            </Border>
 
-                <Button Text="Vybavení" Command="{Binding NavToEquipmentCommand}" />
-                <Button Text="Uložit změny" Command="{Binding SaveChangesCommand}"/>
-                <Button Text="Smazat" Command="{Binding DeleteCommand}"/>
-            </HorizontalStackLayout>
 
-        </VerticalStackLayout>
+        </HorizontalStackLayout>
 
-    </Grid>
+    </VerticalStackLayout>
+
 </ContentPage>

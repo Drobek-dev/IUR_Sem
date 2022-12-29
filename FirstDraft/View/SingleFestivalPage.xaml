@@ -12,49 +12,26 @@
         <support:DateOnlyToString x:Key="dateToString"/>
     </ContentPage.Resources>
 
-    <Grid>
-
-        <Grid.RowDefinitions>
-            <RowDefinition Height="50"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+   
+    
 
        
-        <VerticalStackLayout Grid.Row="1">
+        <VerticalStackLayout  Margin="0,50,0,0">
 
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="50"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="50"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="50"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-
-                <Border Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"
+            <VerticalStackLayout >
+                <Border 
                         Style="{StaticResource festivalBorderStyle}">
                     <HorizontalStackLayout>
                         <Label Text="Název festivalu: "
                                 Style="{StaticResource festivalLabelStyle}"/>
 
                         <Entry Text="{Binding Festival.Name}" 
-                                Style="{StaticResource baseCreateEntryStyle}"/>
+                                Style="{StaticResource baseCreateEntryStyle}"
+                               />
                     </HorizontalStackLayout>
                 </Border>
 
-                <Border Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2"
+                <Border
                         Style="{StaticResource festivalBorderStyle}">
                     <HorizontalStackLayout>
                         <Label Text="Začátek festivalu: "
@@ -64,7 +41,7 @@
                     </HorizontalStackLayout>
                 </Border>
 
-                <Border Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2"
+                <Border 
                         Style="{StaticResource festivalBorderStyle}">
                     <HorizontalStackLayout>
                         <Label Text="Konec festivalu:" 
@@ -74,7 +51,7 @@
                     </HorizontalStackLayout>
                 </Border>
 
-                <Border Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2"
+                <Border
                         Style="{StaticResource festivalBorderStyle}">
                     <HorizontalStackLayout>
                         <Label Text="Lokace: "
@@ -84,7 +61,9 @@
                     </HorizontalStackLayout>
                 </Border>
 
-                <Border Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2"
+                <Border 
+                    Margin="0,50,0,0"
+                    WidthRequest="600"
                         Style="{StaticResource festivalBorderStyle}">
                     <HorizontalStackLayout>
                         <Label Text="Stavba od: "
@@ -92,13 +71,14 @@
                         <Entry Text="{Binding Festival.Construction.StartDate, Converter={StaticResource dateToString}}"
                                 Style="{StaticResource baseCreateEntryStyle}"/>
                         <Label Text="do: "
+                               MinimumWidthRequest="50"
                            Style="{StaticResource festivalLabelStyle}"/>
                         <Entry Text="{Binding Festival.Construction.EndDate, Converter={StaticResource dateToString}}"
                                 Style="{StaticResource baseCreateEntryStyle}"/>
                     </HorizontalStackLayout>
                 </Border>
 
-                <Border Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2"
+                <Border WidthRequest="600"
                         Style="{StaticResource festivalBorderStyle}">
                     <HorizontalStackLayout>
                         <Label Text="Bourání od: "
@@ -106,22 +86,40 @@
                         <Entry Text="{Binding Festival.Deconstruction.StartDate, Converter={StaticResource dateToString}}"
                                 Style="{StaticResource baseCreateEntryStyle}"/>
                         <Label Text="do: "
+                               MinimumWidthRequest="50"
                            Style="{StaticResource festivalLabelStyle}"/>
                         <Entry Text="{Binding Festival.Deconstruction.EndDate, Converter={StaticResource dateToString}}"
                                 Style="{StaticResource baseCreateEntryStyle}"/>
                     </HorizontalStackLayout>
                 </Border>
+                </VerticalStackLayout>
+         
 
-            </Grid>
-
-            <HorizontalStackLayout Grid.Row="2">
-                <Button Text="Externí pracovníci" Command="{Binding NavigateToExternalWorkersCommand}" />
-                <Button Text="Vybavení" Command="{Binding NavToEquipment}" />
-                <Button Text="Uložit změny" Command="{Binding SaveChangesCommand}"/>
-                <Button Text="Smazat" Command="{Binding DeleteFestivalCommand}"/>
+            <HorizontalStackLayout HorizontalOptions="Center" Margin="0,100,0,0">
+                <Border
+                        Style="{StaticResource singleFestivalButtonBorderStyle}">
+                    <Button Text="Externí pracovníci" Command="{Binding NavigateToExternalWorkersCommand}" 
+                                Style="{StaticResource singleFestivalButtonStyle}"/>
+                </Border>
+                <Border
+                        Style="{StaticResource singleFestivalButtonBorderStyle}">
+                    <Button Text="Vybavení" Command="{Binding NavToEquipment}"
+                                Style="{StaticResource singleFestivalButtonStyle}"/>
+                </Border>
+                <Border
+                        Style="{StaticResource singleFestivalButtonBorderStyle}">
+                    <Button Text="Uložit změny" Command="{Binding SaveChangesCommand}" 
+                                Style="{StaticResource singleFestivalButtonStyle}"/>
+                </Border>
+                <Border
+                        Style="{StaticResource singleFestivalButtonBorderStyle}">
+                    <Button Text="Smazat" Command="{Binding DeleteFestivalCommand}" 
+                                Style="{StaticResource singleFestivalButtonStyle}"/>
+                </Border>
+                
             </HorizontalStackLayout>
 
         </VerticalStackLayout>
 
-    </Grid>
+
 </ContentPage>

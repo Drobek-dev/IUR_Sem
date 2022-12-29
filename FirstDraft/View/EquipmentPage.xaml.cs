@@ -1,10 +1,25 @@
 using FirstDraft.ViewModel;
+using System.ComponentModel;
 
 namespace FirstDraft.View;
 
-public partial class EquipmentPage : ContentPage
+public partial class EquipmentPage : ContentPage, INotifyPropertyChanged
 {
 	EquipmentPageVM viewModel;
+
+	Color _locationColor = Color.Parse("Grey");
+	public Color LocationColor
+	{
+		get { return _locationColor; }
+		private set
+		{
+			if (_locationColor != value)
+			{
+				_locationColor = value;
+				OnPropertyChanged(nameof(LocationColor));
+			}
+		}
+	}
 	public EquipmentPage()
 	{
 		InitializeComponent();
@@ -28,7 +43,6 @@ public partial class EquipmentPage : ContentPage
 		if (viewModel.Location.Equals(Support.LocationTypes.bin))
 		{
 			Title = "Koš";
-
 		}
 		else if (viewModel.Location.Equals(Support.LocationTypes.festival))
 		{
@@ -42,5 +56,11 @@ public partial class EquipmentPage : ContentPage
         {
             Title = $"Vybavení transportu {viewModel.LocationName}";
         }
+
+		if(App.Current.Resources.TryGetValue($"{viewModel.Location}Color", out object color))
+		{
+			availableEqpBorder.Stroke = (Color)color;
+			LocationColor = (Color)color;
+		}
     }
 }

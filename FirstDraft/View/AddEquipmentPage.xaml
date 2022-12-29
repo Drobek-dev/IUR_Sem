@@ -9,15 +9,11 @@
              Title="AddEquipmentPage">
 
 
-    <ContentPage.Resources>
-        <support:DateOnlyToString x:Key="dateToString" />
-    </ContentPage.Resources>
+   
 
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto"/>
-        </Grid.ColumnDefinitions>
+    <Grid ColumnDefinitions="Auto">
+        
+     
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
             <RowDefinition Height="Auto"/>
@@ -26,32 +22,68 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
-        <Label Text="Název vybavení"
-                   Grid.Row="1" Grid.Column="0"
-                   Padding="10"/>
-        <Entry Text="{Binding NewEquipmentName}" 
-                   Grid.Row="1" Grid.Column="1" 
-                   Margin="10"/>
 
-        <Label Text="Množství: "
-                   Grid.Row="2" Grid.Column="0"
-                   Padding="10"/>
-        <Entry Text="{Binding NewEquipmentQuantity}"
-                   Grid.Row="2" Grid.Column="1"
-                   Margin="10"/>
+        <Border 
+            x:Name="eqpNameBorder"
+            Grid.Row="1" 
+                    Style="{StaticResource baseCreateBorderStyle}"
+               MinimumWidthRequest="400">
+            
+            <HorizontalStackLayout>
+                <Label 
+                    x:Name="eqpNameLabel"   
+                    Text="Název vybavení: "
+                        Style="{StaticResource warehouseLabelStyle}"    
+                        />
+                <Entry Text="{Binding NewEquipmentName}" 
+                        Style="{StaticResource baseCreateEntryStyle}"/>
+            </HorizontalStackLayout>
+        </Border>
 
-        <Label Text="Den pořízení: " 
-                   Grid.Row="3" Grid.Column="0"
-                   Padding="10"/>
-        <Entry Text="{Binding NewDateOfPurchase, Converter={StaticResource dateToString}}" 
-                   Grid.Row="3" Grid.Column="1"
-                   Margin="10"/>
+        <Border 
+            x:Name="eqpQuantityBorder"
+            Grid.Row="2" 
+                    Style="{StaticResource warehouseBorderStyle}"
+                MinimumWidthRequest="400">
 
-    
-        <Button Text="Přidat"
+            <HorizontalStackLayout>
+                <Label 
+                    x:Name="eqpQuantityLabel"
+                        Text="Množství: "
+                        Style="{StaticResource warehouseLabelStyle}"    
+                        />
+                <Entry Text="{Binding NewEquipmentQuantity}" 
+                        Style="{StaticResource baseCreateEntryStyle}"/>
+            </HorizontalStackLayout>
+        </Border>
+
+        <Border
+            x:Name="eqpDateBorder"
+            Grid.Row="3" 
+                    Style="{StaticResource warehouseBorderStyle}"
+                MinimumWidthRequest="400">
+
+            <HorizontalStackLayout>
+                <Label 
+                     x:Name="eqpDateLabel"
+                        Text="Datum zavedení: "
+                        Style="{StaticResource warehouseLabelStyle}"    
+                        />
+                <Entry Text="{Binding NewDateOfPurchase, Converter={StaticResource dateToString}}"  
+                        Style="{StaticResource baseCreateEntryStyle}"/>
+            </HorizontalStackLayout>
+        </Border>
+
+        <Border 
+            x:Name="addEqpButtonBorder"
+            Grid.Row="4" Grid.Column="0"
+                        Style="{StaticResource warehouseButtonBorderStyle}">
+            <Button Text="+"
                     Command="{Binding AddNewEquipmentCommand}"
-                    Grid.Row="4" Grid.Column="0"
-                    Padding="10"/>
+                    Style="{StaticResource warehouseAddButtonStyle}"/>
+        </Border>
+       
+       
 
     </Grid>
 </ContentPage>

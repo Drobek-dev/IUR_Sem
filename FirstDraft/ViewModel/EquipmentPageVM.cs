@@ -92,62 +92,37 @@ public partial class EquipmentPageVM : BaseVM, INotifyPropertyChanged
             }
         }
     }
-    public ICommand RefreshEquipment => new Command(
-      execute: () =>
+
+    [RelayCommand]
+    void RefreshEquipment()
       {
          RefreshEquipmentMethod();  
-      });
+      }
 
-    public ICommand DragEquipment => new Command<Equipment>(async (Equipment e) => 
+
+    [RelayCommand]
+    void DraqEquipment(Equipment e)
     {
-        try
-        {
+        _draggedEquipment = e; // Unknown Error occurs here! Concurrency issue?
 
-            if(!isPerformingLookup)
-                _draggedEquipment = e; // Unknown Error occurs here! Concurrency issue?
-        }
-        catch (Exception ex) 
-        {
-            await DisplayNotification($"{ex.Message}");
-        }
-    });
+    }
 
-    public ICommand ClearEquipmentToTransfer => new Command(() =>
+    [RelayCommand]
+    void ClearEquipmentToTransfer()
     {
         EquipmentToTransfer = new();
-    });
+        RefreshEquipmentMethod();
+    }
 
-    public ICommand DropEquipment => new Command(async () => 
+    [RelayCommand]
+    void DropEquipment()
     {
-        try
-        {
-            if (!isPerformingLookup)
-            {
-                isPerformingLookup = true;
-                bool canTransfer = true;
-                foreach (var e in EquipmentToTransfer) 
-                {
-                    if (e.ID.Equals(DraggedEquipment.ID))
-                    {
-                        canTransfer = false;
-                    }
-                }
-
-                if (canTransfer)
-                {
-                    EquipmentToTransfer.Add(DraggedEquipment);
-                    _draggedEquipment = null;
-                }
-                isPerformingLookup = false;
-            }
-
-        }
-        catch(Exception ex) 
-        { 
-            await DisplayNotification($"{ex.Message}");
-        }
+        if (_draggedEquipment is null)
+            return;
+        LocalEquipment.Remove(_draggedEquipment);
+        EquipmentToTransfer.Add(_draggedEquipment);
      
-    });
+    }
 
     [RelayCommand]
     async Task NavToTransferPage()
@@ -169,7 +144,8 @@ public partial class EquipmentPageVM : BaseVM, INotifyPropertyChanged
         await Shell.Current.GoToAsync(nameof(AddEquipmentPage), new Dictionary<string, object>
         {
             ["Location"] = equipmentLocation,
-            ["LocationID"] = IDLocation
+            ["LocationID"] = IDLocation,
+            ["LocationName"] = LocationName
         });
     }
 

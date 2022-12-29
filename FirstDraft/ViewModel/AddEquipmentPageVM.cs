@@ -14,10 +14,14 @@ namespace FirstDraft.ViewModel;
 
 [QueryProperty(nameof(Location), nameof(Location))]
 [QueryProperty(nameof(LocationID), nameof(LocationID))]
+[QueryProperty(nameof(LocationName), nameof(LocationName))]
 public partial class AddEquipmentPageVM : BaseVM
 {
     [ObservableProperty]
     string _location;
+
+    [ObservableProperty]
+    string _locationName;
 
     [ObservableProperty]
     Guid _locationID;

@@ -7,32 +7,11 @@
              xmlns:support="clr-namespace:FirstDraft.Support"
              x:DataType="viewModel:SingleWarehousePageVM"
              Title="SingleWarehousePage">
-    <Grid>
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="50"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+    <VerticalStackLayout Margin="0,50,0,0"> 
+        <VerticalStackLayout >
 
-       
-        <VerticalStackLayout Grid.Row="1">
-
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="50"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-
-                    <RowDefinition Height="50"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="50"/>
-                    <ColumnDefinition Width="Auto"/>
-
-                </Grid.ColumnDefinitions>
-
-                <Border Grid.Row="1" Grid.Column="1" 
+                <Border 
                     Style="{StaticResource warehouseBorderStyle}">
                     <HorizontalStackLayout>
                         <Label 
@@ -44,7 +23,7 @@
                     </HorizontalStackLayout>
                 </Border>
 
-                <Border Grid.Row="2" Grid.Column="1"
+                <Border 
                     Style="{StaticResource warehouseBorderStyle}">
                     <HorizontalStackLayout>
                         <Label 
@@ -55,15 +34,29 @@
                         Style="{StaticResource baseCreateEntryStyle}"/>
                     </HorizontalStackLayout>
                 </Border>
-            </Grid>
+            
         </VerticalStackLayout>
+            
+        <HorizontalStackLayout HorizontalOptions="Center" Margin="0,100,0,0">
+            <Border
+                        Style="{StaticResource singleWarehouseButtonBorderStyle}">
+                <Button Text="Vybavení" Command="{Binding NavToEquipmentCommand}" 
+                                Style="{StaticResource singleWarehouseButtonStyle}"/>
+            </Border>
+            <Border
+                        Style="{StaticResource singleWarehouseButtonBorderStyle}">
+                <Button Text="Uložit změny" Command="{Binding SaveChangesCommand}"
+                                Style="{StaticResource singleWarehouseButtonStyle}"/>
+            </Border>
+            <Border
+                        Style="{StaticResource singleWarehouseButtonBorderStyle}">
+                <Button Text="Smazat" Command="{Binding DeleteCommand}"
+                                Style="{StaticResource singleWarehouseButtonStyle}"/>
+            </Border>
+       
 
-        <HorizontalStackLayout Grid.Row="2">
-
-            <Button Text="Vybavení" Command="{Binding NavToEquipmentCommand}" />
-            <Button Text="Uložit změny" Command="{Binding SaveChangesCommand}"/>
-            <Button Text="Smazat" Command="{Binding DeleteCommand}"/>
         </HorizontalStackLayout>
-    </Grid>
+     
+    </VerticalStackLayout>
 </ContentPage>
     
