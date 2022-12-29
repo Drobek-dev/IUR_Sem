@@ -12,11 +12,12 @@
         <support:LocationToBoolConverter x:Key="locationToBool"/>
 
     </ContentPage.Resources>
-    <Grid ColumnDefinitions="50,Auto,Auto,50"
-          RowDefinitions="50,500,Auto,Auto,50">
+    <Grid ColumnDefinitions="10,350,250,10"
+          RowDefinitions="10,500,Auto,Auto,10">
 
         <Grid Grid.Column="1" Grid.Row="1"
-              RowDefinitions="50,Auto,Auto,Auto,300,*">
+              ColumnDefinitions="250,50"
+              RowDefinitions="10,Auto,Auto,300,50">
             <Label 
                 Grid.Row="1"
                 Text="Dostupné vybavení"
@@ -26,13 +27,13 @@
                 Grid.Row="2"
                 Text="Načíst dostupné vybavení" Command="{Binding RefreshEquipment}"/>
             <Button
-                x:Name="DeleteAllEquipmentButton"
-                Grid.Row="3"
+                x:Name="deleteAllEqpButton"
+                Grid.Row="4"
                 Text="Vysypat koš"
                 Command="{Binding DeleteAllEquipmentCommand}"/>
 
 
-            <ListView Grid.Row="4"  ItemsSource="{Binding LocalEquipment}">
+            <ListView Grid.Row="3"  ItemsSource="{Binding LocalEquipment}">
                 <ListView.ItemTemplate>
                     <DataTemplate  x:DataType="entities:Equipment">
                         <ViewCell>
@@ -41,8 +42,7 @@
                                 <Grid ColumnDefinitions="Auto,Auto,Auto,*">
                                     <Label Grid.Column="0" Text="{Binding Quantity}" Padding="10"/>
                                     <Label Grid.Column="1" Text="{Binding Name}" Padding="10"/>
-                                    <Label Grid.Column="2" Text="{Binding DayOfPurchase,Converter={StaticResource dateToString}}" Padding="10"/>
-                                    <Label Grid.Column="3" Text="{Binding Location}" Padding="10"/>
+                                   
                                 </Grid>
                                 <Frame.GestureRecognizers >
                                     <DragGestureRecognizer 
@@ -57,25 +57,29 @@
                 </ListView.ItemTemplate>
             </ListView>
             <Button 
-                Grid.Row="5"
+                Grid.Row="3" Grid.Column="1"
                 Text="+"
-                Command="{Binding NavToAddEquipmentPageCommand}"/>
+                Command="{Binding NavToAddEquipmentPageCommand}"
+                MaximumHeightRequest="100"
+                MaximumWidthRequest="50"/>
         </Grid>
 
         <Grid Grid.Column="2" Grid.Row="1" 
-            RowDefinitions="50,Auto,Auto,Auto,300">
-        <Label Text="Vybrané vybavení: " Grid.Row="1"/>
+            RowDefinitions="10,Auto,Auto,300,50">
+        <Label Text="Vybrané vybavení "
+               Grid.Row="1"
+               HorizontalOptions="Center"/>
             <Button
                 Grid.Row="2"
                 Text="Resetovat vybranévybavení"
                 Command="{Binding ClearEquipmentToTransfer}"/>
             <Button
-                x:Name="DeleteSelectedEquipmentButton"
-                Grid.Row="3"
+                x:Name="deleteSelectedEqpButton"
+                Grid.Row="4"
                 Text="Vysypat vybrané vybavení"
                 Command="{Binding DeleteSelectedEquipmentCommand}"
                 IsVisible="{Binding Location, Converter={StaticResource locationToBool}}"/>
-            <Frame Grid.Row="4">
+            <Frame Grid.Row="3">
             <ListView ItemsSource="{Binding EquipmentToTransfer}" VerticalScrollBarVisibility="Always">
                         <ListView.ItemTemplate>
                             <DataTemplate x:DataType="entities:Equipment">
@@ -109,16 +113,7 @@
             <RadioButton Content="koš" Value="bin"/>
             
         </HorizontalStackLayout>
-        <Label x:Name="animalLabel"
-               Grid.Column="1"
-               Grid.Row="4">
-            <Label.FormattedText>
-                <FormattedString>
-                    <Span Text="You have chosen:" />
-                    <Span Text="{Binding Selection}" />
-                </FormattedString>
-            </Label.FormattedText>
-        </Label>
+       
         <Button 
             Text="Vybrat zástupce v kategorii: "
             Grid.Column="2" Grid.Row="3" 

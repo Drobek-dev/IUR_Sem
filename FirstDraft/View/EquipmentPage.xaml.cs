@@ -22,8 +22,8 @@ public partial class EquipmentPage : ContentPage
     protected override void OnNavigatedTo(NavigatedToEventArgs args)
     {
         base.OnNavigatedTo(args);
-		DeleteSelectedEquipmentButton.IsVisible = viewModel.Location.Equals(Support.LocationTypes.bin);
-		DeleteAllEquipmentButton.IsVisible = viewModel.Location.Equals(Support.LocationTypes.bin);
+		deleteSelectedEqpButton.IsVisible = viewModel.Location.Equals(Support.LocationTypes.bin);
+		deleteAllEqpButton.IsVisible = viewModel.Location.Equals(Support.LocationTypes.bin);
 
 		if (viewModel.Location.Equals(Support.LocationTypes.bin))
 		{

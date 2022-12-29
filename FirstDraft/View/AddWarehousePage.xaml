@@ -7,36 +7,7 @@
              xmlns:support="clr-namespace:FirstDraft.Support"          
              x:DataType="viewModel:WarehousesPageVM"
              Title="Přidání nového festivalu">
-    <ContentPage.Resources>
-        <Style x:Key="warehouseAddButtonStyle" TargetType="Button" BasedOn="{StaticResource addButtonStyle}">
-            <Setter Property="TextColor" Value="{StaticResource textColor}"/>
-
-        </Style>
-
-        <Style x:Key="warehouseButtonBorderStyle" TargetType="Border" BasedOn="{StaticResource addButtonBorderStyle}">
-
-            <Setter Property="Stroke" Value="{StaticResource warehouseColor}"/>
-        </Style>
-
-        <Style x:Key="singleWarehouseButtonBorderStyle" TargetType="Border" BasedOn="{StaticResource selectionButttonBorderStyle}">
-
-            <Setter Property="Stroke" Value="{StaticResource warehouseColor}"/>
-        </Style>
-
-        <Style x:Key="singleWarehouseButtonStyle" TargetType="Button" BasedOn="{StaticResource selectionButtonStyle}">
-            <Setter Property="TextColor" Value="{StaticResource textColor}"/>
-
-        </Style>
-
-        <Style x:Key="warehouseLabelStyle" TargetType="Label" BasedOn="{StaticResource baseCreateLabelStyle}">
-            <Setter Property="TextColor" Value="{StaticResource textColor}"/>
-            <Setter Property="BackgroundColor" Value="{StaticResource warehouseColor}"/>
-        </Style>
-
-        <Style x:Key="warehouseBorderStyle" TargetType="Border" BasedOn="{StaticResource baseCreateBorderStyle}">
-            <Setter Property="Background" Value="{StaticResource warehouseColor}"/>
-        </Style>
-    </ContentPage.Resources>
+   
 
     <VerticalStackLayout>
 

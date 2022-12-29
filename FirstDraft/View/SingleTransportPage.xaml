@@ -7,9 +7,7 @@
              xmlns:support="clr-namespace:FirstDraft.Support"
              x:DataType="viewModel:SingleTransportPageVM"
              Title="SingleTransportPage">
-    <ContentPage.Resources>
-        <support:DateTimeToString x:Key="dateToString"/>
-    </ContentPage.Resources>
+
 
     <Grid>
 
@@ -19,11 +17,6 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Label Grid.Row="0"
-            Text="{Binding Transport.TransportName}"
-            
-            VerticalOptions="Center" 
-            HorizontalOptions="Start" />
         <VerticalStackLayout Grid.Row="1">
 
             <Grid>
@@ -46,53 +39,73 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <Label Text="Název Transportu: " Grid.Column="1" Grid.Row="1"/>
-                <Entry Grid.Column="2" Grid.Row="1"
-                    Text="{Binding Transport.TransportName}"
-                    VerticalOptions="Center" 
-                    HorizontalOptions="Start" />
+                <Border Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"
+                        Style="{StaticResource transportBorderStyle}">
+                    <HorizontalStackLayout>
+                        <Label Text="Název transportu: "
+                                Style="{StaticResource transportLabelStyle}"/>
 
-                <Label Text="Z: " Grid.Column="1" Grid.Row="2"/>
-                <Entry
-                    Grid.Column="2" Grid.Row="2"
-                    x:Name="Location"
-                    Text="{Binding Transport.StartingPosition}"
-                  />
+                        <Entry Text="{Binding Transport.TransportName}" 
+                                Style="{StaticResource baseCreateEntryStyle}"/>
+                    </HorizontalStackLayout>
+                </Border>
 
-                <Label Text="Do: " Grid.Column="1" Grid.Row="3"/>
-                <Entry
-                    Grid.Column="2" Grid.Row="3"
-                    x:Name="StartDateEntry"
-                    Text="{Binding Transport.Destination}"
-                    />
+                <Border Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2"
+                        Style="{StaticResource transportBorderStyle}">
+                    <HorizontalStackLayout>
+                        <Label Text="Počáteční lokace: "
+                           Style="{StaticResource transportLabelStyle}"/>
+                        <Entry Text="{Binding Transport.StartingPosition}"
+                                Style="{StaticResource baseCreateEntryStyle}"/>
+                    </HorizontalStackLayout>
+                </Border>
 
-                <Label Text="Odhadovaná doba příjezdu: " Grid.Column="1" Grid.Row="4"/>
-                <Entry
-                    Grid.Column="2" Grid.Row="4"
-                    x:Name="EndDateEntry"
-                    Text="{Binding Transport.EstimatedArrivalTime, Converter={StaticResource dateToString}}"
-                     />
+                <Border Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2"
+                        Style="{StaticResource transportBorderStyle}">
+                    <HorizontalStackLayout>
+                        <Label Text="Destinace: " 
+                           Style="{StaticResource transportLabelStyle}"/>
+                        <Entry Text="{Binding Transport.Destination}" 
+                                Style="{StaticResource baseCreateEntryStyle}"/>
+                    </HorizontalStackLayout>
+                </Border>
 
-                <Label Text="Celé jméno řidiče: "  Grid.Column="1" Grid.Row="5"/>
-                <Entry
-                    Grid.Column="2" Grid.Row="5"
-                    x:Name="ConstructionStartDate"
-                    Text="{Binding Transport.DriverFullName}"
-                    />
+                <Border Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2"
+                        Style="{StaticResource transportBorderStyle}">
+                    <HorizontalStackLayout>
+                        <Label Text="Odhadovaný čas příjezdu: "
+                           Style="{StaticResource transportLabelStyle}"/>
+                        <Entry Text="{Binding Transport.EstimatedArrivalTime, Converter={StaticResource dateTimeToString}}"
+                                Style="{StaticResource baseCreateEntryStyle}"/>
+                    </HorizontalStackLayout>
+                </Border>
 
-                <Label Text="Telefon na řidiče: " Grid.Column="1" Grid.Row="6"/>
-                <Entry
-                    Grid.Column="2" Grid.Row="6"
-                    x:Name="ConstrucitonEndDate"
-                    Text="{Binding Transport.DriverPhone}"
-                     />
+                <Border Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2"
+                        Style="{StaticResource transportBorderStyle}">
+                    <HorizontalStackLayout>
+                        <Label Text="Celé jméno řidiče: "
+                           Style="{StaticResource transportLabelStyle}"/>
+                        <Entry Text="{Binding Transport.DriverFullName}"
+                                Style="{StaticResource baseCreateEntryStyle}"/>
+                    </HorizontalStackLayout>
+                </Border>
 
-               
+                <Border Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2"
+                        Style="{StaticResource transportBorderStyle}">
+                    <HorizontalStackLayout>
+                        <Label Text="Telefon na řidiče: "
+                           Style="{StaticResource transportLabelStyle}"/>
+                        <Entry Text="{Binding Transport.DriverPhone}"
+                                Style="{StaticResource baseCreateEntryStyle}"/>
+                    </HorizontalStackLayout>
+                </Border>
+
+
 
             </Grid>
 
             <HorizontalStackLayout Grid.Row="2">
-                
+
                 <Button Text="Vybavení" Command="{Binding NavToEquipmentCommand}" />
                 <Button Text="Uložit změny" Command="{Binding SaveChangesCommand}"/>
                 <Button Text="Smazat" Command="{Binding DeleteCommand}"/>

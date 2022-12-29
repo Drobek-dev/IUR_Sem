@@ -8,39 +8,7 @@
              x:DataType="viewModel:TransportsPageVM"
              Title="Přidání nového transportu">
 
-        <ContentPage.Resources>
-
-            <Style x:Key="transportAddButtonStyle" TargetType="Button" BasedOn="{StaticResource addButtonStyle}">
-                <Setter Property="TextColor" Value="{StaticResource textColor}"/>
-
-            </Style>
-
-            <Style x:Key="transportButtonBorderStyle" TargetType="Border" BasedOn="{StaticResource addButtonBorderStyle}">
-
-                <Setter Property="Stroke" Value="{StaticResource transportColor}"/>
-            </Style>
-
-            <Style x:Key="singleTransportButtonBorderStyle" TargetType="Border" BasedOn="{StaticResource selectionButttonBorderStyle}">
-
-                <Setter Property="Stroke" Value="{StaticResource transportColor}"/>
-            </Style>
-
-            <Style x:Key="singleTransportButtonStyle" TargetType="Button" BasedOn="{StaticResource selectionButtonStyle}">
-                <Setter Property="TextColor" Value="{StaticResource transportTextColor}"/>
-
-            </Style>
-
-            <Style x:Key="transportLabelStyle" TargetType="Label" BasedOn="{StaticResource baseCreateLabelStyle}">
-                <Setter Property="TextColor" Value="{StaticResource textColor}"/>
-                <Setter Property="BackgroundColor" Value="{StaticResource transportColor}"/>
-            </Style>
-
-            <Style x:Key="transportBorderStyle" TargetType="Border" BasedOn="{StaticResource baseCreateBorderStyle}">
-                <Setter Property="Background" Value="{StaticResource transportColor}"/>
-            </Style>
-
-
-        </ContentPage.Resources>
+      
 
         <VerticalStackLayout>
         <Grid
