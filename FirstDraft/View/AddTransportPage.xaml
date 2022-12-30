@@ -102,7 +102,7 @@
             <Border Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2"
                         Style="{StaticResource transportButtonBorderStyle}">
                     <Button Text="+"
-                    Command="{Binding AddNew}"
+                    Command="{Binding AddNewCommand}"
                     Style="{StaticResource transportAddButtonStyle}"/>
                 </Border>
             </Grid>

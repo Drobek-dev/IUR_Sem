@@ -79,7 +79,7 @@
         <Border Grid.Row="5" Grid.Column="0"
                         Style="{StaticResource festivalButtonBorderStyle}">
             <Button Text="+"
-                    Command="{Binding AddNewFestival}"
+                    Command="{Binding AddNewCommand}"
                     Style="{StaticResource festivalAddButtonStyle}"/>
         </Border>
     </Grid>

@@ -77,8 +77,13 @@ public partial class BaseVM : ObservableObject
         }
     }
 
-    protected static MyDBContext GetMyDBContextInstance()
+    protected MyDBContext GetMyDBContextInstance()
     {
+        if (!_internetAvailable)
+        {
+            DisplayNotification("Can not connect to databse.");
+            return null;
+        }
         
         try
         {

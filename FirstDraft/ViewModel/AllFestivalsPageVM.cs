@@ -94,9 +94,8 @@ public partial class AllFestivalsPageVM : BaseVM, INotifyPropertyChanged
 
     }
 
-
-    public ICommand AddNewFestival => new Command(
-        execute: async () =>
+    [RelayCommand(CanExecute =nameof(CanExecute))]
+    async Task AddNew()
     {
         Festival f = new() { Name = NewFestivalName, StartDate = NewStartDate, EndDate = NewEndDate, Location = Location, FestivalsExtWorkersRelations = new() };
 
@@ -114,8 +113,8 @@ public partial class AllFestivalsPageVM : BaseVM, INotifyPropertyChanged
             await Shell.Current.GoToAsync("..");
         }
 
-    },
-        canExecute: () => // in this case it is unnecessary as simultaneous adding of festivals does not produce any errors
+    }
+        bool CanExecute ()
         {
   
             if(_task is not null && _task.Status == TaskStatus.Running)
@@ -123,7 +122,7 @@ public partial class AllFestivalsPageVM : BaseVM, INotifyPropertyChanged
                 return false;
             }
             return true;
-        });
+        }
         
 
     public ICommand PerformSearch => new Command<string>((string query) =>

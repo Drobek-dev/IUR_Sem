@@ -4,6 +4,7 @@ using FirstDraft.Model.DatabaseFramework;
 using FirstDraft.Model.DatabaseFramework.Entities;
 using FirstDraft.Support;
 using FirstDraft.View;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,18 @@ public partial class SingleWarehousePageVM : BaseVM
 {
     [ObservableProperty]
     Warehouse _warehouse;
+
+    public async Task Refresh()
+    {
+        using MyDBContext c = GetMyDBContextInstance();
+
+        if (c is null)
+            return;
+
+        Warehouse = await c.Warehouses.Include(w=> w.LocalEquipmentRelations).Where(W=> W.ID.Equals(Warehouse.ID)).FirstOrDefaultAsync();
+       
+        
+    }
 
     [RelayCommand]
     async Task SaveChanges()
@@ -35,6 +48,10 @@ public partial class SingleWarehousePageVM : BaseVM
     [RelayCommand]
     async Task Delete()
     {
+
+        if (!await YesNoAlert($"Proceed to delete {Warehouse.Name} festival?"))
+            return;
+
         using MyDBContext c = GetMyDBContextInstance();
 
         if (c is null)
@@ -42,7 +59,8 @@ public partial class SingleWarehousePageVM : BaseVM
 
         foreach (var ler in Warehouse.LocalEquipmentRelations)
         {
-            c.Equipment.Remove(await c.Equipment.FindAsync(ler.IDEquipment));
+            Equipment e = await c.Equipment.FindAsync(ler.IDEquipment);
+            c.Equipment.Remove(e);
         }
         c.Warehouses.Remove(_warehouse);
         await PerformContextSave(c);

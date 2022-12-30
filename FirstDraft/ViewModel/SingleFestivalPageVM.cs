@@ -11,6 +11,7 @@ using FirstDraft.Support;
 using FirstDraft.View;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using Microsoft.EntityFrameworkCore;
 
 namespace FirstDraft.ViewModel;
 
@@ -20,6 +21,18 @@ public partial class SingleFestivalPageVM : BaseVM
 
     [ObservableProperty]
     Festival _festival;
+
+    public async Task Refresh()
+    {
+        using MyDBContext c = GetMyDBContextInstance();
+
+        if (c is null)
+            return;
+
+        Festival = await c.Festivals.Include(f=> f.LocalEquipmentRelation).Where(W => W.ID.Equals(Festival.ID)).FirstOrDefaultAsync();
+
+
+    }
 
     [RelayCommand]
     async Task NavigateToExternalWorkers()
@@ -48,7 +61,7 @@ public partial class SingleFestivalPageVM : BaseVM
     [RelayCommand]
     async Task DeleteFestival()
     {
-        if (await BaseVM.YesNoAlert($"Proceed to delete {Festival.Name} festival?"))
+        if (await YesNoAlert($"Proceed to delete {Festival.Name} festival?"))
         {
             using MyDBContext c = GetMyDBContextInstance();
 

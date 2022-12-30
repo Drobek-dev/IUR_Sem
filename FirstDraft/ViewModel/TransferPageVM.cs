@@ -43,8 +43,6 @@ public partial class TransferPageVM : BaseVM
     [ObservableProperty]
     ObservableCollection<TargetType> _target;
 
- 
-
     public ICommand PerformSearch => new Command<string>((string query) =>
     {
         if (string.IsNullOrWhiteSpace(query))
@@ -98,7 +96,6 @@ public partial class TransferPageVM : BaseVM
         }
         SearchResults = Target;
     }
-
 
     void AssignEquipmentToNewLocation(MyDBContext context, Guid IDTarget)
     {
@@ -209,14 +206,21 @@ public partial class TransferPageVM : BaseVM
         if (c is null)
             return;
 
-        AssignEquipmentToNewLocation(c, IDTarget);
+        try
+        {
+            AssignEquipmentToNewLocation(c, IDTarget);
 
-        await DeleteOldEquipmentLocation(c);
+            await DeleteOldEquipmentLocation(c);
+
+        }
+        catch(Exception ex)
+        {
+            await DisplayNotification(ex);
+            return;
+        }
 
         await PerformContextSave(c);
         
         await RedirectToParentShellPage();
     }
-
-
 }

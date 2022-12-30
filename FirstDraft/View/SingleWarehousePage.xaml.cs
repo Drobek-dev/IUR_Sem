@@ -9,14 +9,20 @@ public partial class SingleWarehousePage : ContentPage
 	public SingleWarehousePage()
 	{
 		InitializeComponent();
-		vm = new SingleWarehousePageVM();
-		BindingContext = vm;
-	}
+        vm = new SingleWarehousePageVM();
+        BindingContext = vm;
 
-    protected override void OnNavigatedTo(NavigatedToEventArgs args)
+    }
+
+
+    
+    async protected override void OnNavigatedTo(NavigatedToEventArgs args)
     {
         base.OnNavigatedTo(args);
         Title = vm.Warehouse is not null ? $"Sklad {vm.Warehouse.Name}" : Title;
+        
+        await vm.Refresh();
+        
     }
 
 }

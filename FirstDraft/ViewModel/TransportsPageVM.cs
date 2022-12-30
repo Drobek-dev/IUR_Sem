@@ -84,8 +84,8 @@ public partial class TransportsPageVM : BaseVM
         });
     }
 
-    public ICommand AddNew => new Command(
-        execute: async () =>
+    [RelayCommand(CanExecute = nameof(CanExecuteAdd))]
+    async Task AddNew ()
         {
             using MyDBContext c = GetMyDBContextInstance();
 
@@ -106,8 +106,9 @@ public partial class TransportsPageVM : BaseVM
             }
 
            
-        },
-        canExecute: () => // in this case it is unnecessary as simultaneous adding of festivals does not produce any errors
+        }
+
+        bool CanExecuteAdd()
         {
 
             if (_task is not null && _task.Status == TaskStatus.Running)
@@ -115,7 +116,7 @@ public partial class TransportsPageVM : BaseVM
                 return false;
             }
             return true;
-        });
+        }
 
     public ICommand PerformSearch => new Command<string>((string query) =>
     {

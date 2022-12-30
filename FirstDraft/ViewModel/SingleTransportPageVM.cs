@@ -4,6 +4,7 @@ using FirstDraft.Model.DatabaseFramework;
 using FirstDraft.Model.DatabaseFramework.Entities;
 using FirstDraft.Support;
 using FirstDraft.View;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,17 @@ public partial class SingleTransportPageVM : BaseVM
     [ObservableProperty]
     Transport _transport;
 
+    public async Task Refresh()
+    {
+        using MyDBContext c = GetMyDBContextInstance();
+
+        if (c is null)
+            return;
+
+        Transport = await c.Transports.Include(w => w.LocalEquipmentRelations).Where(W => W.ID.Equals(Transport.ID)).FirstOrDefaultAsync();
+
+
+    }
 
     [RelayCommand]
     async Task SaveChanges()
@@ -37,7 +49,10 @@ public partial class SingleTransportPageVM : BaseVM
     [RelayCommand]
     async Task Delete()
     {
-        using MyDBContext c = GetMyDBContextInstance();
+        if (!await YesNoAlert($"Proceed to delete {Transport.TransportName} festival?"))
+            return;
+       
+            using MyDBContext c = GetMyDBContextInstance();
 
         if (c is null)
             return;
