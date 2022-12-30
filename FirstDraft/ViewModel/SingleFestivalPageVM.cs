@@ -73,16 +73,27 @@ public partial class SingleFestivalPageVM : BaseVM
                 c.ExternalWorkers.Remove(ew.ExternalWorker);
             }
             foreach(var ler in Festival.LocalEquipmentRelation)
-            {
+             {
                 c.Equipment.Remove(await c.Equipment.FindAsync(ler.IDEquipment));
             }
 
-            c.Constructions.Remove(Festival.Construction);
-            c.Deconstructions.Remove(Festival.Deconstruction);
-            c.Festivals.Remove(Festival);
+            try
+            {
+                var q=await c.Constructions.ToListAsync();    
+            Construction con = await c.Constructions.FindAsync(Festival.IDConstruction);
+            c.Constructions.Remove(con);
+            Deconstruction de = await c.Deconstructions.FindAsync(Festival.IDDeconstruction);
+            c.Deconstructions.Remove(de);
+            c.Festivals.Remove(await c.Festivals.FindAsync(Festival.ID));
 
             await PerformContextSave(c);
             await Shell.Current.GoToAsync("..");
+
+            }
+            catch(Exception ex)
+            {
+                DisplayNotification(ex);
+            }
         }
     }
 

@@ -24,6 +24,7 @@ public class MyDBContext : DbContext
     public DbSet<Construction> Constructions { get; private set; }
     public DbSet<Deconstruction> Deconstructions { get; private set; }
     public DbSet<Equipment> Equipment { get; private set; }
+
     
     public DbSet<Warehouse> Warehouses { get; private set; }
     public DbSet<Transport> Transports { get; private set; }
@@ -50,6 +51,7 @@ public class MyDBContext : DbContext
             "Username=vhbvixhu;" +
             "Password=y1DwR8W4lNuGyWIAwMl2NfhFbygEIU_a");
             optionsBuilder.LogTo((string m)=>System.Diagnostics.Debug.WriteLine(m), Microsoft.Extensions.Logging.LogLevel.Information);
+            
         }
         else
             throw new ArgumentException($"This app does not recognize database type {TypeOfDatabase}");

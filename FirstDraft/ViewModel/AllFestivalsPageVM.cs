@@ -67,10 +67,12 @@ public partial class AllFestivalsPageVM : BaseVM, INotifyPropertyChanged
             return;
 
         ActiveFestivals = new(c.Festivals.OrderByDescending(f => f.ID)
+            .Include(f => f.Construction)
+           
+            .Include(f => f.Deconstruction)
+            
             .Include(f => f.FestivalsExtWorkersRelations)
             .ThenInclude(few => few.ExternalWorker)
-            .Include(f => f.Construction)
-            .Include(f => f.Deconstruction)
             .AsNoTracking());
 
         SearchResults = ActiveFestivals;
@@ -98,15 +100,20 @@ public partial class AllFestivalsPageVM : BaseVM, INotifyPropertyChanged
     async Task AddNew()
     {
         Festival f = new() { Name = NewFestivalName, StartDate = NewStartDate, EndDate = NewEndDate, Location = Location, FestivalsExtWorkersRelations = new() };
-
+        
         using MyDBContext c = GetMyDBContextInstance();
 
         if (c is null)
             return;
 
-        c.Festivals.Update(f);
+        c.Festivals.Add(f);
+       
 
         await PerformContextSave(c);
+        
+
+       
+
         if (_operationSucceeded)
         {
             ActiveFestivals.Add(f);

@@ -184,7 +184,7 @@ public partial class TransferPageVM : BaseVM
         }
         else if (OriginalLocation.Equals(LocationTypes.transport))
         {
-            await Shell.Current.GoToAsync(nameof(TransportsPage));
+            await Shell.Current.GoToAsync("..");
         }
         else if (OriginalLocation.Equals(LocationTypes.bin))
         {

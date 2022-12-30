@@ -70,6 +70,22 @@
         </Style>
 
 
+        <Style x:Key="eqpViewStyle" TargetType="CollectionView">
+            <Setter Property="VisualStateManager.VisualStateGroups">
+                <VisualStateGroupList>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal" />
+                        <VisualState x:Name="Selected">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor"
+                                        Value="LightSkyBlue" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </Setter>
+        </Style>
+
     </ContentPage.Resources>
     <VerticalStackLayout>
     <controls:InternetConnectionControl 
@@ -113,7 +129,36 @@
                     Command="{Binding DeleteAllEquipmentCommand}"/>
             </Border>
 
-            <Border
+                <Border
+                Style="{StaticResource eqpBorderStyle}"
+                HeightRequest="500"
+                BackgroundColor="Black"
+                Grid.Row="3">
+                    <CollectionView 
+                        HorizontalOptions="Center"
+                        x:Name="locaEquipmentView"
+                        ItemsSource="{Binding LocalEquipment}"
+                        SelectionMode="Multiple"
+                        SelectionChanged="CollectionView_SelectionChanged"
+                        Style="{StaticResource eqpViewStyle}">
+                        
+                        <CollectionView.ItemTemplate HorizontalOptions="Center">
+                            <DataTemplate x:DataType="entities:Equipment">
+                                <Border
+                                    
+                                    Style="{StaticResource eqpBorderStyle}">
+                                    <Grid  ColumnDefinitions="Auto,Auto,Auto,*">
+                                        <Label TextColor="Black" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Grid.Column="0" Text="{Binding Quantity}" Padding="10"/>
+                                        <Label TextColor="Black" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Grid.Column="1" Text="{Binding Name}" Padding="10"/>
+
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </Border>
+
+                <!--<Border
                 Style="{StaticResource eqpBorderStyle}"
                 HeightRequest="500"
                 BackgroundColor="Black"
@@ -144,17 +189,44 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            </Border>
-            <Border 
-                x:Name="addEqpBorder"
-                Style="{StaticResource eqpAddButtonBorderStyle}"
-                Grid.Row="3" Grid.Column="1">
-                <Button
-                Text="+"
-                Style="{StaticResource eqpAddButtonStyle}"
-                Command="{Binding NavToAddEquipmentPageCommand}"/>
-            </Border>
-        </Grid>
+            </Border>-->
+                <VerticalStackLayout Grid.Row="3" Grid.Column="1" 
+                                     >
+                    <Border
+                        Style="{StaticResource eqpAddButtonBorderStyle}"
+                        Stroke="Gray"
+                        WidthRequest="80"
+                        HeightRequest="60"
+                        StrokeShape="RoundRectangle 10"
+                        Margin="10,10,0,10">
+                        <Border.Background>
+                            <LinearGradientBrush EndPoint="1,0">
+                                <GradientStop Color="{Binding Source={RelativeSource AncestorType={x:Type view:EquipmentPage}},Path=LocationColor}"
+                                    Offset="0.1" />
+                                <GradientStop Color="Gray"
+                                    Offset="1.0" />
+                            </LinearGradientBrush>
+                        </Border.Background>
+                        <ImageButton
+                        Source="arrow.png"
+                        Style="{StaticResource eqpAddButtonStyle}"
+                        Command="{Binding TransferToPickedEqpCommand}"/>
+                    </Border>
+                    <Border 
+                        Margin="0,130,0,0"
+                        x:Name="addEqpBorder"
+                        Style="{StaticResource eqpAddButtonBorderStyle}" >
+                    
+                        <Button
+                        Text="+"
+                        Style="{StaticResource eqpAddButtonStyle}"
+                        Command="{Binding NavToAddEquipmentPageCommand}"/>
+                        
+                   
+                    </Border>
+                                
+                </VerticalStackLayout>
+            </Grid>
 
         <Grid Grid.Column="2" Grid.Row="1" 
             RowDefinitions="10,Auto,Auto,300,50">
@@ -188,12 +260,16 @@
                 />
             </Border>
 
-            <Border
+                
+
+
+                <Border
                 Style="{StaticResource selectedEqpBorderStyle}"
                 HeightRequest="300"
                 BackgroundColor="Black"
                 Grid.Row="3">
-            <Frame >
+                
+            <!--<Frame >-->
             <ListView ItemsSource="{Binding EquipmentToTransfer}" VerticalScrollBarVisibility="Always">
                         <ListView.ItemTemplate>
                             <DataTemplate x:DataType="entities:Equipment">
@@ -213,12 +289,12 @@
 
                     </ListView>
        
-                <Frame.GestureRecognizers>
+                <!--<Frame.GestureRecognizers>
                     <DropGestureRecognizer 
                         DropCommand="{Binding Source={x:RelativeSource AncestorType={x:Type viewModel:EquipmentPageVM}},Path=DropEquipmentCommand}"/>
 
                 </Frame.GestureRecognizers>
-            </Frame>
+            </Frame>-->
             </Border>
         </Grid>
 

@@ -15,4 +15,6 @@ public partial class TransportsPage : ContentPage
         BindingContext = new TransportsPageVM();
 
     }
+
+   
 }

@@ -49,6 +49,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\Images\arrow.png" />
 	  <None Remove="Resources\Images\Connection_Lost.png" />
 	</ItemGroup>
 

@@ -26,8 +26,6 @@ public partial class TransferPage : ContentPage
         BindingContext = vm;
 
        
-        
-       
     }
 
     protected override void OnNavigatedTo(NavigatedToEventArgs args)
@@ -40,7 +38,7 @@ public partial class TransferPage : ContentPage
         if(App.Current.Resources.TryGetValue($"{vm.NewLocation}Color",out object color))
         {
             searchBar.BackgroundColor = (Color)color;
-            
+            selectionBorder.Stroke = (Color)color;
         }
 
         Title = vm?.NewLocation is not null ? $"Přemístit do {GetLocInCzech()}" : Title;

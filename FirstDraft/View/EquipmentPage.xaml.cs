@@ -1,3 +1,4 @@
+using FirstDraft.Model.DatabaseFramework.Entities;
 using FirstDraft.ViewModel;
 using System.ComponentModel;
 
@@ -61,6 +62,17 @@ public partial class EquipmentPage : ContentPage, INotifyPropertyChanged
 		{
 			availableEqpBorder.Stroke = (Color)color;
 			LocationColor = (Color)color;
+		}
+    }
+
+    private void CollectionView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {		
+		if (viewModel is null)
+			return;
+		viewModel.SelectedItems = new();
+		foreach(var eqp in e.CurrentSelection)
+		{
+			viewModel.SelectedItems.Add((Equipment)eqp);
 		}
     }
 }

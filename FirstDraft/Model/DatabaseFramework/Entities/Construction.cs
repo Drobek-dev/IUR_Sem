@@ -18,5 +18,7 @@ public class Construction
 
     public ObservableCollection<ConstructionDaysRelations> ConstructionDaysRelations { get; init; }
 
+ 
+
 
 }

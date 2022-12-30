@@ -28,6 +28,9 @@ public partial class EquipmentPageVM : BaseVM, INotifyPropertyChanged
     ObservableCollection<Equipment> _equipmentToTransfer = new();
 
     [ObservableProperty]
+    ObservableCollection<Equipment> _selectedItems;
+
+    [ObservableProperty]
     Equipment _draggedEquipment;
 
     [ObservableProperty]
@@ -99,7 +102,21 @@ public partial class EquipmentPageVM : BaseVM, INotifyPropertyChanged
          RefreshEquipmentMethod();  
       }
 
+    // CollectionView Multiple selection Begin ----------------------------------------------
+    [RelayCommand]
+    void TransferToPickedEqp()
+    {
+        if (SelectedItems is null)
+            return;
+        foreach(var e in SelectedItems)
+        {
+            LocalEquipment.Remove(e);
+            EquipmentToTransfer.Add(e);
+        }
+    }
+    // CollectionView Multiple selection End ----------------------------------------------
 
+    // Drag and Drop Begin -------------------------------------------------------------
     [RelayCommand]
     void DraqEquipment(Equipment e)
     {
@@ -123,10 +140,17 @@ public partial class EquipmentPageVM : BaseVM, INotifyPropertyChanged
         EquipmentToTransfer.Add(_draggedEquipment);
      
     }
+    //Drag and Drop End ----------------------------------------------------------------
 
     [RelayCommand]
     async Task NavToTransferPage()
     {
+        if(EquipmentToTransfer?.Count==0 || Selection is null)
+        {
+            await DisplayNotification($"Destination must be selected.{Environment.NewLine}" +
+                $"Number of selected items must be greater than Zero.");
+            return;
+        }
         string originalLocation = string.IsNullOrWhiteSpace(Location) ? LocationTypes.bin : Location;
         await Shell.Current.GoToAsync(nameof(TransferPage),new Dictionary<string, object>
         {
