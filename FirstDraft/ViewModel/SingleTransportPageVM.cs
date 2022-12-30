@@ -22,8 +22,11 @@ public partial class SingleTransportPageVM : BaseVM
     [RelayCommand]
     async Task SaveChanges()
     {
-        using MyDBContext c = new(TypeOfDatabase.CloudPostgreSQL);
-        
+        using MyDBContext c = GetMyDBContextInstance();
+
+        if (c is null)
+            return;
+
         c.Transports.Update(_transport);
 
         await PerformContextSave(c);
@@ -34,7 +37,10 @@ public partial class SingleTransportPageVM : BaseVM
     [RelayCommand]
     async Task Delete()
     {
-        using MyDBContext c = new(TypeOfDatabase.CloudPostgreSQL);
+        using MyDBContext c = GetMyDBContextInstance();
+
+        if (c is null)
+            return;
 
         foreach (var ler in Transport.LocalEquipmentRelations)
         {

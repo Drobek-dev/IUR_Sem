@@ -71,22 +71,45 @@ public partial class BaseVM : ObservableObject
                 innerExceptions += $"{e.Message} {Environment.NewLine} {Environment.NewLine}";
                 e = e.InnerException;
             }
-            await DisplayNotification(
+            await BaseVM.DisplayNotification(
                 $"Thrown Exception: {ex.Message} {Environment.NewLine}{Environment.NewLine}" +
                 $"Task Exceptions: {innerExceptions}");
         }
     }
 
-    protected async Task<bool> YesNoAlert(string question)
+    protected static MyDBContext GetMyDBContextInstance()
+    {
+        
+        try
+        {
+            return new MyDBContext(Support.TypeOfDatabase.CloudPostgreSQL);
+        }
+        catch(Exception ex)
+        {
+            DisplayNotification(ex);
+            return null;
+        }
+    }
+    protected static async Task<bool> YesNoAlert(string question)
     {
         return await Shell.Current.DisplayAlert("Question?", question, "Yes", "No");
     }
 
-    async public Task DisplayNotification(string message)
+    public static async Task DisplayNotification(string message)
     {
         await Shell.Current.DisplayAlert("Alert", message, "Ok");
     }
 
-    
-    
+    public static async Task DisplayNotification(Exception e)
+    {
+        string message = "";
+        while(e is not null)
+        {
+            message += $" Exception: {e.Message} {Environment.NewLine}";
+            e = e.InnerException;
+        }
+        await Shell.Current.DisplayAlert("Alert", message, "Ok");
+    }
+
+
 }

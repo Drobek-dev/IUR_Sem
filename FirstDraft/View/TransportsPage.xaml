@@ -5,40 +5,27 @@
              xmlns:entities="clr-namespace:FirstDraft.Model.DatabaseFramework.Entities"
              xmlns:viewModel="clr-namespace:FirstDraft.ViewModel"
              xmlns:support="clr-namespace:FirstDraft.Support"
+             xmlns:controls="clr-namespace:FirstDraft.Controls"
              x:DataType="viewModel:TransportsPageVM"
              Title="Transporty">
 
 
     <VerticalStackLayout>
 
-        <Grid
-            RowDefinitions="Auto,Auto"
-            x:Name="InternetLostGrid"
-            IsVisible="{Binding InternetAvailable, Converter={StaticResource internetLostConverter} }">
+        <controls:InternetConnectionControl 
+            IsVisible="{Binding InternetAvailable, Converter={StaticResource internetLostConverter} }"/>
 
-            <Label 
-                Grid.Row="0"
-                Text="Connection Lost"                 
-                HorizontalOptions="Center"
-                />
-            <Image
-                Grid.Row="1"
-                Source="connection_lost.png"
-                HeightRequest="200"
-                HorizontalOptions="Center"
-                />
-
-        </Grid>
-
-        <SearchBar x:Name="searchBar"
-                   BackgroundColor="{StaticResource transportColor}"
+        <SearchBar
+            x:Name="searchBar"
+            BackgroundColor="{StaticResource transportColor}"
             TextColor="{StaticResource textColor}"
-                   SearchCommand="{Binding PerformSearch}"
-                   SearchCommandParameter="{Binding Text, Source={x:Reference searchBar}}"
-                   IsVisible="{Binding InternetAvailable}"
-                   MaximumWidthRequest="500"/>
+            SearchCommand="{Binding PerformSearch}"
+            SearchCommandParameter="{Binding Text, Source={x:Reference searchBar}}"
+            IsVisible="{Binding InternetAvailable}"
+            MaximumWidthRequest="500"/>
 
-        <Grid RowDefinitions="300">
+        <Grid RowDefinitions="300"
+              IsVisible="{Binding InternetAvailable}">
             <CollectionView x:Name="festivalsCollection" 
                          
                             ItemsSource="{Binding SearchResults}">

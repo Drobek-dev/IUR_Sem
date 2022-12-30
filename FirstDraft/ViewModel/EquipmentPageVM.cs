@@ -42,17 +42,17 @@ public partial class EquipmentPageVM : BaseVM, INotifyPropertyChanged
     [ObservableProperty]
     ObservableCollection<Equipment> _localEquipment;
 
-    bool isPerformingLookup = false;
-
     [ObservableProperty]
     string _selection;
-    
-      
-    
+ 
     public void RefreshEquipmentMethod()
     {
         LocalEquipment = new();
-        using MyDBContext c = new(TypeOfDatabase.CloudPostgreSQL);
+        EquipmentToTransfer = new();
+        using MyDBContext c = GetMyDBContextInstance();
+
+        if (c is null)
+            return;
 
         if (Location.Equals(LocationTypes.bin))
         {
@@ -153,7 +153,7 @@ public partial class EquipmentPageVM : BaseVM, INotifyPropertyChanged
     [RelayCommand]
     async Task DeleteSelectedEquipment()
     {
-        if (await YesNoAlert($"Opravdu chcete vysypat z koše vybrané vybavení? {Environment.NewLine}" +
+        if (await BaseVM.YesNoAlert($"Opravdu chcete vysypat z koše vybrané vybavení? {Environment.NewLine}" +
             $"{EquipmentToTransfer.Count} položek vybavení bude nenávratně ztraceno."))
         {
             using MyDBContext c = new(Support.TypeOfDatabase.CloudPostgreSQL);
@@ -177,7 +177,7 @@ public partial class EquipmentPageVM : BaseVM, INotifyPropertyChanged
     [RelayCommand]
     async Task DeleteAllEquipment()
     {
-        if (await YesNoAlert($"Opravdu chcete vysypat koš? {Environment.NewLine}" +
+        if (await BaseVM.YesNoAlert($"Opravdu chcete vysypat koš? {Environment.NewLine}" +
             $"{LocalEquipment.Count} položek vybavení bude nenávratně ztraceno."))
             {
                 using MyDBContext c = new(Support.TypeOfDatabase.CloudPostgreSQL);

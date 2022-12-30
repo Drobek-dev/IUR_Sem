@@ -5,16 +5,20 @@
              xmlns:entities="clr-namespace:FirstDraft.Model.DatabaseFramework.Entities"
              xmlns:viewModel="clr-namespace:FirstDraft.ViewModel"
              xmlns:support="clr-namespace:FirstDraft.Support"
+             xmlns:controls="clr-namespace:FirstDraft.Controls"
              x:DataType="viewModel:SingleTransportPageVM"
              Title="SingleTransportPage">
 
 
 
-        <VerticalStackLayout Margin="0,50, 0,0">
+   <VerticalStackLayout Margin="0,50, 0,0">
 
-            
+        <controls:InternetConnectionControl 
+            IsVisible="{Binding InternetAvailable, Converter={StaticResource internetLostConverter} }"/>
+        <VerticalStackLayout
+            IsVisible="{Binding InternetAvailable}">
 
-                <Border Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"
+            <Border 
                         Style="{StaticResource transportBorderStyle}">
                     <HorizontalStackLayout>
                         <Label Text="Název transportu: "
@@ -23,81 +27,79 @@
                         <Entry Text="{Binding Transport.TransportName}" 
                                 Style="{StaticResource baseCreateEntryStyle}"/>
                     </HorizontalStackLayout>
-                </Border>
-
-                <Border Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2"
-                        Style="{StaticResource transportBorderStyle}">
-                    <HorizontalStackLayout>
-                        <Label Text="Počáteční lokace: "
-                           Style="{StaticResource transportLabelStyle}"/>
-                        <Entry Text="{Binding Transport.StartingPosition}"
-                                Style="{StaticResource baseCreateEntryStyle}"/>
-                    </HorizontalStackLayout>
-                </Border>
-
-                <Border Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2"
-                        Style="{StaticResource transportBorderStyle}">
-                    <HorizontalStackLayout>
-                        <Label Text="Destinace: " 
-                           Style="{StaticResource transportLabelStyle}"/>
-                        <Entry Text="{Binding Transport.Destination}" 
-                                Style="{StaticResource baseCreateEntryStyle}"/>
-                    </HorizontalStackLayout>
-                </Border>
-
-                <Border Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2"
-                        Style="{StaticResource transportBorderStyle}">
-                    <HorizontalStackLayout>
-                        <Label Text="Čas příjezdu: "
-                           Style="{StaticResource transportLabelStyle}"/>
-                        <Entry Text="{Binding Transport.EstimatedArrivalTime, Converter={StaticResource dateTimeToString}}"
-                                Style="{StaticResource baseCreateEntryStyle}"/>
-                    </HorizontalStackLayout>
-                </Border>
-
-                <Border Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2"
-                        Style="{StaticResource transportBorderStyle}">
-                    <HorizontalStackLayout>
-                        <Label Text="Celé jméno řidiče: "
-                           Style="{StaticResource transportLabelStyle}"/>
-                        <Entry Text="{Binding Transport.DriverFullName}"
-                                Style="{StaticResource baseCreateEntryStyle}"/>
-                    </HorizontalStackLayout>
-                </Border>
-
-                <Border Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2"
-                        Style="{StaticResource transportBorderStyle}">
-                    <HorizontalStackLayout>
-                        <Label Text="Telefon na řidiče: "
-                           Style="{StaticResource transportLabelStyle}"/>
-                        <Entry Text="{Binding Transport.DriverPhone}"
-                                Style="{StaticResource baseCreateEntryStyle}"/>
-                    </HorizontalStackLayout>
-                </Border>
-
-
-
-
-        <HorizontalStackLayout HorizontalOptions="Center" Margin="0,100,0,0">
-            <Border
-                        Style="{StaticResource singleTransportButtonBorderStyle}">
-                <Button Text="Vybavení" Command="{Binding NavToEquipmentCommand}" 
-                                Style="{StaticResource singleTransportButtonStyle}"/>
-            </Border>
-            <Border
-                        Style="{StaticResource singleTransportButtonBorderStyle}">
-                <Button Text="Uložit změny" Command="{Binding SaveChangesCommand}"
-                                Style="{StaticResource singleTransportButtonStyle}"/>
-            </Border>
-            <Border
-                        Style="{StaticResource singleTransportButtonBorderStyle}">
-                <Button Text="Smazat" Command="{Binding DeleteCommand}"
-                                Style="{StaticResource singleTransportButtonStyle}"/>
             </Border>
 
+            <Border 
+                    Style="{StaticResource transportBorderStyle}">
+                <HorizontalStackLayout>
+                    <Label Text="Počáteční lokace: "
+                        Style="{StaticResource transportLabelStyle}"/>
+                    <Entry Text="{Binding Transport.StartingPosition}"
+                            Style="{StaticResource baseCreateEntryStyle}"/>
+                </HorizontalStackLayout>
+            </Border>
 
-        </HorizontalStackLayout>
+            <Border 
+                    Style="{StaticResource transportBorderStyle}">
+                <HorizontalStackLayout>
+                    <Label Text="Destinace: " 
+                        Style="{StaticResource transportLabelStyle}"/>
+                    <Entry Text="{Binding Transport.Destination}" 
+                            Style="{StaticResource baseCreateEntryStyle}"/>
+                </HorizontalStackLayout>
+            </Border>
 
+            <Border 
+                    Style="{StaticResource transportBorderStyle}">
+                <HorizontalStackLayout>
+                    <Label Text="Čas příjezdu: "
+                        Style="{StaticResource transportLabelStyle}"/>
+                    <Entry Text="{Binding Transport.EstimatedArrivalTime, Converter={StaticResource dateTimeToString}}"
+                            Style="{StaticResource baseCreateEntryStyle}"/>
+                </HorizontalStackLayout>
+            </Border>
+
+            <Border 
+                    Style="{StaticResource transportBorderStyle}">
+                <HorizontalStackLayout>
+                    <Label Text="Celé jméno řidiče: "
+                        Style="{StaticResource transportLabelStyle}"/>
+                    <Entry Text="{Binding Transport.DriverFullName}"
+                            Style="{StaticResource baseCreateEntryStyle}"/>
+                </HorizontalStackLayout>
+            </Border>
+
+            <Border
+                    Style="{StaticResource transportBorderStyle}">
+                <HorizontalStackLayout>
+                    <Label Text="Telefon na řidiče: "
+                        Style="{StaticResource transportLabelStyle}"/>
+                    <Entry Text="{Binding Transport.DriverPhone}"
+                            Style="{StaticResource baseCreateEntryStyle}"/>
+                </HorizontalStackLayout>
+            </Border>
+
+            <HorizontalStackLayout HorizontalOptions="Center" Margin="0,100,0,0">
+                <Border
+                            Style="{StaticResource singleTransportButtonBorderStyle}">
+                    <Button Text="Vybavení" Command="{Binding NavToEquipmentCommand}" 
+                                    Style="{StaticResource singleTransportButtonStyle}"/>
+                </Border>
+                <Border
+                            Style="{StaticResource singleTransportButtonBorderStyle}">
+                    <Button Text="Uložit změny" Command="{Binding SaveChangesCommand}"
+                                    Style="{StaticResource singleTransportButtonStyle}"/>
+                </Border>
+                <Border
+                            Style="{StaticResource singleTransportButtonBorderStyle}">
+                    <Button Text="Smazat" Command="{Binding DeleteCommand}"
+                                    Style="{StaticResource singleTransportButtonStyle}"/>
+                </Border>
+
+
+            </HorizontalStackLayout>
+       
+        </VerticalStackLayout>
     </VerticalStackLayout>
 
 </ContentPage>

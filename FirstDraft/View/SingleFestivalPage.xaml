@@ -6,19 +6,19 @@
              xmlns:entities="clr-namespace:FirstDraft.Model.DatabaseFramework.Entities"
              xmlns:viewModel="clr-namespace:FirstDraft.ViewModel"
              xmlns:support="clr-namespace:FirstDraft.Support"
+             xmlns:controls="clr-namespace:FirstDraft.Controls"
              x:DataType="viewModel:SingleFestivalPageVM">
 
     <ContentPage.Resources>
         <support:DateOnlyToString x:Key="dateToString"/>
     </ContentPage.Resources>
+ 
+    <VerticalStackLayout  Margin="0,50,0,0">
+        <controls:InternetConnectionControl 
+            IsVisible="{Binding InternetAvailable, Converter={StaticResource internetLostConverter} }"/>
 
-   
-    
-
-       
-        <VerticalStackLayout  Margin="0,50,0,0">
-
-            <VerticalStackLayout >
+            <VerticalStackLayout
+                IsVisible="{Binding InternetAvailable}">
                 <Border 
                         Style="{StaticResource festivalBorderStyle}">
                     <HorizontalStackLayout>
@@ -95,7 +95,10 @@
                 </VerticalStackLayout>
          
 
-            <HorizontalStackLayout HorizontalOptions="Center" Margin="0,100,0,0">
+            <HorizontalStackLayout 
+                IsVisible="{Binding InternetAvailable}"
+                HorizontalOptions="Center"
+                Margin="0,100,0,0">
                 <Border
                         Style="{StaticResource singleFestivalButtonBorderStyle}">
                     <Button Text="Externí pracovníci" Command="{Binding NavigateToExternalWorkersCommand}" 
@@ -119,7 +122,7 @@
                 
             </HorizontalStackLayout>
 
-        </VerticalStackLayout>
+    </VerticalStackLayout>
 
 
 </ContentPage>

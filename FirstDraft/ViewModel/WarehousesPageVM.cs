@@ -46,8 +46,11 @@ public partial class WarehousesPageVM : BaseVM
     {
         if (!InternetAvailable)
             return;
-        using MyDBContext context = new(TypeOfDatabase.CloudPostgreSQL);
-        ActiveWarehouses = new(context.Warehouses.Include(w=>w.LocalEquipmentRelations));
+        using MyDBContext c = GetMyDBContextInstance();
+
+        if (c is null)
+            return;
+        ActiveWarehouses = new(c.Warehouses.Include(w=>w.LocalEquipmentRelations));
         SearchResults = ActiveWarehouses;
     }
 
@@ -72,7 +75,11 @@ public partial class WarehousesPageVM : BaseVM
         {
             Warehouse w = new() { Name = NewWarehouseName, Address = NewWarehouseAddress};
 
-            using MyDBContext c = new(TypeOfDatabase.CloudPostgreSQL);
+            using MyDBContext c = GetMyDBContextInstance();
+
+            if (c is null)
+                return;
+
             c.Warehouses.Update(w);
             await PerformContextSave(c);
 

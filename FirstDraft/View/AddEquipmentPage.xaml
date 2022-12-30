@@ -5,6 +5,7 @@
              xmlns:viewModel="clr-namespace:FirstDraft.ViewModel"
              xmlns:entities="clr-namespace:FirstDraft.Model.DatabaseFramework.Entities"
              xmlns:support="clr-namespace:FirstDraft.Support"          
+             xmlns:controls="clr-namespace:FirstDraft.Controls"          
              x:DataType="viewModel:AddEquipmentPageVM"
              Title="AddEquipmentPage">
 
@@ -13,67 +14,72 @@
 
     <VerticalStackLayout Margin="0,50,0,0">
 
-        <Border 
-            x:Name="eqpNameBorder"
-       
+
+        <controls:InternetConnectionControl 
+            IsVisible="{Binding InternetAvailable, Converter={StaticResource internetLostConverter} }"/>
+
+
+        <VerticalStackLayout IsVisible="{Binding InternetAvailable}">
+                <Border 
+                    x:Name="eqpNameBorder"
                     Style="{StaticResource baseCreateBorderStyle}"
-               MinimumWidthRequest="400">
+                    MinimumWidthRequest="400">
             
-            <HorizontalStackLayout>
-                <Label 
-                    x:Name="eqpNameLabel"   
-                    Text="Název vybavení: "
-                        Style="{StaticResource warehouseLabelStyle}"    
-                        />
-                <Entry Text="{Binding NewEquipmentName}" 
-                        Style="{StaticResource baseCreateEntryStyle}"/>
-            </HorizontalStackLayout>
-        </Border>
+                    <HorizontalStackLayout>
+                        <Label 
+                            x:Name="eqpNameLabel"   
+                            Text="Název vybavení: "
+                                Style="{StaticResource warehouseLabelStyle}"    
+                                />
+                        <Entry Text="{Binding NewEquipmentName}" 
+                                Style="{StaticResource baseCreateEntryStyle}"/>
+                    </HorizontalStackLayout>
+                </Border>
 
-        <Border 
-            x:Name="eqpQuantityBorder"
+                <Border 
+                    x:Name="eqpQuantityBorder"
             
-                    Style="{StaticResource warehouseBorderStyle}"
-                MinimumWidthRequest="400">
+                            Style="{StaticResource warehouseBorderStyle}"
+                        MinimumWidthRequest="400">
 
-            <HorizontalStackLayout>
-                <Label 
-                    x:Name="eqpQuantityLabel"
-                        Text="Množství: "
-                        Style="{StaticResource warehouseLabelStyle}"    
-                        />
-                <Entry Text="{Binding NewEquipmentQuantity}" 
-                        Style="{StaticResource baseCreateEntryStyle}"/>
-            </HorizontalStackLayout>
-        </Border>
+                    <HorizontalStackLayout>
+                        <Label 
+                            x:Name="eqpQuantityLabel"
+                                Text="Množství: "
+                                Style="{StaticResource warehouseLabelStyle}"    
+                                />
+                        <Entry Text="{Binding NewEquipmentQuantity}" 
+                                Style="{StaticResource baseCreateEntryStyle}"/>
+                    </HorizontalStackLayout>
+                </Border>
 
-        <Border
-            x:Name="eqpDateBorder"
+                <Border
+                    x:Name="eqpDateBorder"
            
-                    Style="{StaticResource warehouseBorderStyle}"
-                MinimumWidthRequest="400">
+                            Style="{StaticResource warehouseBorderStyle}"
+                        MinimumWidthRequest="400">
 
-            <HorizontalStackLayout>
-                <Label 
-                     x:Name="eqpDateLabel"
-                        Text="Datum zavedení: "
-                        Style="{StaticResource warehouseLabelStyle}"    
-                        />
-                <Entry Text="{Binding NewDateOfPurchase, Converter={StaticResource dateToString}}"  
-                        Style="{StaticResource baseCreateEntryStyle}"/>
-            </HorizontalStackLayout>
-        </Border>
+                    <HorizontalStackLayout>
+                        <Label 
+                             x:Name="eqpDateLabel"
+                                Text="Datum zavedení: "
+                                Style="{StaticResource warehouseLabelStyle}"    
+                                />
+                        <Entry Text="{Binding NewDateOfPurchase, Converter={StaticResource dateToString}}"  
+                                Style="{StaticResource baseCreateEntryStyle}"/>
+                    </HorizontalStackLayout>
+                </Border>
 
-        <Border 
-            x:Name="addEqpButtonBorder"
-            Margin="0,50,0,0"
+                <Border 
+                    x:Name="addEqpButtonBorder"
+                    Margin="0,50,0,0"
           
-                        Style="{StaticResource warehouseButtonBorderStyle}">
-            <Button Text="+"
-                    Command="{Binding AddNewEquipmentCommand}"
-                    Style="{StaticResource warehouseAddButtonStyle}"/>
-        </Border>
-
+                                Style="{StaticResource warehouseButtonBorderStyle}">
+                    <Button Text="+"
+                            Command="{Binding AddNewEquipmentCommand}"
+                            Style="{StaticResource warehouseAddButtonStyle}"/>
+                </Border>
+        </VerticalStackLayout>
     </VerticalStackLayout>
 
 

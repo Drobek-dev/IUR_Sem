@@ -6,6 +6,7 @@
              xmlns:viewModel ="clr-namespace:FirstDraft.ViewModel"
              xmlns:view ="clr-namespace:FirstDraft.View"
              xmlns:entities ="clr-namespace:FirstDraft.Model.DatabaseFramework.Entities"
+             xmlns:controls ="clr-namespace:FirstDraft.Controls"
              x:DataType="viewModel:EquipmentPageVM"
              Title="Vybavení">
     <ContentPage.Resources>
@@ -70,9 +71,13 @@
 
 
     </ContentPage.Resources>
+    <VerticalStackLayout>
+    <controls:InternetConnectionControl 
+            IsVisible="{Binding InternetAvailable, Converter={StaticResource internetLostConverter} }"/>
     <Grid ColumnDefinitions="10,350,250,10"
           RowDefinitions="10,500,Auto,Auto,Auto,10"
-          HorizontalOptions="Center">
+          HorizontalOptions="Center"
+          IsVisible="{Binding InternetAvailable}">
 
         <Grid Grid.Column="1" Grid.Row="1" Grid.RowSpan="4"
               ColumnDefinitions="250,100"
@@ -243,4 +248,5 @@
         </Border>
 
     </Grid>
+    </VerticalStackLayout>
 </ContentPage>

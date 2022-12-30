@@ -53,8 +53,12 @@ public partial class TransportsPageVM : BaseVM
     {
         if (!InternetAvailable)
             return;
-        MyDBContext context = new(TypeOfDatabase.CloudPostgreSQL);
-        ActiveTransports = new(context.Transports.Include(t=> t.LocalEquipmentRelations).OrderByDescending(t=> t.ID));
+        using MyDBContext c = GetMyDBContextInstance();
+
+        if (c is null)
+            return;
+
+        ActiveTransports = new(c.Transports.Include(t=> t.LocalEquipmentRelations).OrderByDescending(t=> t.ID));
         SearchResults = ActiveTransports;
     }
 
@@ -83,10 +87,14 @@ public partial class TransportsPageVM : BaseVM
     public ICommand AddNew => new Command(
         execute: async () =>
         {
+            using MyDBContext c = GetMyDBContextInstance();
+
+            if (c is null)
+                return;
+
             Transport t = new() { TransportName = NewTransportName, DriverFullName = NewTransportDriverFullName, StartingPosition = NewTransportStartingPosition
                                    , Destination = NewTransportDestination, DriverPhone = NewTransportDriverPhone, EstimatedArrivalTime =DateTime.SpecifyKind(NewTransportEstimatedArrivalTime, DateTimeKind.Utc)};
 
-            MyDBContext c = new(TypeOfDatabase.CloudPostgreSQL);
             c.Transports.Update(t);
 
             await PerformContextSave(c);

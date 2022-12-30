@@ -61,9 +61,12 @@ public partial class AllFestivalsPageVM : BaseVM, INotifyPropertyChanged
         if (!InternetAvailable)
             return;
 
-        using MyDBContext context = new(TypeOfDatabase.CloudPostgreSQL);
+        using MyDBContext c = GetMyDBContextInstance();
 
-        ActiveFestivals = new(context.Festivals.OrderByDescending(f => f.ID)
+        if (c is null)
+            return;
+
+        ActiveFestivals = new(c.Festivals.OrderByDescending(f => f.ID)
             .Include(f => f.FestivalsExtWorkersRelations)
             .ThenInclude(few => few.ExternalWorker)
             .Include(f => f.Construction)
@@ -97,7 +100,11 @@ public partial class AllFestivalsPageVM : BaseVM, INotifyPropertyChanged
     {
         Festival f = new() { Name = NewFestivalName, StartDate = NewStartDate, EndDate = NewEndDate, Location = Location, FestivalsExtWorkersRelations = new() };
 
-        using MyDBContext c = new(TypeOfDatabase.CloudPostgreSQL);
+        using MyDBContext c = GetMyDBContextInstance();
+
+        if (c is null)
+            return;
+
         c.Festivals.Update(f);
 
         await PerformContextSave(c);

@@ -22,7 +22,11 @@ public partial class SingleWarehousePageVM : BaseVM
     [RelayCommand]
     async Task SaveChanges()
     {
-        using MyDBContext c = new(TypeOfDatabase.CloudPostgreSQL);
+        using MyDBContext c = GetMyDBContextInstance();
+
+        if (c is null)
+            return;
+
         c.Warehouses.Update(_warehouse);
         await PerformContextSave(c);
 
@@ -31,7 +35,10 @@ public partial class SingleWarehousePageVM : BaseVM
     [RelayCommand]
     async Task Delete()
     {
-        using MyDBContext c = new(TypeOfDatabase.CloudPostgreSQL);
+        using MyDBContext c = GetMyDBContextInstance();
+
+        if (c is null)
+            return;
 
         foreach (var ler in Warehouse.LocalEquipmentRelations)
         {

@@ -21,9 +21,6 @@ public partial class SingleFestivalPageVM : BaseVM
     [ObservableProperty]
     Festival _festival;
 
-   
-
-
     [RelayCommand]
     async Task NavigateToExternalWorkers()
     {
@@ -37,8 +34,11 @@ public partial class SingleFestivalPageVM : BaseVM
     [RelayCommand]
     async Task SaveChanges()
     {
-        using MyDBContext c = new(TypeOfDatabase.CloudPostgreSQL);
-        
+        using MyDBContext c = GetMyDBContextInstance();
+
+        if (c is null)
+            return;
+
         c.Festivals.Update(_festival);
 
         await PerformContextSave(c);
@@ -48,11 +48,14 @@ public partial class SingleFestivalPageVM : BaseVM
     [RelayCommand]
     async Task DeleteFestival()
     {
-        if (await YesNoAlert($"Proceed to delete {Festival.Name} festival?"))
+        if (await BaseVM.YesNoAlert($"Proceed to delete {Festival.Name} festival?"))
         {
-            using MyDBContext c = new(TypeOfDatabase.CloudPostgreSQL);
+            using MyDBContext c = GetMyDBContextInstance();
 
-            foreach(var ew in Festival.FestivalsExtWorkersRelations)
+            if (c is null)
+                return;
+
+            foreach (var ew in Festival.FestivalsExtWorkersRelations)
             {
                 c.ExternalWorkers.Remove(ew.ExternalWorker);
             }

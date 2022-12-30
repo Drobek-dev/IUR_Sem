@@ -5,31 +5,17 @@
              xmlns:viewModel="clr-namespace:FirstDraft.ViewModel"
              xmlns:entities="clr-namespace:FirstDraft.Model.DatabaseFramework.Entities"
              xmlns:support="clr-namespace:FirstDraft.Support"          
+             xmlns:controls="clr-namespace:FirstDraft.Controls"          
              x:DataType="viewModel:WarehousesPageVM"
              Title="Přidání nového festivalu">
    
 
     <VerticalStackLayout>
 
-        <Grid
-            RowDefinitions="Auto,Auto"
-            x:Name="InternetLostGrid"
-            IsVisible="{Binding InternetAvailable, Converter={StaticResource internetLostConverter} }">
 
-            <Label 
-                Grid.Row="0"
-                Text="Connection Lost"                 
-                HorizontalOptions="Center"
-                />
-            <Image
-                Grid.Row="1"
-                Source="connection_lost.png"
-                HeightRequest="200"
-                HorizontalOptions="Center"
-                />
+        <controls:InternetConnectionControl 
+            IsVisible="{Binding InternetAvailable, Converter={StaticResource internetLostConverter} }"/>
 
-        </Grid>
-        
         <Grid 
             HorizontalOptions="Center"
             Grid.Column="1" Grid.Row="1"

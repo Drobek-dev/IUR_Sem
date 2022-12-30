@@ -61,6 +61,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Controls\InternetConnectionControl.xaml.cs">
+	    <DependentUpon>InternetConnectionControl.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="View\TransportsPage.xaml.cs">
 	    <DependentUpon>TransportsPage.xaml</DependentUpon>
 	  </Compile>
@@ -70,7 +73,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Controls\ExternalWorkerControl.xaml">
+	  <MauiXaml Update="Controls\InternetConnectionControl.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="View\About.xaml">

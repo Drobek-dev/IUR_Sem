@@ -61,12 +61,16 @@ public partial class TransferPageVM : BaseVM
     [RelayCommand]
     async Task LoadTargetInfo()
     {
-        using MyDBContext context = new(TypeOfDatabase.CloudPostgreSQL);
+        using MyDBContext c = GetMyDBContextInstance();
+
+        if (c is null)
+            return;
+
         Target = new();
 
         if (NewLocation.Equals(LocationTypes.festival))
         {
-            var Festivals = await context.Festivals.OrderByDescending(f => f.ID).ToListAsync();
+            var Festivals = await c.Festivals.OrderByDescending(f => f.ID).ToListAsync();
             foreach(var f in Festivals) 
             {
                 Target.Add(new() { Name = f.Name, ID = f.ID });  
@@ -74,7 +78,7 @@ public partial class TransferPageVM : BaseVM
         }
         else if (NewLocation.Equals(LocationTypes.warehouse))
         {
-            var Warehouses = await context.Warehouses.OrderByDescending(w => w.ID).ToListAsync();
+            var Warehouses = await c.Warehouses.OrderByDescending(w => w.ID).ToListAsync();
             foreach (var w in Warehouses)
             {
                 Target.Add(new() { Name = w.Name, ID = w.ID });
@@ -82,7 +86,7 @@ public partial class TransferPageVM : BaseVM
         }
         else if (NewLocation.Equals(LocationTypes.transport))
         {
-            var Transports = await context.Transports.OrderByDescending(t => t.ID).ToListAsync();
+            var Transports = await c.Transports.OrderByDescending(t => t.ID).ToListAsync();
             foreach (var t in Transports)
             {
                 Target.Add(new() { Name = t.TransportName, ID = t.ID });
@@ -200,13 +204,16 @@ public partial class TransferPageVM : BaseVM
         if (IDTarget.Equals(OriginalLocationID))
             return;
 
-        using MyDBContext context = new(TypeOfDatabase.CloudPostgreSQL);
+        using MyDBContext c = GetMyDBContextInstance();
 
-        AssignEquipmentToNewLocation(context, IDTarget);
+        if (c is null)
+            return;
 
-        await DeleteOldEquipmentLocation(context);
+        AssignEquipmentToNewLocation(c, IDTarget);
 
-        await PerformContextSave(context);
+        await DeleteOldEquipmentLocation(c);
+
+        await PerformContextSave(c);
         
         await RedirectToParentShellPage();
     }

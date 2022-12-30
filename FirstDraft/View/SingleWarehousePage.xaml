@@ -5,11 +5,16 @@
              xmlns:entities="clr-namespace:FirstDraft.Model.DatabaseFramework.Entities"
              xmlns:viewModel="clr-namespace:FirstDraft.ViewModel"
              xmlns:support="clr-namespace:FirstDraft.Support"
+             xmlns:controls="clr-namespace:FirstDraft.Controls"
              x:DataType="viewModel:SingleWarehousePageVM"
              Title="SingleWarehousePage">
 
-    <VerticalStackLayout Margin="0,50,0,0"> 
-        <VerticalStackLayout >
+    <VerticalStackLayout Margin="0,50,0,0">
+
+        <controls:InternetConnectionControl 
+            IsVisible="{Binding InternetAvailable, Converter={StaticResource internetLostConverter} }"/>
+        <VerticalStackLayout
+            IsVisible="{Binding InternetAvailable}">
 
                 <Border 
                     Style="{StaticResource warehouseBorderStyle}">
@@ -37,7 +42,8 @@
             
         </VerticalStackLayout>
             
-        <HorizontalStackLayout HorizontalOptions="Center" Margin="0,100,0,0">
+        <HorizontalStackLayout HorizontalOptions="Center" Margin="0,100,0,0"
+                               IsVisible="{Binding InternetAvailable}">
             <Border
                         Style="{StaticResource singleWarehouseButtonBorderStyle}">
                 <Button Text="Vybavení" Command="{Binding NavToEquipmentCommand}" 

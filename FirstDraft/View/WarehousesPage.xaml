@@ -5,42 +5,28 @@
              xmlns:entities="clr-namespace:FirstDraft.Model.DatabaseFramework.Entities"
              xmlns:viewModel="clr-namespace:FirstDraft.ViewModel"
              xmlns:support="clr-namespace:FirstDraft.Support"
+             xmlns:controls="clr-namespace:FirstDraft.Controls"
              x:DataType="viewModel:WarehousesPageVM"
              Title="Sklady">
 
     
     <VerticalStackLayout>
 
-        <Grid
-            RowDefinitions="Auto,Auto"
-            x:Name="InternetLostGrid"
-            IsVisible="{Binding InternetAvailable, Converter={StaticResource internetLostConverter} }">
+        <controls:InternetConnectionControl 
+            IsVisible="{Binding InternetAvailable, Converter={StaticResource internetLostConverter} }"/>
 
-            <Label 
-                Grid.Row="0"
-                Text="Connection Lost"                 
-                HorizontalOptions="Center"
-                />
-            <Image
-                Grid.Row="1"
-                Source="connection_lost.png"
-                HeightRequest="200"
-                HorizontalOptions="Center"
-                />
-
-        </Grid>
-
-        <SearchBar x:Name="searchBar"
-                   BackgroundColor="{StaticResource warehouseColor}"
-                   
+        <SearchBar 
+            x:Name="searchBar"
+            BackgroundColor="{StaticResource warehouseColor}"
             TextColor="{StaticResource textColor}"
-                   SearchCommand="{Binding PerformSearch}"
-                   SearchCommandParameter="{Binding Text, Source={x:Reference searchBar}}"
-                   MaximumWidthRequest="500"
-                   IsVisible="{Binding InternetAvailable}"/>
-        <Grid RowDefinitions="300">
+            SearchCommand="{Binding PerformSearch}"
+            SearchCommandParameter="{Binding Text, Source={x:Reference searchBar}}"
+            MaximumWidthRequest="500"
+            IsVisible="{Binding InternetAvailable}"/>
+        <Grid RowDefinitions="300"
+              IsVisible="{Binding InternetAvailable}">
             <CollectionView 
-                IsVisible="{Binding InternetAvailable}"
+                
                 ItemsSource="{Binding SearchResults}">
 
                 <CollectionView.ItemTemplate>
