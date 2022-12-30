@@ -70,8 +70,8 @@ public partial class WarehousesPageVM : BaseVM
         });
     }
 
-    public ICommand AddNewWarehouse => new Command(
-        execute: async () =>
+    [RelayCommand(CanExecute = nameof(CanExecute))]
+    async Task AddNew ()
         {
             Warehouse w = new() { Name = NewWarehouseName, Address = NewWarehouseAddress};
 
@@ -88,8 +88,9 @@ public partial class WarehousesPageVM : BaseVM
                 _activeWarehouses.Add(w);
                 await Shell.Current.GoToAsync("..");
             }
-        },
-        canExecute: () => // in this case it is unnecessary as simultaneous adding of festivals does not produce any errors
+        }
+
+       bool CanExecute()
         {
 
             if (_taskWarehouse is not null && _taskWarehouse.Status == TaskStatus.Running)
@@ -97,7 +98,7 @@ public partial class WarehousesPageVM : BaseVM
                 return false;
             }
             return true;
-        });
+        }
 
     public ICommand PerformSearch => new Command<string>((string query) =>
     {

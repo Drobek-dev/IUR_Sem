@@ -62,7 +62,7 @@
             <Border Grid.Row="3" Grid.Column="0"
                         Style="{StaticResource warehouseButtonBorderStyle}">
                 <Button Text="+"
-                    Command="{Binding AddNewWarehouse}"
+                    Command="{Binding AddNewCommand}"
                     Style="{StaticResource warehouseAddButtonStyle}"/>
             </Border>
         

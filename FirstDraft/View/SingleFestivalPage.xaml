@@ -106,7 +106,7 @@
                 </Border>
                 <Border
                         Style="{StaticResource singleFestivalButtonBorderStyle}">
-                    <Button Text="Vybavení" Command="{Binding NavToEquipment}"
+                    <Button Text="Vybavení" Command="{Binding NavToEquipmentCommand}"
                                 Style="{StaticResource singleFestivalButtonStyle}"/>
                 </Border>
                 <Border

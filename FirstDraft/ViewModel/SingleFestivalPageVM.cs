@@ -86,7 +86,8 @@ public partial class SingleFestivalPageVM : BaseVM
         }
     }
 
-    public ICommand NavToEquipment => new Command(async() =>
+    [RelayCommand]
+    async Task NavToEquipment ()
     {
         await Shell.Current.GoToAsync($"{nameof(EquipmentPage)}",
             new Dictionary<string, object>
@@ -95,7 +96,7 @@ public partial class SingleFestivalPageVM : BaseVM
                 ["Location"] = LocationTypes.festival,
                 ["LocationName"] = Festival.Name
             });
-    });
+    }
 
 
 
