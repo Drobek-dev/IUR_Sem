@@ -9,50 +9,11 @@
              x:DataType="viewModel:AllFestivalsPageVM"
              Title="Festivaly">
 
-    <ContentPage.Resources>
-        <support:DateOnlyToString x:Key="dateToString" />
-        <support:InternetConnectionToVisibilityConverter x:Key="internetLostConverter" />
-
-        <Style x:Key="festivalAddButtonStyle" TargetType="Button" BasedOn="{StaticResource addButtonStyle}">
-            <Setter Property="TextColor" Value="{StaticResource textColor}"/>
-            
-        </Style>
-
-        <Style x:Key="festivalButtonBorderStyle" TargetType="Border" BasedOn="{StaticResource addButtonBorderStyle}">
-            
-            <Setter Property="Stroke" Value="{StaticResource festivalColor}"/>
-        </Style>
-
-        <Style x:Key="singleFestivalButtonBorderStyle" TargetType="Border" BasedOn="{StaticResource selectionButttonBorderStyle}">
-            
-            <Setter Property="Stroke" Value="{StaticResource festivalColor}"/>
-        </Style>
-
-        <Style x:Key="singleFestivalButtonStyle" TargetType="Button" BasedOn="{StaticResource selectionButtonStyle}">
-            <Setter Property="TextColor" Value="{StaticResource textColor}"/>
-            
-        </Style>
-
-        <Style x:Key="festivalLabelStyle" TargetType="Label" BasedOn="{StaticResource baseCreateLabelStyle}">
-            <Setter Property="TextColor" Value="{StaticResource textColor}"/>
-            <Setter Property="BackgroundColor" Value="{StaticResource festivalColor}"/>
-        </Style>
-
-        <Style x:Key="festivalBorderStyle" TargetType="Border" BasedOn="{StaticResource baseCreateBorderStyle}">
-            <Setter Property="Background" Value="{StaticResource festivalColor}"/>
-        </Style>
-        
-    </ContentPage.Resources>
-    
-    
-
     <VerticalStackLayout>
 
         <controls:InternetConnectionControl 
             IsVisible="{Binding InternetAvailable, Converter={StaticResource internetLostConverter} }"/>
-
-
-
+        
         <SearchBar 
             x:Name="searchBar"  
             BackgroundColor="{StaticResource festivalColor}"

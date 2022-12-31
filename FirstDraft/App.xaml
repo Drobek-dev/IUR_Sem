@@ -17,16 +17,14 @@
             <support:InternetConnectionToVisibilityConverter x:Key="internetLostConverter" />
             <support:DateTimeToString x:Key="dateTimeToString"/>
 
-
-     
-
             <Color x:Key="textColor">Black</Color>
             <Color x:Key="festivalColor">#E3D122</Color>
             <Color x:Key="warehouseColor">#FF00E4</Color>
             <Color x:Key="transportColor">#00E0FF</Color>
             <Color x:Key="binColor">#FF8B00</Color>
 
-            <Style x:Key="baseCreateBorderStyle" TargetType="Border">
+            <!--Base Styles Begin-->
+            <Style x:Key="baseBorderStyle" TargetType="Border">
                 <Setter Property="StrokeThickness" Value="4" />
                 <Setter Property="StrokeShape" Value="RoundRectangle 10" />
                 <Setter Property="Padding" Value="5"/>
@@ -34,7 +32,7 @@
                 <Setter Property="WidthRequest" Value="450"/>
             </Style>
 
-            <Style x:Key="baseCreateLabelStyle" TargetType="Label">
+            <Style x:Key="baseLabelStyle" TargetType="Label">
                 <Setter Property="FontSize" Value="Medium" />
                 <Setter Property="FontAttributes" Value="Bold" />
                 <Setter Property="Padding" Value="10"/>
@@ -42,7 +40,7 @@
                 <Setter Property="MinimumWidthRequest" Value="200"/>
             </Style>
 
-            <Style x:Key="baseCreateEntryStyle" TargetType="Entry">
+            <Style x:Key="baseEntryStyle" TargetType="Entry">
                 <Setter Property="TextColor" Value="White"/>
                 <Setter Property="BackgroundColor" Value="Black"/>
                 <Setter Property="Margin" Value="0,5,5,0"/>
@@ -56,6 +54,9 @@
                 <Setter Property="Margin" Value="20"/>
             </Style>
 
+            <!--Base Styles End-->
+
+            <!-- Additional Button related Styles Begin -->
             <Style x:Key="selectionButtonStyle" TargetType="Button" BasedOn="{StaticResource baseButtonStyle}">
                 <Setter Property="FontSize" Value="Body"/>
                 <Setter Property="MaximumWidthRequest" Value="200"/>
@@ -69,22 +70,24 @@
                 <Setter Property="MaximumHeightRequest" Value="100"/>
             </Style>
 
-            <Style x:Key="selectionButttonBorderStyle" TargetType="Border" BasedOn="{StaticResource baseCreateBorderStyle}">
-                <Setter Property="MaximumWidthRequest" Value="210"/>
-                <Setter Property="MaximumHeightRequest" Value="60"/>
-                <Setter Property="StrokeThickness" Value="5" />
-                <Setter Property="StrokeShape" Value="RoundRectangle 40" />
-                <Setter Property="Margin" Value="3"/>
-            </Style>
-
-            <Style x:Key="addButtonBorderStyle" TargetType="Border" BasedOn="{StaticResource baseCreateBorderStyle}">
+            <Style x:Key="addButtonBorderStyle" TargetType="Border" BasedOn="{StaticResource baseBorderStyle}">
                 <Setter Property="MaximumWidthRequest" Value="110"/>
                 <Setter Property="MaximumHeightRequest" Value="110"/>
                 <Setter Property="StrokeThickness" Value="5" />
                 <Setter Property="StrokeShape" Value="RoundRectangle 40" />
                 <Setter Property="Margin" Value="10"/>
             </Style>
+            
+            <Style x:Key="selectionButttonBorderStyle" TargetType="Border" BasedOn="{StaticResource baseBorderStyle}">
+                <Setter Property="MaximumWidthRequest" Value="210"/>
+                <Setter Property="MaximumHeightRequest" Value="60"/>
+                <Setter Property="StrokeThickness" Value="5" />
+                <Setter Property="StrokeShape" Value="RoundRectangle 40" />
+                <Setter Property="Margin" Value="3"/>
+            </Style>
+            <!-- Additional Button related Styles End -->
 
+            <!-- Festival Styles Begin -->
             <Style x:Key="festivalAddButtonStyle" TargetType="Button" BasedOn="{StaticResource addButtonStyle}">
                 <Setter Property="TextColor" Value="{StaticResource textColor}"/>
 
@@ -105,16 +108,17 @@
 
             </Style>
 
-            <Style x:Key="festivalLabelStyle" TargetType="Label" BasedOn="{StaticResource baseCreateLabelStyle}">
+            <Style x:Key="festivalLabelStyle" TargetType="Label" BasedOn="{StaticResource baseLabelStyle}">
                 <Setter Property="TextColor" Value="{StaticResource textColor}"/>
                 <Setter Property="BackgroundColor" Value="{StaticResource festivalColor}"/>
             </Style>
 
-            <Style x:Key="festivalBorderStyle" TargetType="Border" BasedOn="{StaticResource baseCreateBorderStyle}">
+            <Style x:Key="festivalBorderStyle" TargetType="Border" BasedOn="{StaticResource baseBorderStyle}">
                 <Setter Property="Background" Value="{StaticResource festivalColor}"/>
             </Style>
+            <!-- Festival Styles End -->
 
-
+            <!-- Transport Styles Begin -->
             <Style x:Key="transportAddButtonStyle" TargetType="Button" BasedOn="{StaticResource addButtonStyle}">
                 <Setter Property="TextColor" Value="{StaticResource textColor}"/>
 
@@ -135,12 +139,12 @@
 
             </Style>
 
-            <Style x:Key="transportLabelStyle" TargetType="Label" BasedOn="{StaticResource baseCreateLabelStyle}">
+            <Style x:Key="transportLabelStyle" TargetType="Label" BasedOn="{StaticResource baseLabelStyle}">
                 <Setter Property="TextColor" Value="{StaticResource textColor}"/>
                 <Setter Property="BackgroundColor" Value="{StaticResource transportColor}"/>
             </Style>
 
-            <Style x:Key="transportBorderStyle" TargetType="Border" BasedOn="{StaticResource baseCreateBorderStyle}">
+            <Style x:Key="transportBorderStyle" TargetType="Border" BasedOn="{StaticResource baseBorderStyle}">
                 <Setter Property="Background" Value="{StaticResource transportColor}"/>
             </Style>
 
@@ -148,7 +152,9 @@
                 <Setter Property="TextColor" Value="{StaticResource textColor}"/>
 
             </Style>
+            <!-- Transport Styles End -->
 
+            <!-- Warehouse Styles Begin -->
             <Style x:Key="warehouseButtonBorderStyle" TargetType="Border" BasedOn="{StaticResource addButtonBorderStyle}">
 
                 <Setter Property="Stroke" Value="{StaticResource warehouseColor}"/>
@@ -164,28 +170,30 @@
 
             </Style>
 
-            <Style x:Key="warehouseLabelStyle" TargetType="Label" BasedOn="{StaticResource baseCreateLabelStyle}">
+            <Style x:Key="warehouseLabelStyle" TargetType="Label" BasedOn="{StaticResource baseLabelStyle}">
                 <Setter Property="TextColor" Value="{StaticResource textColor}"/>
                 <Setter Property="BackgroundColor" Value="{StaticResource warehouseColor}"/>
             </Style>
 
-            <Style x:Key="warehouseBorderStyle" TargetType="Border" BasedOn="{StaticResource baseCreateBorderStyle}">
+            <Style x:Key="warehouseBorderStyle" TargetType="Border" BasedOn="{StaticResource baseBorderStyle}">
                 <Setter Property="Background" Value="{StaticResource warehouseColor}"/>
             </Style>
+            <!-- Warehouse Styles End -->
 
-            <Style x:Key="binLabelStyle" TargetType="Label" BasedOn="{StaticResource baseCreateLabelStyle}">
+            <!-- Bin Styles Begin -->
+            <Style x:Key="binLabelStyle" TargetType="Label" BasedOn="{StaticResource baseLabelStyle}">
                 <Setter Property="TextColor" Value="{StaticResource textColor}"/>
                 <Setter Property="BackgroundColor" Value="{StaticResource binColor}"/>
             </Style>
 
-            <Style x:Key="binBorderStyle" TargetType="Border" BasedOn="{StaticResource baseCreateBorderStyle}">
+            <Style x:Key="binBorderStyle" TargetType="Border" BasedOn="{StaticResource baseBorderStyle}">
                 <Setter Property="Background" Value="{StaticResource binColor}"/>
             </Style>
             <Style x:Key="binButtonBorderStyle" TargetType="Border" BasedOn="{StaticResource addButtonBorderStyle}">
 
                 <Setter Property="Stroke" Value="{StaticResource binColor}"/>
             </Style>
-
+            <!-- Bin Styles End -->
 
 
         </ResourceDictionary>

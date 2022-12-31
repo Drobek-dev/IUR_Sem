@@ -13,6 +13,7 @@
 
         <controls:InternetConnectionControl 
             IsVisible="{Binding InternetAvailable, Converter={StaticResource internetLostConverter} }"/>
+        
         <VerticalStackLayout
             IsVisible="{Binding InternetAvailable}">
 
@@ -24,7 +25,7 @@
                         Style="{StaticResource warehouseLabelStyle}"    
                         />
                         <Entry Text="{Binding Warehouse.Name}" 
-                        Style="{StaticResource baseCreateEntryStyle}"/>
+                        Style="{StaticResource baseEntryStyle}"/>
                     </HorizontalStackLayout>
                 </Border>
 
@@ -36,7 +37,7 @@
                         Style="{StaticResource warehouseLabelStyle}"    
                         />
                         <Entry Text="{Binding Warehouse.Address}" 
-                        Style="{StaticResource baseCreateEntryStyle}"/>
+                        Style="{StaticResource baseEntryStyle}"/>
                     </HorizontalStackLayout>
                 </Border>
             

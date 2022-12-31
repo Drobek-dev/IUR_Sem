@@ -59,12 +59,14 @@ public partial class ExternalWorkersVM : BaseVM
     [RelayCommand]
     async Task DeleteWorker(ExternalWorker ew)
     {
+        ExternalWorkers.Remove(ExternalWorkers.Where(few => few.IDExternalWorker == ew.ID).First());
         using MyDBContext c = new(Support.TypeOfDatabase.CloudPostgreSQL);
         c.ExternalWorkers.Remove(ew);
        
         await PerformContextSave(c);
-        if(_operationSucceeded)
-            ExternalWorkers.Remove(ExternalWorkers.Where(few => few.IDExternalWorker == ew.ID).First());
+
+        if (!_operationSucceeded)
+            await DisplayNotification("Smazání položky selhalo.");
 
     }
 }

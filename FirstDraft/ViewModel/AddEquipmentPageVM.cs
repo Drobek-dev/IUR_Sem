@@ -30,7 +30,7 @@ public partial class AddEquipmentPageVM : BaseVM
     string _newEquipmentName;
 
     [ObservableProperty]
-    int _newEquipmentQuantity;
+    int _newEquipmentQuantity = 1;
 
     [ObservableProperty]
     DateOnly _newDateOfPurchase = DateOnly.FromDateTime(DateTime.Now);

@@ -23,6 +23,7 @@
             SearchCommandParameter="{Binding Text, Source={x:Reference searchBar}}"
             MaximumWidthRequest="500"
             IsVisible="{Binding InternetAvailable}"/>
+        
         <Grid RowDefinitions="300"
               IsVisible="{Binding InternetAvailable}">
             <CollectionView 

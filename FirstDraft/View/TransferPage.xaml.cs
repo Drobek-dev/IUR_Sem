@@ -28,7 +28,7 @@ public partial class TransferPage : ContentPage
        
     }
 
-    async protected override void OnNavigatedTo(NavigatedToEventArgs args)
+    protected override void OnNavigatedTo(NavigatedToEventArgs args)
     {
         base.OnNavigatedTo(args);
         if (App.Current.Resources.TryGetValue($"{vm.NewLocation}ButtonBorderStyle", out object buttonBorderStyle))

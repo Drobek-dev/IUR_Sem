@@ -8,10 +8,8 @@
              xmlns:controls="clr-namespace:FirstDraft.Controls"          
              x:DataType="viewModel:WarehousesPageVM"
              Title="Přidání nového festivalu">
-   
 
     <VerticalStackLayout>
-
 
         <controls:InternetConnectionControl 
             IsVisible="{Binding InternetAvailable, Converter={StaticResource internetLostConverter} }"/>
@@ -42,7 +40,7 @@
                         Style="{StaticResource warehouseLabelStyle}"    
                         />
                     <Entry Text="{Binding NewWarehouseName}" 
-                        Style="{StaticResource baseCreateEntryStyle}"/>
+                        Style="{StaticResource baseEntryStyle}"/>
                 </HorizontalStackLayout>
             </Border>
 
@@ -54,10 +52,9 @@
                         Style="{StaticResource warehouseLabelStyle}"    
                         />
                     <Entry Text="{Binding NewWarehouseAddress}" 
-                        Style="{StaticResource baseCreateEntryStyle}"/>
+                        Style="{StaticResource baseEntryStyle}"/>
                 </HorizontalStackLayout>
             </Border>
-
 
             <Border Grid.Row="3" Grid.Column="0"
                         Style="{StaticResource warehouseButtonBorderStyle}">
@@ -65,7 +62,6 @@
                     Command="{Binding AddNewCommand}"
                     Style="{StaticResource warehouseAddButtonStyle}"/>
             </Border>
-        
 
         </Grid>
     </VerticalStackLayout>

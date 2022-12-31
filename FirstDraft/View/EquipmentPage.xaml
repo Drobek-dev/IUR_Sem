@@ -9,8 +9,8 @@
              xmlns:controls ="clr-namespace:FirstDraft.Controls"
              x:DataType="viewModel:EquipmentPageVM"
              Title="Vybavení">
+    
     <ContentPage.Resources>
-        <support:DateOnlyToString x:Key="dateToString" />
         <support:LocationToBoolConverter x:Key="locationToBool"/>
 
 
@@ -70,6 +70,8 @@
         </Style>
 
 
+        <!--This style should set the bacground color of selected items to LighSkyBlue Color.
+        But for some reason it is not working-->
         <Style x:Key="eqpViewStyle" TargetType="CollectionView">
             <Setter Property="VisualStateManager.VisualStateGroups">
                 <VisualStateGroupList>
@@ -87,6 +89,7 @@
         </Style>
 
     </ContentPage.Resources>
+    
     <VerticalStackLayout>
         <controls:InternetConnectionControl 
                 IsVisible="{Binding InternetAvailable, Converter={StaticResource internetLostConverter} }"/>
@@ -131,6 +134,7 @@
                         Command="{Binding DeleteAllEquipmentCommand}"/>
                 </Border>
 
+                <!-- Selection View Start-->
                 <Border
                     Style="{StaticResource eqpBorderStyle}"
                     HeightRequest="490"
@@ -160,40 +164,46 @@
                             </CollectionView.ItemTemplate>
                         </CollectionView>
                     </Border>
+                <!-- Selection View End-->
+                
+                <!-- Drag And Drop Start-->
+                
+                <!--<Border
+                Style="{StaticResource eqpBorderStyle}"
+                HeightRequest="500"
+                BackgroundColor="Black"
+                Grid.Row="3">
+            <ListView   ItemsSource="{Binding LocalEquipment}">
+                <ListView.ItemTemplate>
+                    <DataTemplate  x:DataType="entities:Equipment">
+                        <ViewCell >
 
-                    <!--<Border
-                    Style="{StaticResource eqpBorderStyle}"
-                    HeightRequest="500"
-                    BackgroundColor="Black"
-                    Grid.Row="3">
-                <ListView   ItemsSource="{Binding LocalEquipment}">
-                    <ListView.ItemTemplate>
-                        <DataTemplate  x:DataType="entities:Equipment">
-                            <ViewCell >
+                            <Frame >
+                                <Border
+                                    Style="{StaticResource eqpBorderStyle}">
+                                    <Grid  ColumnDefinitions="Auto,Auto,Auto,*">
+                                        <Label TextColor="Black" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Grid.Column="0" Text="{Binding Quantity}" Padding="10"/>
+                                        <Label TextColor="Black" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Grid.Column="1" Text="{Binding Name}" Padding="10"/>
 
-                                <Frame >
-                                    <Border
-                                        Style="{StaticResource eqpBorderStyle}">
-                                        <Grid  ColumnDefinitions="Auto,Auto,Auto,*">
-                                            <Label TextColor="Black" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Grid.Column="0" Text="{Binding Quantity}" Padding="10"/>
-                                            <Label TextColor="Black" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Grid.Column="1" Text="{Binding Name}" Padding="10"/>
-
-                                        </Grid>
-                                    </Border>
-                                    <Frame.GestureRecognizers >
-                                        <DragGestureRecognizer 
-                                                DragStartingCommand="{Binding Source={x:RelativeSource AncestorType={x:Type viewModel:EquipmentPageVM}},Path=DraqEquipmentCommand}" 
-                                                DragStartingCommandParameter="{Binding .}"/>
-                                    </Frame.GestureRecognizers>
-                                </Frame>
+                                    </Grid>
+                                </Border>
+                                <Frame.GestureRecognizers >
+                                    <DragGestureRecognizer 
+                                            DragStartingCommand="{Binding Source={x:RelativeSource AncestorType={x:Type viewModel:EquipmentPageVM}},Path=DraqEquipmentCommand}" 
+                                            DragStartingCommandParameter="{Binding .}"/>
+                                </Frame.GestureRecognizers>
+                            </Frame>
 
 
-                            </ViewCell>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-                </Border>-->
-                    <VerticalStackLayout Grid.Row="3" Grid.Column="1" 
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            </Border>-->
+
+                <!-- Drag And Drop End-->
+                
+                <VerticalStackLayout Grid.Row="3" Grid.Column="1" 
                                          >
                         <Border
                             Style="{StaticResource eqpAddButtonBorderStyle}"
@@ -201,7 +211,7 @@
                             WidthRequest="80"
                             HeightRequest="60"
                             StrokeShape="RoundRectangle 10"
-                            Margin="10,10,0,10">
+                            Margin="20,20,0,10">
                             <Border.Background>
                                 <LinearGradientBrush EndPoint="1,0">
                                     <GradientStop Color="{Binding Source={RelativeSource AncestorType={x:Type view:EquipmentPage}},Path=LocationColor}"
@@ -215,6 +225,7 @@
                             Style="{StaticResource eqpAddButtonStyle}"
                             Command="{Binding TransferToPickedEqpCommand}"/>
                         </Border>
+                    
                         <Border 
                             Margin="0,130,0,0"
                             x:Name="addEqpBorder"
@@ -303,6 +314,7 @@
             <Label
                 Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="2" Margin="0,30,0,0"
                 Text="Přemístit vybrané vybavení do kategorie:"/>
+            
             <HorizontalStackLayout
                 x:Name="RadioButtons"
                 Grid.Column="2" Grid.Row="3" 
@@ -326,5 +338,7 @@
             </Border>
 
         </Grid>
+        
     </VerticalStackLayout>
+    
 </ContentPage>

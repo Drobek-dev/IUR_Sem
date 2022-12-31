@@ -5,7 +5,7 @@
              Title="BinPage">
     <VerticalStackLayout>
         <Label 
-            Text="Welcome to .NET MAUI!"
+            Text="Obsah Koše se načítá..."
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
     </VerticalStackLayout>

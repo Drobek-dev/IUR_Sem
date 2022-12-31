@@ -9,20 +9,15 @@
              x:DataType="viewModel:AddEquipmentPageVM"
              Title="AddEquipmentPage">
 
-
-
-
     <VerticalStackLayout Margin="0,50,0,0">
-
 
         <controls:InternetConnectionControl 
             IsVisible="{Binding InternetAvailable, Converter={StaticResource internetLostConverter} }"/>
 
-
         <VerticalStackLayout IsVisible="{Binding InternetAvailable}">
                 <Border 
                     x:Name="eqpNameBorder"
-                    Style="{StaticResource baseCreateBorderStyle}"
+                    Style="{StaticResource baseBorderStyle}"
                     MinimumWidthRequest="400">
             
                     <HorizontalStackLayout>
@@ -32,7 +27,7 @@
                                 Style="{StaticResource warehouseLabelStyle}"    
                                 />
                         <Entry Text="{Binding NewEquipmentName}" 
-                                Style="{StaticResource baseCreateEntryStyle}"/>
+                                Style="{StaticResource baseEntryStyle}"/>
                     </HorizontalStackLayout>
                 </Border>
 
@@ -49,15 +44,14 @@
                                 Style="{StaticResource warehouseLabelStyle}"    
                                 />
                         <Entry Text="{Binding NewEquipmentQuantity}" 
-                                Style="{StaticResource baseCreateEntryStyle}"/>
+                                Style="{StaticResource baseEntryStyle}"/>
                     </HorizontalStackLayout>
                 </Border>
 
                 <Border
-                    x:Name="eqpDateBorder"
-           
-                            Style="{StaticResource warehouseBorderStyle}"
-                        MinimumWidthRequest="400">
+                    x:Name="eqpDateBorder"         
+                    Style="{StaticResource warehouseBorderStyle}"
+                    MinimumWidthRequest="400">
 
                     <HorizontalStackLayout>
                         <Label 
@@ -66,22 +60,20 @@
                                 Style="{StaticResource warehouseLabelStyle}"    
                                 />
                         <Entry Text="{Binding NewDateOfPurchase, Converter={StaticResource dateToString}}"  
-                                Style="{StaticResource baseCreateEntryStyle}"/>
+                                Style="{StaticResource baseEntryStyle}"/>
                     </HorizontalStackLayout>
                 </Border>
 
                 <Border 
                     x:Name="addEqpButtonBorder"
                     Margin="0,50,0,0"
-          
-                                Style="{StaticResource warehouseButtonBorderStyle}">
+                    Style="{StaticResource warehouseButtonBorderStyle}">
                     <Button Text="+"
                             Command="{Binding AddNewEquipmentCommand}"
                             Style="{StaticResource warehouseAddButtonStyle}"/>
                 </Border>
         </VerticalStackLayout>
+        
     </VerticalStackLayout>
-
-
 
 </ContentPage>

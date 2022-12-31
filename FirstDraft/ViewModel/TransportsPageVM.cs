@@ -42,7 +42,6 @@ public partial class TransportsPageVM : BaseVM
     [ObservableProperty]
     ObservableCollection<Transport> _searchResults;
 
-   
     public TransportsPageVM()
     {
         Init();
@@ -108,7 +107,7 @@ public partial class TransportsPageVM : BaseVM
            
         }
 
-        bool CanExecuteAdd()
+    bool CanExecuteAdd()
         {
 
             if (_task is not null && _task.Status == TaskStatus.Running)

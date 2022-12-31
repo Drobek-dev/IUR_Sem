@@ -9,8 +9,6 @@
              x:DataType="viewModel:TransportsPageVM"
              Title="Přidání nového transportu">
 
-      
-
         <VerticalStackLayout>
 
         <controls:InternetConnectionControl 
@@ -45,7 +43,7 @@
                                 Style="{StaticResource transportLabelStyle}"/>
 
                         <Entry Text="{Binding NewTransportName}" 
-                                Style="{StaticResource baseCreateEntryStyle}"/>
+                                Style="{StaticResource baseEntryStyle}"/>
                     </HorizontalStackLayout>
                 </Border>
 
@@ -55,57 +53,58 @@
                         <Label Text="Počáteční lokace: "
                            Style="{StaticResource transportLabelStyle}"/>
                         <Entry Text="{Binding NewTransportStartingPosition}"
-                                Style="{StaticResource baseCreateEntryStyle}"/>
+                                Style="{StaticResource baseEntryStyle}"/>
                     </HorizontalStackLayout>
                 </Border>
 
-            <Border Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
+                <Border Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
                         Style="{StaticResource transportBorderStyle}">
                     <HorizontalStackLayout>
                         <Label Text="Destinace: " 
                            Style="{StaticResource transportLabelStyle}"/>
                         <Entry Text="{Binding NewTransportDestination}" 
-                                Style="{StaticResource baseCreateEntryStyle}"/>
+                                Style="{StaticResource baseEntryStyle}"/>
                     </HorizontalStackLayout>
                 </Border>
 
-            <Border Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"
+                <Border Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"
                         Style="{StaticResource transportBorderStyle}">
                     <HorizontalStackLayout>
                     <Label Text="Čas příjezdu: "
                            Style="{StaticResource transportLabelStyle}"/>
                         <Entry Text="{Binding NewTransportEstimatedArrivalTime, Converter={StaticResource dateTimeToString}}"
-                                Style="{StaticResource baseCreateEntryStyle}"/>
+                                Style="{StaticResource baseEntryStyle}"/>
                     </HorizontalStackLayout>
                 </Border>
 
-            <Border Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2"
+                <Border Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2"
                         Style="{StaticResource transportBorderStyle}">
                 <HorizontalStackLayout>
                     <Label Text="Celé jméno řidiče: "
                            Style="{StaticResource transportLabelStyle}"/>
                     <Entry Text="{Binding NewTransportDriverFullName}"
-                                Style="{StaticResource baseCreateEntryStyle}"/>
+                                Style="{StaticResource baseEntryStyle}"/>
                 </HorizontalStackLayout>
             </Border>
 
-            <Border Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2"
+                <Border Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2"
                         Style="{StaticResource transportBorderStyle}">
                 <HorizontalStackLayout>
                     <Label Text="Telefon na řidiče: "
                            Style="{StaticResource transportLabelStyle}"/>
                     <Entry Text="{Binding NewTransportDriverPhone}"
-                                Style="{StaticResource baseCreateEntryStyle}"/>
+                                Style="{StaticResource baseEntryStyle}"/>
                 </HorizontalStackLayout>
             </Border>
 
-            <Border Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2"
+                <Border Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2"
                         Style="{StaticResource transportButtonBorderStyle}">
                     <Button Text="+"
                     Command="{Binding AddNewCommand}"
                     Style="{StaticResource transportAddButtonStyle}"/>
                 </Border>
             </Grid>
+            
         </VerticalStackLayout>
   
 </ContentPage>

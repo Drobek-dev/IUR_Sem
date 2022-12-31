@@ -45,6 +45,7 @@
                 </CollectionView.ItemTemplate>
             </CollectionView>
         </Grid>
+        
         <Border
             IsVisible="{Binding InternetAvailable}"
             Style="{StaticResource transportButtonBorderStyle}">

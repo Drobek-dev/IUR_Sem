@@ -90,7 +90,7 @@ public partial class WarehousesPageVM : BaseVM
             }
         }
 
-       bool CanExecute()
+    bool CanExecute()
         {
 
             if (_taskWarehouse is not null && _taskWarehouse.Status == TaskStatus.Running)

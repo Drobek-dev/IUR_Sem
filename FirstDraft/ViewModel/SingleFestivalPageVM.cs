@@ -36,6 +36,8 @@ public partial class SingleFestivalPageVM : BaseVM
             .Include(f=> f.LocalEquipmentRelation)
             .Include(f=> f.FestivalsExtWorkersRelations)
             .ThenInclude(few=> few.ExternalWorker)
+            .Include(f=> f.Construction)
+            .Include(f=> f.Deconstruction)
             .Where(W => W.ID.Equals(Festival.ID))
             .FirstOrDefaultAsync();
 
@@ -64,32 +66,39 @@ public partial class SingleFestivalPageVM : BaseVM
 
         await PerformContextSave(c);
 
-        if(_operationSucceeded)
+        if (_operationSucceeded)
+        {
             await Refresh();
+            await DisplayNotification("Změny uloženy.");
+
+        }
         
     }
 
     [RelayCommand]
     async Task DeleteFestival()
     {
-        if (await YesNoAlert($"Proceed to delete {Festival.Name} festival?"))
+        if (!await YesNoAlert($"Smazat festival {Festival.Name}?{Environment.NewLine}" +
+            $"{Festival.FestivalsExtWorkersRelations?.Count ?? 0} externich pracovníků bude odstraněno.{Environment.NewLine}" +
+            $"{Festival.LocalEquipmentRelation?.Count ?? 0} kusů vybavení bude odstraněno."))
+            return;
+        
+        using MyDBContext c = GetMyDBContextInstance();
+
+        if (c is null)
+            return;
+
+        foreach (var ew in Festival.FestivalsExtWorkersRelations)
         {
-            using MyDBContext c = GetMyDBContextInstance();
-
-            if (c is null)
-                return;
-
-            foreach (var ew in Festival.FestivalsExtWorkersRelations)
+            c.ExternalWorkers.Remove(ew.ExternalWorker);
+        }
+        foreach(var ler in Festival.LocalEquipmentRelation)
             {
-                c.ExternalWorkers.Remove(ew.ExternalWorker);
-            }
-            foreach(var ler in Festival.LocalEquipmentRelation)
-             {
-                c.Equipment.Remove(await c.Equipment.FindAsync(ler.IDEquipment));
-            }
+            c.Equipment.Remove(await c.Equipment.FindAsync(ler.IDEquipment));
+        }
 
-            try
-            {
+        try
+        {
             var q=await c.Constructions.ToListAsync();    
             Construction con = await c.Constructions.FindAsync(Festival.IDConstruction);
             c.Constructions.Remove(con);
@@ -98,14 +107,17 @@ public partial class SingleFestivalPageVM : BaseVM
             c.Festivals.Remove(await c.Festivals.FindAsync(Festival.ID));
 
             await PerformContextSave(c);
-            await Shell.Current.GoToAsync("..");
 
-            }
-            catch(Exception ex)
-            {
-                await DisplayNotification(ex);
-            }
+            if(_operationSucceeded)
+                await Shell.Current.GoToAsync("..");
+
+
         }
+        catch(Exception ex)
+        {
+            await DisplayNotification(ex);
+        }
+        
     }
 
     [RelayCommand]

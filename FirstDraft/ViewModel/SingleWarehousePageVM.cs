@@ -51,7 +51,10 @@ public partial class SingleWarehousePageVM : BaseVM
         await PerformContextSave(c);
 
         if (_operationSucceeded)
+        {
             await Refresh();
+            await DisplayNotification("Změny uloženy.");
+        }
 
     }
 
@@ -59,7 +62,8 @@ public partial class SingleWarehousePageVM : BaseVM
     async Task Delete()
     {
 
-        if (!await YesNoAlert($"Proceed to delete {Warehouse.Name} festival?"))
+        if (!await YesNoAlert($"Smazat sklad {Warehouse.Name}?{Environment.NewLine}" +
+            $"{Warehouse.LocalEquipmentRelations?.Count ?? 0} vybavení bode odstraněno."))
             return;
 
         using MyDBContext c = GetMyDBContextInstance();
@@ -73,8 +77,11 @@ public partial class SingleWarehousePageVM : BaseVM
             c.Equipment.Remove(e);
         }
         c.Warehouses.Remove(_warehouse);
+
         await PerformContextSave(c);
-        await Shell.Current.GoToAsync("..");
+
+        if(_operationSucceeded)
+            await Shell.Current.GoToAsync("..");
     }
 
     [RelayCommand]

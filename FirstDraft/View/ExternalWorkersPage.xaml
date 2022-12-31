@@ -8,6 +8,13 @@
              x:DataType="viewModel:ExternalWorkersVM"
              Title="Externí pracovníci">
 
+    <ContentPage.Resources>
+        <Style x:Key="localLabelStyle" TargetType="Label">
+            <Setter Property="TextColor" Value="{StaticResource textColor}"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="FontAttributes" Value="Bold"/>
+        </Style>
+    </ContentPage.Resources>
     <VerticalStackLayout>
         
         <HorizontalStackLayout HorizontalOptions="Center" >
@@ -20,13 +27,13 @@
                                MinimumWidthRequest="100"
                            Style="{StaticResource festivalLabelStyle}"/>
                         <Entry Text="{Binding FirstName}"
-                           Style="{StaticResource baseCreateEntryStyle}"/>
+                           Style="{StaticResource baseEntryStyle}"/>
 
                         <Label Text="Last name: "
                                MinimumWidthRequest="100"
                                Style="{StaticResource festivalLabelStyle}"/>
                     <Entry Text="{Binding LastName}"
-                           Style="{StaticResource baseCreateEntryStyle}"/>
+                           Style="{StaticResource baseEntryStyle}"/>
                 </HorizontalStackLayout>
                 </Border>
                 <Border
@@ -37,13 +44,13 @@
                            MinimumWidthRequest="133"
                            Style="{StaticResource festivalLabelStyle}"/>
                     <Entry Text="{Binding Function}"
-                           Style="{StaticResource baseCreateEntryStyle}"/>
+                           Style="{StaticResource baseEntryStyle}"/>
 
                     <Label Text="Phone: "
                            MinimumWidthRequest="129"
                            Style="{StaticResource festivalLabelStyle}"/>
                     <Entry Text="{Binding PhoneNumber}"
-                           Style="{StaticResource baseCreateEntryStyle}"/>
+                           Style="{StaticResource baseEntryStyle}"/>
                 </HorizontalStackLayout>
                 </Border>
               <HorizontalStackLayout>
@@ -59,7 +66,7 @@
                                Style="{StaticResource festivalLabelStyle}"/>
                         <Entry Text="{Binding Email}"
                            
-                               Style="{StaticResource baseCreateEntryStyle}"/>
+                               Style="{StaticResource baseEntryStyle}"/>
                         
                     </HorizontalStackLayout>
                 </Border>
@@ -83,8 +90,8 @@
                 Margin="0,20,0,0"
                 StrokeShape="RoundRectangle 10">
             <ListView x:Name="ExternalWorkersView" Grid.Row="1"
-                  ItemsSource="{Binding ExternalWorkers}"
-                  >
+                  ItemsSource="{Binding ExternalWorkers}">
+                
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="entities:FestivalsExtWorkersRelations"  >
                     <ViewCell >
@@ -113,7 +120,7 @@
 
                                 </Grid.ColumnDefinitions>
 
-                                    <Label Grid.Column="1" Grid.Row="1" Text="Name: " Padding="10" TextColor="{StaticResource textColor}" FontAttributes="Bold"/>
+                                    <Label Grid.Column="1" Grid.Row="1" Text="Name: " Style="{StaticResource localLabelStyle}"/>
                                 <Entry Grid.Column="2" Grid.Row="1"
                                        Text="{Binding ExternalWorker.FirstName}"
                                         TextColor="{StaticResource textColor}"
@@ -127,21 +134,21 @@
                                        />
 
 
-                                    <Label Grid.Column="1" Grid.Row="2" Text="Function: " Padding="10"  TextColor="{StaticResource textColor}" FontAttributes="Bold"/>
+                                    <Label Grid.Column="1" Grid.Row="2" Text="Function: " Style="{StaticResource localLabelStyle}"/>
                                 <Entry Grid.Column="2" Grid.Row="2"
                                        Text="{Binding ExternalWorker.Function}"
                                         TextColor="{StaticResource textColor}"
                                        
                                        />
 
-                                    <Label Grid.Column="1" Grid.Row="3" Text="Phone number: " Padding="10"  TextColor="{StaticResource textColor}" FontAttributes="Bold"/>
+                                    <Label Grid.Column="1" Grid.Row="3" Text="Phone number: " Style="{StaticResource localLabelStyle}"/>
                                 <Entry Grid.Column="2" Grid.Row="3"
                                        Text="{Binding ExternalWorker.PhoneNumber}"
                                         TextColor="{StaticResource textColor}"
                                        
                                        />
 
-                                    <Label Grid.Column="1" Grid.Row="4" Text="Name" Padding="10"  TextColor="{StaticResource textColor}" FontAttributes="Bold"/>
+                                    <Label Grid.Column="1" Grid.Row="4" Text="Name" Style="{StaticResource localLabelStyle}"/>
                                 <Entry Grid.Column="2" Grid.Row="4"
                                         TextColor="{StaticResource textColor}"
                                        Text="{Binding ExternalWorker.Email}"

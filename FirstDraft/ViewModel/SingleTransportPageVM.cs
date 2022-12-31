@@ -50,13 +50,17 @@ public partial class SingleTransportPageVM : BaseVM
         await PerformContextSave(c);
 
         if (_operationSucceeded)
+        {
             await Refresh();
+            await DisplayNotification("Změny uloženy.");
+        }
     }
 
     [RelayCommand]
     async Task Delete()
     {
-        if (!await YesNoAlert($"Proceed to delete {Transport.TransportName} festival?"))
+        if (!await YesNoAlert($"Smazat transport {Transport.TransportName}?{Environment.NewLine}" +
+            $"{Transport.LocalEquipmentRelations?.Count ?? 0} vybavení bude odstraněno."))
             return;
        
             using MyDBContext c = GetMyDBContextInstance();
@@ -69,8 +73,11 @@ public partial class SingleTransportPageVM : BaseVM
             c.Equipment.Remove(await c.Equipment.FindAsync(ler.IDEquipment));
         }
         c.Transports.Remove(Transport);
+
         await PerformContextSave(c);
-        await Shell.Current.GoToAsync("..");
+
+        if(_operationSucceeded)
+            await Shell.Current.GoToAsync("..");
     }
 
     [RelayCommand]

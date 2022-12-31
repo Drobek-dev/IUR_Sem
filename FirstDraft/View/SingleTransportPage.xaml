@@ -15,6 +15,7 @@
 
         <controls:InternetConnectionControl 
             IsVisible="{Binding InternetAvailable, Converter={StaticResource internetLostConverter} }"/>
+       
         <VerticalStackLayout
             IsVisible="{Binding InternetAvailable}">
 
@@ -25,7 +26,7 @@
                                 Style="{StaticResource transportLabelStyle}"/>
 
                         <Entry Text="{Binding Transport.TransportName}" 
-                                Style="{StaticResource baseCreateEntryStyle}"/>
+                                Style="{StaticResource baseEntryStyle}"/>
                     </HorizontalStackLayout>
             </Border>
 
@@ -35,7 +36,7 @@
                     <Label Text="Počáteční lokace: "
                         Style="{StaticResource transportLabelStyle}"/>
                     <Entry Text="{Binding Transport.StartingPosition}"
-                            Style="{StaticResource baseCreateEntryStyle}"/>
+                            Style="{StaticResource baseEntryStyle}"/>
                 </HorizontalStackLayout>
             </Border>
 
@@ -45,7 +46,7 @@
                     <Label Text="Destinace: " 
                         Style="{StaticResource transportLabelStyle}"/>
                     <Entry Text="{Binding Transport.Destination}" 
-                            Style="{StaticResource baseCreateEntryStyle}"/>
+                            Style="{StaticResource baseEntryStyle}"/>
                 </HorizontalStackLayout>
             </Border>
 
@@ -55,7 +56,7 @@
                     <Label Text="Čas příjezdu: "
                         Style="{StaticResource transportLabelStyle}"/>
                     <Entry Text="{Binding Transport.EstimatedArrivalTime, Converter={StaticResource dateTimeToString}}"
-                            Style="{StaticResource baseCreateEntryStyle}"/>
+                            Style="{StaticResource baseEntryStyle}"/>
                 </HorizontalStackLayout>
             </Border>
 
@@ -65,7 +66,7 @@
                     <Label Text="Celé jméno řidiče: "
                         Style="{StaticResource transportLabelStyle}"/>
                     <Entry Text="{Binding Transport.DriverFullName}"
-                            Style="{StaticResource baseCreateEntryStyle}"/>
+                            Style="{StaticResource baseEntryStyle}"/>
                 </HorizontalStackLayout>
             </Border>
 
@@ -75,7 +76,7 @@
                     <Label Text="Telefon na řidiče: "
                         Style="{StaticResource transportLabelStyle}"/>
                     <Entry Text="{Binding Transport.DriverPhone}"
-                            Style="{StaticResource baseCreateEntryStyle}"/>
+                            Style="{StaticResource baseEntryStyle}"/>
                 </HorizontalStackLayout>
             </Border>
 
@@ -100,6 +101,7 @@
             </HorizontalStackLayout>
        
         </VerticalStackLayout>
+       
     </VerticalStackLayout>
 
 </ContentPage>

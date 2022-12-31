@@ -12,90 +12,89 @@
     <ContentPage.Resources>
         <support:DateOnlyToString x:Key="dateToString"/>
     </ContentPage.Resources>
- 
+
     <VerticalStackLayout  Margin="0,50,0,0">
         <controls:InternetConnectionControl 
             IsVisible="{Binding InternetAvailable, Converter={StaticResource internetLostConverter} }"/>
 
-            <VerticalStackLayout
+        <VerticalStackLayout
                 IsVisible="{Binding InternetAvailable}">
-                <Border 
+            <Border 
                         Style="{StaticResource festivalBorderStyle}">
-                    <HorizontalStackLayout>
-                        <Label Text="Název festivalu: "
+                <HorizontalStackLayout>
+                    <Label Text="Název festivalu: "
                                 Style="{StaticResource festivalLabelStyle}"/>
 
-                        <Entry Text="{Binding Festival.Name}" 
-                                Style="{StaticResource baseCreateEntryStyle}"
+                    <Entry Text="{Binding Festival.Name}" 
+                                Style="{StaticResource baseEntryStyle}"
                                />
-                    </HorizontalStackLayout>
-                </Border>
+                </HorizontalStackLayout>
+            </Border>
 
-                <Border
+            <Border
                         Style="{StaticResource festivalBorderStyle}">
-                    <HorizontalStackLayout>
-                        <Label Text="Začátek festivalu: "
+                <HorizontalStackLayout>
+                    <Label Text="Začátek festivalu: "
                            Style="{StaticResource festivalLabelStyle}"/>
-                        <Entry Text="{Binding Festival.StartDate, Converter={StaticResource dateToString}}"
-                                Style="{StaticResource baseCreateEntryStyle}"/>
-                    </HorizontalStackLayout>
-                </Border>
+                    <Entry Text="{Binding Festival.StartDate, Converter={StaticResource dateToString}}"
+                                Style="{StaticResource baseEntryStyle}"/>
+                </HorizontalStackLayout>
+            </Border>
 
-                <Border 
+            <Border 
                         Style="{StaticResource festivalBorderStyle}">
-                    <HorizontalStackLayout>
-                        <Label Text="Konec festivalu:" 
+                <HorizontalStackLayout>
+                    <Label Text="Konec festivalu:" 
                            Style="{StaticResource festivalLabelStyle}"/>
-                        <Entry Text="{Binding Festival.EndDate, Converter={StaticResource dateToString}}" 
-                                Style="{StaticResource baseCreateEntryStyle}"/>
-                    </HorizontalStackLayout>
-                </Border>
+                    <Entry Text="{Binding Festival.EndDate, Converter={StaticResource dateToString}}" 
+                                Style="{StaticResource baseEntryStyle}"/>
+                </HorizontalStackLayout>
+            </Border>
 
-                <Border
+            <Border
                         Style="{StaticResource festivalBorderStyle}">
-                    <HorizontalStackLayout>
-                        <Label Text="Lokace: "
+                <HorizontalStackLayout>
+                    <Label Text="Lokace: "
                            Style="{StaticResource festivalLabelStyle}"/>
-                        <Entry Text="{Binding Festival.Location}"
-                                Style="{StaticResource baseCreateEntryStyle}"/>
-                    </HorizontalStackLayout>
-                </Border>
+                    <Entry Text="{Binding Festival.Location}"
+                                Style="{StaticResource baseEntryStyle}"/>
+                </HorizontalStackLayout>
+            </Border>
 
-                <Border 
+            <Border 
                     Margin="0,50,0,0"
                     WidthRequest="600"
                         Style="{StaticResource festivalBorderStyle}">
-                    <HorizontalStackLayout>
-                        <Label Text="Stavba od: "
+                <HorizontalStackLayout>
+                    <Label Text="Stavba od: "
                            Style="{StaticResource festivalLabelStyle}"/>
-                        <Entry Text="{Binding Festival.Construction.StartDate, Converter={StaticResource dateToString}}"
-                                Style="{StaticResource baseCreateEntryStyle}"/>
-                        <Label Text="do: "
+                    <Entry Text="{Binding Festival.Construction.StartDate, Converter={StaticResource dateToString}}"
+                                Style="{StaticResource baseEntryStyle}"/>
+                    <Label Text="do: "
                                MinimumWidthRequest="50"
                            Style="{StaticResource festivalLabelStyle}"/>
-                        <Entry Text="{Binding Festival.Construction.EndDate, Converter={StaticResource dateToString}}"
-                                Style="{StaticResource baseCreateEntryStyle}"/>
-                    </HorizontalStackLayout>
-                </Border>
+                    <Entry Text="{Binding Festival.Construction.EndDate, Converter={StaticResource dateToString}}"
+                                Style="{StaticResource baseEntryStyle}"/>
+                </HorizontalStackLayout>
+            </Border>
 
-                <Border WidthRequest="600"
+            <Border WidthRequest="600"
                         Style="{StaticResource festivalBorderStyle}">
-                    <HorizontalStackLayout>
-                        <Label Text="Bourání od: "
+                <HorizontalStackLayout>
+                    <Label Text="Bourání od: "
                            Style="{StaticResource festivalLabelStyle}"/>
-                        <Entry Text="{Binding Festival.Deconstruction.StartDate, Converter={StaticResource dateToString}}"
-                                Style="{StaticResource baseCreateEntryStyle}"/>
-                        <Label Text="do: "
+                    <Entry Text="{Binding Festival.Deconstruction.StartDate, Converter={StaticResource dateToString}}"
+                                Style="{StaticResource baseEntryStyle}"/>
+                    <Label Text="do: "
                                MinimumWidthRequest="50"
                            Style="{StaticResource festivalLabelStyle}"/>
-                        <Entry Text="{Binding Festival.Deconstruction.EndDate, Converter={StaticResource dateToString}}"
-                                Style="{StaticResource baseCreateEntryStyle}"/>
-                    </HorizontalStackLayout>
-                </Border>
-                </VerticalStackLayout>
-         
+                    <Entry Text="{Binding Festival.Deconstruction.EndDate, Converter={StaticResource dateToString}}"
+                                Style="{StaticResource baseEntryStyle}"/>
+                </HorizontalStackLayout>
+            </Border>
+        </VerticalStackLayout>
 
-            <HorizontalStackLayout 
+        <HorizontalStackLayout 
                 IsVisible="{Binding InternetAvailable}"
                 HorizontalOptions="Center"
                 Margin="0,100,0,0">

@@ -17,10 +17,10 @@
             IsVisible="{Binding InternetAvailable, Converter={StaticResource internetLostConverter} }"/>
 
         <Grid
-        HorizontalOptions="Center"
-        Grid.Column="1" Grid.Row="1"
-              Grid.RowSpan="3"
-              IsVisible="{Binding InternetAvailable}">
+            HorizontalOptions="Center"
+            Grid.Column="1" Grid.Row="1"
+            Grid.RowSpan="3"
+            IsVisible="{Binding InternetAvailable}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
@@ -42,7 +42,7 @@
                                 Style="{StaticResource festivalLabelStyle}"/>
 
                 <Entry Text="{Binding NewFestivalName}" 
-                                Style="{StaticResource baseCreateEntryStyle}"/>
+                                Style="{StaticResource baseEntryStyle}"/>
             </HorizontalStackLayout>
         </Border>
 
@@ -52,7 +52,7 @@
                 <Label Text="Začátek festivalu: "
                            Style="{StaticResource festivalLabelStyle}"/>
                 <Entry Text="{Binding NewStartDate, Converter={StaticResource dateToString}}"
-                                Style="{StaticResource baseCreateEntryStyle}"/>
+                                Style="{StaticResource baseEntryStyle}"/>
             </HorizontalStackLayout>
         </Border>
 
@@ -62,7 +62,7 @@
                 <Label Text="Konec festivalu:" 
                            Style="{StaticResource festivalLabelStyle}"/>
                 <Entry Text="{Binding NewEndDate, Converter={StaticResource dateToString}}" 
-                                Style="{StaticResource baseCreateEntryStyle}"/>
+                                Style="{StaticResource baseEntryStyle}"/>
             </HorizontalStackLayout>
         </Border>
 
@@ -72,7 +72,7 @@
                 <Label Text="Lokace: "
                            Style="{StaticResource festivalLabelStyle}"/>
                 <Entry Text="{Binding Location}"
-                                Style="{StaticResource baseCreateEntryStyle}"/>
+                                Style="{StaticResource baseEntryStyle}"/>
             </HorizontalStackLayout>
         </Border>
 
@@ -82,6 +82,7 @@
                     Command="{Binding AddNewCommand}"
                     Style="{StaticResource festivalAddButtonStyle}"/>
         </Border>
+            
     </Grid>
     </VerticalStackLayout>
 </ContentPage>
