@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace FirstDraft.ViewModel;
 
 [QueryProperty(nameof(Transport), nameof(Transport))]
@@ -19,6 +20,9 @@ public partial class SingleTransportPageVM : BaseVM
     [ObservableProperty]
     Transport _transport;
 
+    [ObservableProperty]
+    string _title;
+
     public async Task Refresh()
     {
         using MyDBContext c = GetMyDBContextInstance();
@@ -26,8 +30,10 @@ public partial class SingleTransportPageVM : BaseVM
         if (c is null)
             return;
 
-        Transport = await c.Transports.Include(w => w.LocalEquipmentRelations).Where(W => W.ID.Equals(Transport.ID)).FirstOrDefaultAsync();
-
+        Transport = await c.Transports
+            .Include(w => w.LocalEquipmentRelations)
+            .Where(W => W.ID.Equals(Transport.ID)).FirstOrDefaultAsync();
+        Title = Transport is not null ? $"Transport {Transport.TransportName}" : Title;
 
     }
 
@@ -43,7 +49,8 @@ public partial class SingleTransportPageVM : BaseVM
 
         await PerformContextSave(c);
 
-
+        if (_operationSucceeded)
+            await Refresh();
     }
 
     [RelayCommand]

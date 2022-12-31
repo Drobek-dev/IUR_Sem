@@ -7,7 +7,7 @@
              xmlns:support="clr-namespace:FirstDraft.Support"
              xmlns:controls="clr-namespace:FirstDraft.Controls"
              x:DataType="viewModel:SingleTransportPageVM"
-             Title="SingleTransportPage">
+             Title="{Binding Title}">
 
 
 

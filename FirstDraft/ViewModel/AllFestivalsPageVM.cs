@@ -65,12 +65,10 @@ public partial class AllFestivalsPageVM : BaseVM, INotifyPropertyChanged
 
         if (c is null)
             return;
-
+        
         ActiveFestivals = new(c.Festivals.OrderByDescending(f => f.ID)
-            .Include(f => f.Construction)
-           
-            .Include(f => f.Deconstruction)
-            
+            .Include(f => f.Construction)         
+            .Include(f => f.Deconstruction)           
             .Include(f => f.FestivalsExtWorkersRelations)
             .ThenInclude(few => few.ExternalWorker)
             .AsNoTracking());

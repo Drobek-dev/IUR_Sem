@@ -28,7 +28,7 @@ public partial class TransferPage : ContentPage
        
     }
 
-    protected override void OnNavigatedTo(NavigatedToEventArgs args)
+    async protected override void OnNavigatedTo(NavigatedToEventArgs args)
     {
         base.OnNavigatedTo(args);
         if (App.Current.Resources.TryGetValue($"{vm.NewLocation}ButtonBorderStyle", out object buttonBorderStyle))
@@ -43,6 +43,8 @@ public partial class TransferPage : ContentPage
 
         Title = vm?.NewLocation is not null ? $"Přemístit do {GetLocInCzech()}" : Title;
         Title = vm?.NewLocation?.Equals(LocationTypes.bin) ?? false ? $"Premistit do Koše" : Title;
+
+        
     }
     string GetLocInCzech()
 {

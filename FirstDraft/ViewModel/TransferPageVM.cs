@@ -171,29 +171,7 @@ public partial class TransferPageVM : BaseVM
         }
     }
 
-    async Task RedirectToParentShellPage()
-    {
-        if (OriginalLocation.Equals(LocationTypes.festival))
-        {
-            await Shell.Current.GoToAsync(nameof(AllFestivalsPage));
-
-        }
-        else if (OriginalLocation.Equals(LocationTypes.warehouse))
-        {
-            await Shell.Current.GoToAsync(nameof(WarehousesPage));
-        }
-        else if (OriginalLocation.Equals(LocationTypes.transport))
-        {
-            await Shell.Current.GoToAsync("..");
-        }
-        else if (OriginalLocation.Equals(LocationTypes.bin))
-        {
-            await Shell.Current.GoToAsync(nameof(EquipmentPage), new Dictionary<string, object>
-            {
-                ["Location"] = Support.LocationTypes.bin
-            });
-        }
-    }
+   
     [RelayCommand]
     async Task TransferEquipment(Guid IDTarget)
     {
@@ -221,6 +199,6 @@ public partial class TransferPageVM : BaseVM
 
         await PerformContextSave(c);
         
-        await RedirectToParentShellPage();
+        await Shell.Current.GoToAsync("..");
     }
 }

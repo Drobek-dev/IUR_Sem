@@ -19,7 +19,7 @@ public partial class SingleWarehousePage : ContentPage
     async protected override void OnNavigatedTo(NavigatedToEventArgs args)
     {
         base.OnNavigatedTo(args);
-        Title = vm.Warehouse is not null ? $"Sklad {vm.Warehouse.Name}" : Title;
+        
         
         await vm.Refresh();
         

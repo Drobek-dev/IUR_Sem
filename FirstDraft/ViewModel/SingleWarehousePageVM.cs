@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
+
 namespace FirstDraft.ViewModel;
 
 [QueryProperty(nameof(Warehouse), nameof(Warehouse))]
@@ -20,6 +21,9 @@ public partial class SingleWarehousePageVM : BaseVM
     [ObservableProperty]
     Warehouse _warehouse;
 
+    [ObservableProperty]
+    string _title;
+
     public async Task Refresh()
     {
         using MyDBContext c = GetMyDBContextInstance();
@@ -27,9 +31,12 @@ public partial class SingleWarehousePageVM : BaseVM
         if (c is null)
             return;
 
-        Warehouse = await c.Warehouses.Include(w=> w.LocalEquipmentRelations).Where(W=> W.ID.Equals(Warehouse.ID)).FirstOrDefaultAsync();
-       
-        
+        Warehouse = await c.Warehouses
+            .Include(w=> w.LocalEquipmentRelations)
+            .Where(W=> W.ID.Equals(Warehouse.ID))
+            .FirstOrDefaultAsync();
+
+        Title = Warehouse is not null ? $"Sklad {Warehouse.Name}" : Title;
     }
 
     [RelayCommand]
@@ -42,6 +49,9 @@ public partial class SingleWarehousePageVM : BaseVM
 
         c.Warehouses.Update(_warehouse);
         await PerformContextSave(c);
+
+        if (_operationSucceeded)
+            await Refresh();
 
     }
 

@@ -149,13 +149,13 @@
                                        />
 
                                 <Button Text="Uložit"
-                                        Grid.Row="2" Grid.Column="5"
-                                        HorizontalOptions="EndAndExpand"
+                                        Grid.Row="2" Grid.Column="4"
+                                        HorizontalOptions="End"
                                         TextColor="{StaticResource textColor}"
                                         Command="{Binding Source={RelativeSource AncestorType={x:Type viewModel:ExternalWorkersVM}},Path=UpdateWorkerCommand}"
                                         CommandParameter="{Binding ExternalWorker}"/>
                                 <Button Text="Smazat"
-                                        Grid.Row="3" Grid.Column="5"
+                                        Grid.Row="3" Grid.Column="4"
                                         HorizontalOptions="End"
                                         TextColor="{StaticResource textColor}"
                                         Command="{Binding Source={RelativeSource AncestorType={x:Type viewModel:ExternalWorkersVM}},Path=DeleteWorkerCommand}"

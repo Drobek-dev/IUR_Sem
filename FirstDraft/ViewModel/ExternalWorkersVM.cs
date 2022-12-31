@@ -60,10 +60,11 @@ public partial class ExternalWorkersVM : BaseVM
     async Task DeleteWorker(ExternalWorker ew)
     {
         using MyDBContext c = new(Support.TypeOfDatabase.CloudPostgreSQL);
-        ExternalWorkers.Remove(ExternalWorkers.Where(few => few.IDExternalWorker == ew.ID).First());
         c.ExternalWorkers.Remove(ew);
        
         await PerformContextSave(c);
+        if(_operationSucceeded)
+            ExternalWorkers.Remove(ExternalWorkers.Where(few => few.IDExternalWorker == ew.ID).First());
 
     }
 }

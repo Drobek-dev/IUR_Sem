@@ -22,6 +22,9 @@ public partial class SingleFestivalPageVM : BaseVM
     [ObservableProperty]
     Festival _festival;
 
+    [ObservableProperty]
+    string _title;
+
     public async Task Refresh()
     {
         using MyDBContext c = GetMyDBContextInstance();
@@ -29,9 +32,14 @@ public partial class SingleFestivalPageVM : BaseVM
         if (c is null)
             return;
 
-        Festival = await c.Festivals.Include(f=> f.LocalEquipmentRelation).Where(W => W.ID.Equals(Festival.ID)).FirstOrDefaultAsync();
+        Festival = await c.Festivals
+            .Include(f=> f.LocalEquipmentRelation)
+            .Include(f=> f.FestivalsExtWorkersRelations)
+            .ThenInclude(few=> few.ExternalWorker)
+            .Where(W => W.ID.Equals(Festival.ID))
+            .FirstOrDefaultAsync();
 
-
+        Title = Festival is not null ? $"Festival {Festival.Name}" : Title;
     }
 
     [RelayCommand]
@@ -55,6 +63,9 @@ public partial class SingleFestivalPageVM : BaseVM
         c.Festivals.Update(_festival);
 
         await PerformContextSave(c);
+
+        if(_operationSucceeded)
+            await Refresh();
         
     }
 
@@ -79,7 +90,7 @@ public partial class SingleFestivalPageVM : BaseVM
 
             try
             {
-                var q=await c.Constructions.ToListAsync();    
+            var q=await c.Constructions.ToListAsync();    
             Construction con = await c.Constructions.FindAsync(Festival.IDConstruction);
             c.Constructions.Remove(con);
             Deconstruction de = await c.Deconstructions.FindAsync(Festival.IDDeconstruction);
@@ -92,7 +103,7 @@ public partial class SingleFestivalPageVM : BaseVM
             }
             catch(Exception ex)
             {
-                DisplayNotification(ex);
+                await DisplayNotification(ex);
             }
         }
     }
