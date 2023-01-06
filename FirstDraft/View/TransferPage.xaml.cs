@@ -43,6 +43,8 @@ public partial class TransferPage : ContentPage
 
         Title = vm?.NewLocation is not null ? $"Přemístit do {GetLocInCzech()}" : Title;
         Title = vm?.NewLocation?.Equals(LocationTypes.bin) ?? false ? $"Premistit do Koše" : Title;
+        vm.Target = new();
+        vm.SearchResults = new();
 
         
     }
