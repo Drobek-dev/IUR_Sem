@@ -16,8 +16,12 @@
         </Style>
     </ContentPage.Resources>
     <VerticalStackLayout>
-        <ActivityIndicator IsRunning="{Binding IsPerformingAction}" Color="{StaticResource festivalColor}"/>
         
+        <ActivityIndicator IsRunning="{Binding IsPerformingAction}" Color="{StaticResource festivalColor}"/>
+
+        <controls:InternetConnectionControl 
+            IsVisible="{Binding InternetAvailable, Converter={StaticResource internetLostConverter} }"/>
+
         <HorizontalStackLayout HorizontalOptions="Center" >
             <VerticalStackLayout >
                 <Border
