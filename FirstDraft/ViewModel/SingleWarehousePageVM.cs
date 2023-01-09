@@ -32,20 +32,24 @@ public partial class SingleWarehousePageVM : BaseVM
             return;
 
         Warehouse = await c.Warehouses
-            .Include(w=> w.LocalEquipmentRelations)
+            .Include(w=> w.LocalEquipmentRelationss)
             .Where(W=> W.ID.Equals(Warehouse.ID))
-            .FirstOrDefaultAsync();
+            .FirstAsync();
 
         Title = Warehouse is not null ? $"Sklad {Warehouse.Name}" : Title;
     }
 
-    [RelayCommand]
+    [RelayCommand(CanExecute =nameof(CanExecuteAction))]
     async Task SaveChanges()
     {
+        IsPerformingAction = true;  
         using MyDBContext c = GetMyDBContextInstance();
 
         if (c is null)
+        {
+            IsPerformingAction = false;
             return;
+        }
 
         c.Warehouses.Update(_warehouse);
         await PerformContextSave(c);
@@ -55,23 +59,29 @@ public partial class SingleWarehousePageVM : BaseVM
             await Refresh();
             await DisplayNotification("Změny uloženy.");
         }
-
+        IsPerformingAction = false;
     }
 
-    [RelayCommand]
+    [RelayCommand(CanExecute = nameof(CanExecuteAction))]
     async Task Delete()
     {
-
+        IsPerformingAction = true;
         if (!await YesNoAlert($"Smazat sklad {Warehouse.Name}?{Environment.NewLine}" +
-            $"{Warehouse.LocalEquipmentRelations?.Count ?? 0} vybavení bode odstraněno."))
+            $"{Warehouse.LocalEquipmentRelationss?.Count ?? 0} vybavení bode odstraněno."))
+        {
+            IsPerformingAction = false;
             return;
+        }
 
         using MyDBContext c = GetMyDBContextInstance();
 
         if (c is null)
+        {
+            IsPerformingAction = false;
             return;
+        }
 
-        foreach (var ler in Warehouse.LocalEquipmentRelations)
+        foreach (var ler in Warehouse.LocalEquipmentRelationss)
         {
             Equipment e = await c.Equipment.FindAsync(ler.IDEquipment);
             c.Equipment.Remove(e);
@@ -82,18 +92,22 @@ public partial class SingleWarehousePageVM : BaseVM
 
         if(_operationSucceeded)
             await Shell.Current.GoToAsync("..");
+        IsPerformingAction = false;
     }
 
-    [RelayCommand]
+    [RelayCommand(CanExecute = nameof(IsNavigating))]
     async Task NavToEquipment()
     {
-        await Shell.Current.GoToAsync($"{nameof(EquipmentPage)}",
-            new Dictionary<string, object>
-            {
-                ["IDLocation"] = Warehouse.ID,
-                ["Location"] = LocationTypes.warehouse,
-                ["LocationName"] = Warehouse.Name
-            });
+        await 
+            NavigateTo(
+                Shell.Current.GoToAsync($"{nameof(EquipmentPage)}",
+                    new Dictionary<string, object>
+                    {
+                        ["IDLocation"] = Warehouse.ID,
+                        ["Location"] = GlobalValues.warehouse,
+                        ["LocationName"] = Warehouse.Name
+                    })
+                );
     }
 
 }

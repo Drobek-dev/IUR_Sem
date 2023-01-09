@@ -39,20 +39,20 @@ public partial class AddEquipmentPage : ContentPage
         
 
         Title = vm?.LocationName is not null ? $"Přidat vybavení do {GetLocInCzech()} \"{vm.LocationName}\"" : Title;
-        Title = vm?.Location?.Equals(LocationTypes.bin)?? false ? $"Přidat vybavení do Koše" : Title;
+        Title = vm?.Location?.Equals(GlobalValues.bin)?? false ? $"Přidat vybavení do Koše" : Title;
     }
 
     string GetLocInCzech()
     {
-        if (vm.Location.Equals(LocationTypes.festival))
+        if (vm.Location.Equals(GlobalValues.festival))
         {
             return "festivalu";
         }
-        else if (vm.Location.Equals(LocationTypes.warehouse))
+        else if (vm.Location.Equals(GlobalValues.warehouse))
         {
             return "skladu";
         }
-        else if (vm.Location.Equals(LocationTypes.transport))
+        else if (vm.Location.Equals(GlobalValues.transport))
         {
             return "transportu";
         }

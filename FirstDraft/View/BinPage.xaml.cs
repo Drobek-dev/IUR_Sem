@@ -12,7 +12,7 @@ public partial class BinPage : ContentPage
         base.OnAppearing();
 		await Shell.Current.GoToAsync(nameof(EquipmentPage), new Dictionary<string, object>
         {
-            ["Location"] = Support.LocationTypes.bin
+            ["Location"] = Support.GlobalValues.bin
         });
     }
 }

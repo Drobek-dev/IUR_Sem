@@ -53,10 +53,20 @@
             <Border 
                     Style="{StaticResource transportBorderStyle}">
                 <HorizontalStackLayout>
+                    <Label Text="Datum příjezdu: "
+                        Style="{StaticResource transportLabelStyle}"/>
+                    <DatePicker Date="{Binding Transport.EstimatedArrivalTime}"
+                                Style="{StaticResource basePickerStyle}"/>
+                </HorizontalStackLayout>
+            </Border>
+
+            <Border 
+                    Style="{StaticResource transportBorderStyle}">
+                <HorizontalStackLayout>
                     <Label Text="Čas příjezdu: "
                         Style="{StaticResource transportLabelStyle}"/>
-                    <Entry Text="{Binding Transport.EstimatedArrivalTime, Converter={StaticResource dateTimeToString}}"
-                            Style="{StaticResource baseEntryStyle}"/>
+                    <TimePicker Time="{Binding Transport.EstimatedArrivalTime, Converter={StaticResource dateTimeToTimeSpanConverter}}"
+                                Style="{StaticResource basePickerStyle}"/>
                 </HorizontalStackLayout>
             </Border>
 

@@ -7,6 +7,8 @@ public partial class AddFestivalPage : ContentPage
 	public AddFestivalPage()
 	{
 		InitializeComponent();
-		BindingContext = new AllFestivalsPageVM();
+		BindingContext = new AllFestivalsPageVM(this);
 	}
+
+
 }

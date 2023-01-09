@@ -30,21 +30,28 @@ public partial class AllFestivalsPageVM : BaseVM, INotifyPropertyChanged
     ObservableCollection<Festival> _activeFestivals;
 
     [ObservableProperty]
-    string _newFestivalName;
+    string _newFestivalName="";
 
     [ObservableProperty]
-    string _location;
+    string _location="";
 
     [ObservableProperty]
-    DateOnly _newStartDate = DateOnly.FromDateTime(DateTime.Now);
+    DateTime _newStartDate = DateTime.Now;
 
     [ObservableProperty]
-    DateOnly _newEndDate = DateOnly.FromDateTime(DateTime.Now.AddDays(1));
+    DateTime _newEndDate = DateTime.Now.AddDays(1);
 
     [ObservableProperty]
     ObservableCollection<Festival> _searchResults;
 
 
+    AddFestivalPage _addView;
+
+    public AllFestivalsPageVM(AddFestivalPage addView)
+    {
+        Init();
+        _addView = addView;
+    }
     public AllFestivalsPageVM()
     {
         Init();
@@ -76,61 +83,44 @@ public partial class AllFestivalsPageVM : BaseVM, INotifyPropertyChanged
         SearchResults = ActiveFestivals;
     }
 
-    [RelayCommand]
+    [RelayCommand(CanExecute =nameof(IsNavigating))]
     async Task NavToAddFestivalPage()
     {
-        await Shell.Current.GoToAsync(nameof(AddFestivalPage));
+        await NavigateTo(Shell.Current.GoToAsync(nameof(AddFestivalPage)));
+        
     }
 
-    [RelayCommand]
+    [RelayCommand(CanExecute = nameof(IsNavigating))]
     async Task NavToFestivalSinglePage(Festival f)
     {
-       
-            await Shell.Current.GoToAsync(nameof(SingleFestivalPage), new Dictionary<string, object>
-            {
-                ["Festival"] = f
-            });
-        
 
+        await
+            NavigateTo(
+                Shell.Current.GoToAsync(nameof(SingleFestivalPage), new Dictionary<string, object>
+                {
+                    ["Festival"] = f
+                })
+            );
     }
 
-    [RelayCommand(CanExecute =nameof(CanExecute))]
+    [RelayCommand(CanExecute =nameof(CanExecuteAction))]
     async Task AddNew()
     {
-        Festival f = new() { Name = NewFestivalName, StartDate = NewStartDate, EndDate = NewEndDate, Location = Location, FestivalsExtWorkersRelations = new() };
-        
-        using MyDBContext c = GetMyDBContextInstance();
 
-        if (c is null)
-            return;
-
-        c.Festivals.Add(f);
-       
-
-        await PerformContextSave(c);
-        
-
-       
-
-        if (_operationSucceeded)
-        {
-            ActiveFestivals.Add(f);
-            await Shell.Current.GoToAsync("..");
-        }
-
+        Festival f = new() { Name = NewFestivalName, 
+            StartDate = DateOnly.FromDateTime(NewStartDate), 
+            EndDate = DateOnly.FromDateTime(NewEndDate), 
+            Location = Location, 
+            FestivalsExtWorkersRelations = new(),
+            LocalEquipmentRelations = new(),
+            Construction = new(),
+            Deconstruction = new()};
+        await AddNewEntity(f);
     }
-        bool CanExecute ()
-        {
-  
-            if(_task is not null && _task.Status == TaskStatus.Running)
-            {
-                return false;
-            }
-            return true;
-        }
-        
 
-    public ICommand PerformSearch => new Command<string>((string query) =>
+
+    [RelayCommand]
+    void PerformSearch(string query)
     {
         if (string.IsNullOrWhiteSpace(query))
         {
@@ -138,9 +128,12 @@ public partial class AllFestivalsPageVM : BaseVM, INotifyPropertyChanged
         }
         else
         {
-            SearchResults = new(ActiveFestivals.Where(f => f.Name.Equals(query)).ToList());
+            SearchResults = new(ActiveFestivals.Where(f => f.Name.Contains(query)).ToList());
         }
-    });
+    }
+
+    
+
 
 
 }

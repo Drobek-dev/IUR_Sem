@@ -19,7 +19,7 @@
             x:Name="searchBar"
             BackgroundColor="{StaticResource transportColor}"
             TextColor="{StaticResource textColor}"
-            SearchCommand="{Binding PerformSearch}"
+            SearchCommand="{Binding PerformSearchCommand}"
             SearchCommandParameter="{Binding Text, Source={x:Reference searchBar}}"
             IsVisible="{Binding InternetAvailable}"
             MaximumWidthRequest="500"/>

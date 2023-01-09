@@ -15,69 +15,84 @@
             IsVisible="{Binding InternetAvailable, Converter={StaticResource internetLostConverter} }"/>
 
         <Grid
-                HorizontalOptions="Center"
-                Grid.Column="1" Grid.Row="1"
-                Grid.RowSpan="3"
-                IsVisible="{Binding InternetAvailable}">
+            HorizontalOptions="Center"
+            Grid.Column="1" Grid.Row="1"
+            Grid.RowSpan="3"
+            IsVisible="{Binding InternetAvailable}">
                 
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="50"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="50"/>
-                </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
 
-                <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+            <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                    Style="{StaticResource transportBorderStyle}">
+                <HorizontalStackLayout>
+                    <Label Text="Název transportu: "
+                            Style="{StaticResource transportLabelStyle}"/>
+
+                    <Entry Text="{Binding NewTransportName}" 
+                            Style="{StaticResource baseEntryStyle}"/>
+                </HorizontalStackLayout>
+            </Border>
+
+            <Border Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+                    Style="{StaticResource transportBorderStyle}">
+                <HorizontalStackLayout>
+                    <Label Text="Počáteční lokace: "
+                        Style="{StaticResource transportLabelStyle}"/>
+                    <Entry Text="{Binding NewTransportStartingPosition}"
+                            Style="{StaticResource baseEntryStyle}"/>
+                </HorizontalStackLayout>
+            </Border>
+
+            <Border Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
+                    Style="{StaticResource transportBorderStyle}">
+                <HorizontalStackLayout>
+                    <Label Text="Destinace: " 
+                        Style="{StaticResource transportLabelStyle}"/>
+                    <Entry Text="{Binding NewTransportDestination}" 
+                            Style="{StaticResource baseEntryStyle}"/>
+                </HorizontalStackLayout>
+            </Border>
+
+            <Border Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"
+                    Style="{StaticResource transportBorderStyle}">
+                <HorizontalStackLayout>
+                <Label Text="Datum příjezdu: "
+                        Style="{StaticResource transportLabelStyle}"/>
+                <DatePicker 
+                        Date="{Binding NewTransportEstimatedArrivalDate}"
+                        Style="{StaticResource basePickerStyle}"/>
+
+            </HorizontalStackLayout>
+            </Border>
+
+            <Border Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2"
                         Style="{StaticResource transportBorderStyle}">
-                    <HorizontalStackLayout>
-                        <Label Text="Název transportu: "
-                                Style="{StaticResource transportLabelStyle}"/>
-
-                        <Entry Text="{Binding NewTransportName}" 
-                                Style="{StaticResource baseEntryStyle}"/>
-                    </HorizontalStackLayout>
-                </Border>
-
-                <Border Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
-                        Style="{StaticResource transportBorderStyle}">
-                    <HorizontalStackLayout>
-                        <Label Text="Počáteční lokace: "
-                           Style="{StaticResource transportLabelStyle}"/>
-                        <Entry Text="{Binding NewTransportStartingPosition}"
-                                Style="{StaticResource baseEntryStyle}"/>
-                    </HorizontalStackLayout>
-                </Border>
-
-                <Border Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
-                        Style="{StaticResource transportBorderStyle}">
-                    <HorizontalStackLayout>
-                        <Label Text="Destinace: " 
-                           Style="{StaticResource transportLabelStyle}"/>
-                        <Entry Text="{Binding NewTransportDestination}" 
-                                Style="{StaticResource baseEntryStyle}"/>
-                    </HorizontalStackLayout>
-                </Border>
-
-                <Border Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"
-                        Style="{StaticResource transportBorderStyle}">
-                    <HorizontalStackLayout>
+                <HorizontalStackLayout>
                     <Label Text="Čas příjezdu: "
                            Style="{StaticResource transportLabelStyle}"/>
-                        <Entry Text="{Binding NewTransportEstimatedArrivalTime, Converter={StaticResource dateTimeToString}}"
-                                Style="{StaticResource baseEntryStyle}"/>
-                    </HorizontalStackLayout>
-                </Border>
+                    <TimePicker 
+                            Time="{Binding NewTransportEstimatedArrivalDate, Converter={StaticResource dateTimeToTimeSpanConverter}}"
+                            Style="{StaticResource basePickerStyle}"/>
 
-                <Border Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2"
+                </HorizontalStackLayout>
+            </Border>
+
+            <Border Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2"
                         Style="{StaticResource transportBorderStyle}">
                 <HorizontalStackLayout>
                     <Label Text="Celé jméno řidiče: "
@@ -87,17 +102,17 @@
                 </HorizontalStackLayout>
             </Border>
 
-                <Border Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2"
+                <Border Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2"
                         Style="{StaticResource transportBorderStyle}">
                 <HorizontalStackLayout>
                     <Label Text="Telefon na řidiče: "
                            Style="{StaticResource transportLabelStyle}"/>
                     <Entry Text="{Binding NewTransportDriverPhone}"
-                                Style="{StaticResource baseEntryStyle}"/>
+                                Style="{StaticResource basePhoneEntryStyle}"/>
                 </HorizontalStackLayout>
             </Border>
 
-                <Border Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2"
+                <Border Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2"
                         Style="{StaticResource transportButtonBorderStyle}">
                     <Button Text="+"
                     Command="{Binding AddNewCommand}"

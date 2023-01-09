@@ -44,7 +44,7 @@
                                 Style="{StaticResource warehouseLabelStyle}"    
                                 />
                         <Entry Text="{Binding NewEquipmentQuantity}" 
-                                Style="{StaticResource baseEntryStyle}"/>
+                                Style="{StaticResource baseIntegerEntryStyle}"/>
                     </HorizontalStackLayout>
                 </Border>
 
@@ -59,9 +59,9 @@
                                 Text="Datum zavedení: "
                                 Style="{StaticResource warehouseLabelStyle}"    
                                 />
-                        <Entry Text="{Binding NewDateOfPurchase, Converter={StaticResource dateToString}}"  
-                                Style="{StaticResource baseEntryStyle}"/>
-                    </HorizontalStackLayout>
+                    <DatePicker Date="{Binding NewDateOfPurchase}"
+                                Style="{StaticResource basePickerStyle}"/>
+                </HorizontalStackLayout>
                 </Border>
 
                 <Border 

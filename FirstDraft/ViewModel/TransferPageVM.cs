@@ -66,7 +66,7 @@ public partial class TransferPageVM : BaseVM
 
         Target = new();
 
-        if (NewLocation.Equals(LocationTypes.festival))
+        if (NewLocation.Equals(GlobalValues.festival))
         {
             var Festivals = await c.Festivals.OrderByDescending(f => f.ID).ToListAsync();
             foreach(var f in Festivals) 
@@ -74,7 +74,7 @@ public partial class TransferPageVM : BaseVM
                 Target.Add(new() { Name = f.Name, ID = f.ID });  
             }
         }
-        else if (NewLocation.Equals(LocationTypes.warehouse))
+        else if (NewLocation.Equals(GlobalValues.warehouse))
         {
             var Warehouses = await c.Warehouses.OrderByDescending(w => w.ID).ToListAsync();
             foreach (var w in Warehouses)
@@ -82,7 +82,7 @@ public partial class TransferPageVM : BaseVM
                 Target.Add(new() { Name = w.Name, ID = w.ID });
             }
         }
-        else if (NewLocation.Equals(LocationTypes.transport))
+        else if (NewLocation.Equals(GlobalValues.transport))
         {
             var Transports = await c.Transports.OrderByDescending(t => t.ID).ToListAsync();
             foreach (var t in Transports)
@@ -90,7 +90,7 @@ public partial class TransferPageVM : BaseVM
                 Target.Add(new() { Name = t.TransportName, ID = t.ID });
             }
         }
-        else if (NewLocation.Equals(LocationTypes.bin))
+        else if (NewLocation.Equals(GlobalValues.bin))
         {
             Target.Add(new() { Name = "Bin" });
         }
@@ -99,7 +99,7 @@ public partial class TransferPageVM : BaseVM
 
     void AssignEquipmentToNewLocation(MyDBContext context, Guid IDTarget)
     {
-        if (NewLocation.Equals(LocationTypes.festival))
+        if (NewLocation.Equals(GlobalValues.festival))
         {
             foreach (var e in Equipment)
             {
@@ -108,7 +108,7 @@ public partial class TransferPageVM : BaseVM
                 e.Location = NewLocation;
             }
         }
-        else if (NewLocation.Equals(LocationTypes.warehouse))
+        else if (NewLocation.Equals(GlobalValues.warehouse))
         {
             foreach (var e in Equipment)
             {
@@ -117,7 +117,7 @@ public partial class TransferPageVM : BaseVM
                 e.Location = NewLocation;
             }
         }
-        else if (NewLocation.Equals(LocationTypes.transport))
+        else if (NewLocation.Equals(GlobalValues.transport))
         {
             foreach (var e in Equipment)
             {
@@ -126,7 +126,7 @@ public partial class TransferPageVM : BaseVM
                 e.Location = NewLocation;
             }
         }
-        else if (NewLocation.Equals(LocationTypes.bin))
+        else if (NewLocation.Equals(GlobalValues.bin))
         {
             foreach (var e in Equipment)
             {
@@ -139,7 +139,7 @@ public partial class TransferPageVM : BaseVM
 
     async Task DeleteOldEquipmentLocation(MyDBContext context)
     {
-        if (OriginalLocation.Equals(LocationTypes.festival))
+        if (OriginalLocation.Equals(GlobalValues.festival))
         {
             foreach (var e in Equipment)
            {
@@ -147,7 +147,7 @@ public partial class TransferPageVM : BaseVM
    
             }
         }
-        else if (OriginalLocation.Equals(LocationTypes.warehouse))
+        else if (OriginalLocation.Equals(GlobalValues.warehouse))
         {
             foreach (var e in Equipment)
             {
@@ -155,14 +155,14 @@ public partial class TransferPageVM : BaseVM
 
             }
         }
-        else if (OriginalLocation.Equals(LocationTypes.transport))
+        else if (OriginalLocation.Equals(GlobalValues.transport))
         {
             foreach (var e in Equipment)
             {
                 context.EquipmentInTransports.Remove(await context.EquipmentInTransports.FindAsync(e.ID, OriginalLocationID));
             }
         }
-        else if (OriginalLocation.Equals(LocationTypes.bin))
+        else if (OriginalLocation.Equals(GlobalValues.bin))
         {
             foreach (var e in Equipment)
             {
@@ -172,10 +172,10 @@ public partial class TransferPageVM : BaseVM
     }
 
    
-    [RelayCommand]
+    [RelayCommand(CanExecute =nameof(CanExecuteAction))]
     async Task TransferEquipment(Guid IDTarget)
     {
-
+        IsPerformingAction = true;
         if (IDTarget.Equals(OriginalLocationID))
             return;
 
@@ -199,6 +199,13 @@ public partial class TransferPageVM : BaseVM
 
         await PerformContextSave(c);
         
-        await Shell.Current.GoToAsync("..");
+        if (_operationSucceeded)
+        {
+            await 
+                NavigateTo(
+                    Shell.Current.GoToAsync("..")
+                );
+        }
+        IsPerformingAction = false;
     }
 }

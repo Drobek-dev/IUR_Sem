@@ -91,7 +91,7 @@ public class MyDBContext : DbContext
         modelBuilder.Entity<EquipmentInFestival>().HasKey(eif => new { eif.IDEquipment, eif.IDFestival });
         modelBuilder.Entity<EquipmentInFestival>()
             .HasOne(eif => eif.Festival)
-            .WithMany(f => f.LocalEquipmentRelation)
+            .WithMany(f => f.LocalEquipmentRelations)
             .HasForeignKey(eif => eif.IDFestival);
         modelBuilder.Entity<EquipmentInFestival>()
             .HasOne(eif => eif.Equipment)
@@ -101,7 +101,7 @@ public class MyDBContext : DbContext
         modelBuilder.Entity<EquipmentInWarehouse>().HasKey(eiw => new { eiw.IDEquipment, eiw.IDWarehouse });
         modelBuilder.Entity<EquipmentInWarehouse>()
             .HasOne(eiw => eiw.Warehouse)
-            .WithMany(w => w.LocalEquipmentRelations)
+            .WithMany(w => w.LocalEquipmentRelationss)
             .HasForeignKey(eiw => eiw.IDWarehouse);
         modelBuilder.Entity<EquipmentInWarehouse>()
             .HasOne(eiw => eiw.Equipment)
@@ -111,7 +111,7 @@ public class MyDBContext : DbContext
         modelBuilder.Entity<EquipmentInTransport>().HasKey(eit => new { eit.IDEquipment, eit.IDTransport });
         modelBuilder.Entity<EquipmentInTransport>()
             .HasOne(eit=> eit.Transport)
-            .WithMany(t => t.LocalEquipmentRelations)
+            .WithMany(t => t.LocalEquipmentRelationss)
             .HasForeignKey(eit => eit.IDTransport);
 
         modelBuilder.Entity<EquipmentInTransport>()

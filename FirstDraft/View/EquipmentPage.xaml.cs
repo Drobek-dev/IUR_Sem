@@ -38,22 +38,22 @@ public partial class EquipmentPage : ContentPage, INotifyPropertyChanged
     protected override void OnNavigatedTo(NavigatedToEventArgs args)
     {
         base.OnNavigatedTo(args);
-		deleteSelectedEqpButton.IsVisible = viewModel.Location.Equals(Support.LocationTypes.bin);
-		deleteAllEqpButton.IsVisible = viewModel.Location.Equals(Support.LocationTypes.bin);
+		deleteSelectedEqpButton.IsVisible = viewModel.Location.Equals(Support.GlobalValues.bin);
+		deleteAllEqpButton.IsVisible = viewModel.Location.Equals(Support.GlobalValues.bin);
 
-		if (viewModel.Location.Equals(Support.LocationTypes.bin))
+		if (viewModel.Location.Equals(Support.GlobalValues.bin))
 		{
 			Title = "Koš";
 		}
-		else if (viewModel.Location.Equals(Support.LocationTypes.festival))
+		else if (viewModel.Location.Equals(Support.GlobalValues.festival))
 		{
 			Title = $"Vybavení festivalu {viewModel.LocationName}";
 		}
-        else if (viewModel.Location.Equals(Support.LocationTypes.warehouse))
+        else if (viewModel.Location.Equals(Support.GlobalValues.warehouse))
         {
             Title = $"Vybavení skladu {viewModel.LocationName}";
         }
-        else if (viewModel.Location.Equals(Support.LocationTypes.transport))
+        else if (viewModel.Location.Equals(Support.GlobalValues.transport))
         {
             Title = $"Vybavení transportu {viewModel.LocationName}";
         }

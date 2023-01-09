@@ -42,23 +42,25 @@ public partial class TransferPage : ContentPage
         }
 
         Title = vm?.NewLocation is not null ? $"Přemístit do {GetLocInCzech()}" : Title;
-        Title = vm?.NewLocation?.Equals(LocationTypes.bin) ?? false ? $"Premistit do Koše" : Title;
+        Title = vm?.NewLocation?.Equals(GlobalValues.bin) ?? false ? $"Premistit do Koše" : Title;
+
         vm.Target = new();
         vm.SearchResults = new();
+
 
         
     }
     string GetLocInCzech()
 {
-    if (vm.NewLocation.Equals(LocationTypes.festival))
+    if (vm.NewLocation.Equals(GlobalValues.festival))
     {
         return "festivalu";
     }
-    else if (vm.NewLocation.Equals(LocationTypes.warehouse))
+    else if (vm.NewLocation.Equals(GlobalValues.warehouse))
     {
         return "skladu";
     }
-    else if (vm.NewLocation.Equals(LocationTypes.transport))
+    else if (vm.NewLocation.Equals(GlobalValues.transport))
     {
         return "transportu";
     }

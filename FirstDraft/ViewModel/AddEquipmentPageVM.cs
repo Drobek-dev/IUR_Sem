@@ -18,29 +18,41 @@ namespace FirstDraft.ViewModel;
 public partial class AddEquipmentPageVM : BaseVM
 {
     [ObservableProperty]
-    string _location;
+    string _location ="";
 
     [ObservableProperty]
-    string _locationName;
+    string _locationName = "";
 
     [ObservableProperty]
     Guid _locationID;
 
     [ObservableProperty]
-    string _newEquipmentName;
+    string _newEquipmentName = "";
 
     [ObservableProperty]
     int _newEquipmentQuantity = 1;
 
     [ObservableProperty]
-    DateOnly _newDateOfPurchase = DateOnly.FromDateTime(DateTime.Now);
+    DateTime _newDateOfPurchase = DateTime.Now;
 
-    [RelayCommand]
+    
+
+    [RelayCommand(CanExecute = nameof(CanExecuteAction))]
     async Task AddNewEquipment()
     {
+
+        IsPerformingAction = true;
+
+       
         using MyDBContext c = new(Support.TypeOfDatabase.CloudPostgreSQL);
+
+        if(c is null)
+        {
+            IsPerformingAction= false;
+            return;
+        }
         Equipment e = new() { Name = _newEquipmentName, Location = Location, 
-            Quantity = NewEquipmentQuantity, DayOfPurchase = NewDateOfPurchase };
+            Quantity = NewEquipmentQuantity, DayOfPurchase = DateOnly.FromDateTime(NewDateOfPurchase) };
         
         c.Equipment.Add(e);
 
@@ -48,23 +60,23 @@ public partial class AddEquipmentPageVM : BaseVM
 
         if (_operationSucceeded)
         {
-            if (Location.Equals(LocationTypes.festival))
+            if (Location.Equals(GlobalValues.festival))
             {
                 EquipmentInFestival eif = new() { IDEquipment = e.ID, IDFestival=LocationID };
                 c.EquipmentInFestivals.Add(eif);    
 
             }
-            else if (Location.Equals(LocationTypes.warehouse))
+            else if (Location.Equals(GlobalValues.warehouse))
             {
                 EquipmentInWarehouse eiw = new() { IDEquipment = e.ID, IDWarehouse = LocationID };
                 c.EquipmentInWarehouses.Add(eiw);
             }
-            else if (Location.Equals(LocationTypes.transport))
+            else if (Location.Equals(GlobalValues.transport))
             {
                 EquipmentInTransport eit = new() { IDEquipment = e.ID, IDTransport = LocationID };
                 c.EquipmentInTransports.Add(eit);
             }
-            else if (Location.Equals(LocationTypes.bin))
+            else if (Location.Equals(GlobalValues.bin))
             {
                 EquipmentInBin eib = new() { IDEquipment = e.ID};
                 c.Bin.Add(eib);
@@ -72,9 +84,10 @@ public partial class AddEquipmentPageVM : BaseVM
 
             await PerformContextSave(c);
 
-            await Shell.Current.GoToAsync("..");
+            if(_operationSucceeded)
+                await Shell.Current.GoToAsync("..");
         }
-
+        IsPerformingAction = false;
     }
 
 

@@ -27,7 +27,7 @@ public class Warehouse : INotifyPropertyChanged
     }
     public required string Address {  get; set; }
 
-    public ObservableCollection<EquipmentInWarehouse> LocalEquipmentRelations { get; init; } = new();
+    public ObservableCollection<EquipmentInWarehouse> LocalEquipmentRelationss { get; init; } = new();
 
     public event PropertyChangedEventHandler PropertyChanged;
     void OnPropertyChanged(string name)

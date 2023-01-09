@@ -10,7 +10,10 @@
              Title="{Binding Title}">
 
     <ContentPage.Resources>
-        <support:DateOnlyToString x:Key="dateToString"/>
+        <support:DateOnlyToString x:Key="dateOnlyToString"/>
+        
+        
+        
     </ContentPage.Resources>
 
     <VerticalStackLayout  Margin="0,50,0,0">
@@ -19,6 +22,7 @@
 
         <VerticalStackLayout
                 IsVisible="{Binding InternetAvailable}">
+          
             <Border 
                         Style="{StaticResource festivalBorderStyle}">
                 <HorizontalStackLayout>
@@ -26,8 +30,8 @@
                                 Style="{StaticResource festivalLabelStyle}"/>
 
                     <Entry Text="{Binding Festival.Name}" 
-                                Style="{StaticResource baseEntryStyle}"
-                               />
+                                Style="{StaticResource baseEntryStyle}">
+                        </Entry>
                 </HorizontalStackLayout>
             </Border>
 
@@ -36,8 +40,10 @@
                 <HorizontalStackLayout>
                     <Label Text="Začátek festivalu: "
                            Style="{StaticResource festivalLabelStyle}"/>
-                    <Entry Text="{Binding Festival.StartDate, Converter={StaticResource dateToString}}"
-                                Style="{StaticResource baseEntryStyle}"/>
+                    <DatePicker 
+                        Date="{Binding Festival.StartDate, Converter={StaticResource dateOnlyToDateTimeConverter}}"
+                        MaximumDate="{Binding Festival.EndDate, Converter={StaticResource dateOnlyToDateTimeConverter}}"
+                        Style="{StaticResource basePickerStyle}"/>
                 </HorizontalStackLayout>
             </Border>
 
@@ -46,8 +52,9 @@
                 <HorizontalStackLayout>
                     <Label Text="Konec festivalu:" 
                            Style="{StaticResource festivalLabelStyle}"/>
-                    <Entry Text="{Binding Festival.EndDate, Converter={StaticResource dateToString}}" 
-                                Style="{StaticResource baseEntryStyle}"/>
+                    <DatePicker 
+                        Date="{Binding Festival.EndDate, Converter={StaticResource dateOnlyToDateTimeConverter}}"
+                        Style="{StaticResource basePickerStyle}"/>
                 </HorizontalStackLayout>
             </Border>
 
@@ -68,13 +75,16 @@
                 <HorizontalStackLayout>
                     <Label Text="Stavba od: "
                            Style="{StaticResource festivalLabelStyle}"/>
-                    <Entry Text="{Binding Festival.Construction.StartDate, Converter={StaticResource dateToString}}"
-                                Style="{StaticResource baseEntryStyle}"/>
+                    <DatePicker 
+                        Date="{Binding Festival.Construction.StartDate, Converter={StaticResource dateOnlyToDateTimeConverter}}"
+                        MaximumDate="{Binding Festival.Construction.EndDate, Converter={StaticResource dateOnlyToDateTimeConverter}}"
+                        Style="{StaticResource basePickerStyle}"/>
                     <Label Text="do: "
                                MinimumWidthRequest="50"
                            Style="{StaticResource festivalLabelStyle}"/>
-                    <Entry Text="{Binding Festival.Construction.EndDate, Converter={StaticResource dateToString}}"
-                                Style="{StaticResource baseEntryStyle}"/>
+                    <DatePicker 
+                        Date="{Binding Festival.Construction.EndDate, Converter={StaticResource dateOnlyToDateTimeConverter}}"     
+                        Style="{StaticResource basePickerStyle}"/>
                 </HorizontalStackLayout>
             </Border>
 
@@ -83,13 +93,16 @@
                 <HorizontalStackLayout>
                     <Label Text="Bourání od: "
                            Style="{StaticResource festivalLabelStyle}"/>
-                    <Entry Text="{Binding Festival.Deconstruction.StartDate, Converter={StaticResource dateToString}}"
-                                Style="{StaticResource baseEntryStyle}"/>
+                    <DatePicker 
+                        Date="{Binding Festival.Deconstruction.StartDate, Converter={StaticResource dateOnlyToDateTimeConverter}}"
+                        MaximumDate="{Binding Festival.Deconstruction.EndDate, Converter={StaticResource dateOnlyToDateTimeConverter}}"
+                        Style="{StaticResource basePickerStyle}"/>
                     <Label Text="do: "
                                MinimumWidthRequest="50"
                            Style="{StaticResource festivalLabelStyle}"/>
-                    <Entry Text="{Binding Festival.Deconstruction.EndDate, Converter={StaticResource dateToString}}"
-                                Style="{StaticResource baseEntryStyle}"/>
+                    <DatePicker 
+                        Date="{Binding Festival.Deconstruction.EndDate, Converter={StaticResource dateOnlyToDateTimeConverter}}"
+                        Style="{StaticResource basePickerStyle}"/>
                 </HorizontalStackLayout>
             </Border>
         </VerticalStackLayout>

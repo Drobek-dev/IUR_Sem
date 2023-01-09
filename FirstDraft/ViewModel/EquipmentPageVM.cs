@@ -34,13 +34,13 @@ public partial class EquipmentPageVM : BaseVM, INotifyPropertyChanged
     Equipment _draggedEquipment;
 
     [ObservableProperty]
-    string _locationName;
+    string _locationName = "";
 
     [ObservableProperty]
     Guid _iDLocation;
 
     [ObservableProperty]
-    string _location;
+    string _location = "";
 
     [ObservableProperty]
     ObservableCollection<Equipment> _localEquipment;
@@ -57,7 +57,7 @@ public partial class EquipmentPageVM : BaseVM, INotifyPropertyChanged
         if (c is null)
             return;
 
-        if (Location.Equals(LocationTypes.bin))
+        if (Location.Equals(GlobalValues.bin))
         {
             var BinEquipment = c.Bin.Include(b => b.Equipment).ToList();
             foreach (var localRelation in BinEquipment)
@@ -66,30 +66,30 @@ public partial class EquipmentPageVM : BaseVM, INotifyPropertyChanged
             }
         }
 
-        else if (Location.Equals(LocationTypes.festival))
+        else if (Location.Equals(GlobalValues.festival))
         {
-            var Festival = c.Festivals.Include(f => f.LocalEquipmentRelation).ThenInclude(eif => eif.Equipment).Where(f => f.ID.Equals(IDLocation)).First();
+            var Festival = c.Festivals.Include(f => f.LocalEquipmentRelations).ThenInclude(eif => eif.Equipment).Where(f => f.ID.Equals(IDLocation)).First();
 
-            foreach (var localRelation in Festival.LocalEquipmentRelation)
+            foreach (var localRelation in Festival.LocalEquipmentRelations)
             {
                 LocalEquipment.Add(localRelation.Equipment);
             }
 
         }
-        else if (Location.Equals(LocationTypes.warehouse))
+        else if (Location.Equals(GlobalValues.warehouse))
         {
-            var Warehouse = c.Warehouses.Include(w => w.LocalEquipmentRelations).ThenInclude(ler => ler.Equipment).Where(w => w.ID.Equals(IDLocation)).First();
+            var Warehouse = c.Warehouses.Include(w => w.LocalEquipmentRelationss).ThenInclude(ler => ler.Equipment).Where(w => w.ID.Equals(IDLocation)).First();
 
-            foreach (var localRelation in Warehouse.LocalEquipmentRelations)
+            foreach (var localRelation in Warehouse.LocalEquipmentRelationss)
             {
                 LocalEquipment.Add(localRelation.Equipment);
             }
         }
-        else if (Location.Equals(LocationTypes.transport))
+        else if (Location.Equals(GlobalValues.transport))
         {
-            var Transport = c.Transports.Include(t => t.LocalEquipmentRelations).ThenInclude(ler => ler.Equipment).Where(t => t.ID.Equals(IDLocation)).First();
+            var Transport = c.Transports.Include(t => t.LocalEquipmentRelationss).ThenInclude(ler => ler.Equipment).Where(t => t.ID.Equals(IDLocation)).First();
 
-            foreach (var localRelation in Transport.LocalEquipmentRelations)
+            foreach (var localRelation in Transport.LocalEquipmentRelationss)
             {
                 LocalEquipment.Add(localRelation.Equipment);
             }
@@ -131,6 +131,8 @@ public partial class EquipmentPageVM : BaseVM, INotifyPropertyChanged
         RefreshEquipmentMethod();
     }
 
+    // CollectionView Multiple selection End ----------------------------------------------
+
     [RelayCommand]
     void DropEquipment()
     {
@@ -142,7 +144,7 @@ public partial class EquipmentPageVM : BaseVM, INotifyPropertyChanged
     }
     //Drag and Drop End ----------------------------------------------------------------
 
-    [RelayCommand]
+    [RelayCommand(CanExecute = nameof(IsNavigating))]
     async Task NavToTransferPage()
     {
         if(EquipmentToTransfer?.Count==0 || Selection is null)
@@ -151,36 +153,43 @@ public partial class EquipmentPageVM : BaseVM, INotifyPropertyChanged
                 $"Number of selected items must be greater than Zero.");
             return;
         }
-        string originalLocation = string.IsNullOrWhiteSpace(Location) ? LocationTypes.bin : Location;
-        await Shell.Current.GoToAsync(nameof(TransferPage),new Dictionary<string, object>
+        string originalLocation = string.IsNullOrWhiteSpace(Location) ? GlobalValues.bin : Location;
+        await NavigateTo( Shell.Current.GoToAsync(nameof(TransferPage),new Dictionary<string, object>
         {
             ["OriginalLocation"] = originalLocation,
             ["OriginalLocationID"] = IDLocation,
             ["NewLocation"] = Selection,
             ["Equipment"] = EquipmentToTransfer,
             ["OriginalLocationName"] =LocationName
-        });
+        }));
     }
 
-    [RelayCommand]
+    [RelayCommand(CanExecute = nameof(IsNavigating))]
     async Task NavToAddEquipmentPage()
     {
-        string equipmentLocation = string.IsNullOrWhiteSpace(Location) ? LocationTypes.bin : Location;
-        await Shell.Current.GoToAsync(nameof(AddEquipmentPage), new Dictionary<string, object>
+        string equipmentLocation = string.IsNullOrWhiteSpace(Location) ? GlobalValues.bin : Location;
+        await NavigateTo( Shell.Current.GoToAsync(nameof(AddEquipmentPage), new Dictionary<string, object>
         {
             ["Location"] = equipmentLocation,
             ["LocationID"] = IDLocation,
             ["LocationName"] = LocationName
-        });
+        }));
     }
 
-    [RelayCommand]
+    [RelayCommand(CanExecute = nameof(CanExecuteAction))]
     async Task DeleteSelectedEquipment()
     {
         if (await BaseVM.YesNoAlert($"Opravdu chcete vysypat z koše vybrané vybavení? {Environment.NewLine}" +
             $"{EquipmentToTransfer.Count} položek vybavení bude nenávratně ztraceno."))
         {
+            IsPerformingAction = true;
             using MyDBContext c = new(Support.TypeOfDatabase.CloudPostgreSQL);
+
+            if(c is null)
+            {
+                IsPerformingAction= false;
+                return;
+            }
             foreach(var e in EquipmentToTransfer)
             {
                 c.Bin.Remove(await c.Bin.FindAsync(e.ID));
@@ -195,30 +204,38 @@ public partial class EquipmentPageVM : BaseVM, INotifyPropertyChanged
                 EquipmentToTransfer = new();
                 RefreshEquipmentMethod();
             }
+            IsPerformingAction = false;
         }
     }
 
-    [RelayCommand]
+    [RelayCommand(CanExecute = nameof(CanExecuteAction))]
     async Task DeleteAllEquipment()
     {
         if (await BaseVM.YesNoAlert($"Opravdu chcete vysypat koš? {Environment.NewLine}" +
             $"{LocalEquipment.Count} položek vybavení bude nenávratně ztraceno."))
+        {
+            IsPerformingAction = true;
+            using MyDBContext c = new(Support.TypeOfDatabase.CloudPostgreSQL);
+            if (c is null)
             {
-                using MyDBContext c = new(Support.TypeOfDatabase.CloudPostgreSQL);
-                foreach (var e in LocalEquipment)
-                {
-                    c.Bin.Remove(await c.Bin.FindAsync(e.ID));
-                    c.Equipment.Remove(await c.Equipment.FindAsync(e.ID));
-
-                }
-
-                await PerformContextSave(c);
-
-                if (_operationSucceeded)
-                {
-                    EquipmentToTransfer = new();
-                    RefreshEquipmentMethod();
-                }
+                IsPerformingAction = false;
+                return;
             }
+            foreach (var e in LocalEquipment)
+            {
+                c.Bin.Remove(await c.Bin.FindAsync(e.ID));
+                c.Equipment.Remove(await c.Equipment.FindAsync(e.ID));
+
+            }
+
+            await PerformContextSave(c);
+
+            if (_operationSucceeded)
+            {
+                EquipmentToTransfer = new();
+                RefreshEquipmentMethod();
+            }
+            IsPerformingAction = false;
+        }
     }
 }

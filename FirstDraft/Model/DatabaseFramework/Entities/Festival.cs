@@ -13,46 +13,66 @@ using System.Threading.Tasks;
 
 namespace FirstDraft.Model.DatabaseFramework.Entities;
 
-public class Festival : INotifyPropertyChanged
+public class Festival:INotifyPropertyChanged  
 {
 
     
     public Guid ID { get; private init; }
 
+
     private string _name;
+
     public required string Name { get => _name;
         init 
         {
             _name = value;
-
-            OnPropertyChanged(nameof(Name));
         }
     }
-
-    public required DateOnly StartDate { get; init; }
-    
-   
-    public required DateOnly EndDate { get; init; }
-    public required string Location {  get; init; }
-
-    [ForeignKey(nameof(Construction))]
-    public Guid IDConstruction { get; init; }
-
-    public Construction Construction { get; init; } = new();
-
-    [ForeignKey(nameof(Deconstruction))]
-    public Guid IDDeconstruction { get; init; }
-    public Deconstruction Deconstruction { get; init; } = new();
-
-
-    public ObservableCollection<FestivalsExtWorkersRelations> FestivalsExtWorkersRelations { get; init; } = new();
-    public ObservableCollection<EquipmentInFestival> LocalEquipmentRelation { get; init; } = new();
-
-
     public event PropertyChangedEventHandler PropertyChanged;
     void OnPropertyChanged(string name)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
     }
+
+    private DateOnly _startDate;
+    public required DateOnly StartDate 
+    {
+        get => _startDate;
+        set
+        {
+            _startDate = value;
+            OnPropertyChanged(nameof(StartDate));   
+        }
+    
+    }
+
+    private DateOnly _endDate;
+    public required DateOnly EndDate
+    {
+        get => _endDate;
+        set
+        {
+            _endDate = value;
+            OnPropertyChanged(nameof(EndDate));
+        }
+    }
+    public required string Location {  get; init; }
+
+    [ForeignKey(nameof(Construction))]
+    public Guid IDConstruction { get; init; }
+
+    public Construction Construction { get; init; }
+
+    [ForeignKey(nameof(Deconstruction))]
+    public Guid IDDeconstruction { get; init; }
+    public Deconstruction Deconstruction { get; init; }
+
+
+    public ObservableCollection<FestivalsExtWorkersRelations> FestivalsExtWorkersRelations { get; init; }
+    public ObservableCollection<EquipmentInFestival> LocalEquipmentRelations { get; init; }
+
+
+   
+    
 }
 

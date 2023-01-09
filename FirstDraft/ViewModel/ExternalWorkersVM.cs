@@ -16,11 +16,11 @@ namespace FirstDraft.ViewModel;
 public partial class ExternalWorkersVM : BaseVM
 {
 
-    [ObservableProperty] string _function;
-    [ObservableProperty] string _firstName;
-    [ObservableProperty] string _lastName;
-    [ObservableProperty] string _PhoneNumber;
-    [ObservableProperty] string _Email;
+    [ObservableProperty] string _function = "";
+    [ObservableProperty] string _firstName = "";
+    [ObservableProperty] string _lastName = "";
+    [ObservableProperty] string _PhoneNumber = "";
+    [ObservableProperty] string _Email = "";
 
     [ObservableProperty]
     Festival _festival;
@@ -31,11 +31,18 @@ public partial class ExternalWorkersVM : BaseVM
     public string AffiliatedFestivalID { get; set; }
 
     
-    [RelayCommand]
+    [RelayCommand(CanExecute =nameof(CanExecuteAction))]
     async Task AddWorker()
     {
+        IsPerformingAction = true;
         ExternalWorker ew = new() { FirstName = FirstName, LastName = LastName, Function = Function, PhoneNumber = PhoneNumber, Email = Email };
         using MyDBContext c = new(Support.TypeOfDatabase.CloudPostgreSQL);
+
+        if(c is null)
+        {
+            IsPerformingAction = false;
+            return;
+        }
 
         c.ExternalWorkers.Add(ew);
         await PerformContextSave(c);
@@ -46,27 +53,42 @@ public partial class ExternalWorkersVM : BaseVM
 
         if(_operationSucceeded)
             ExternalWorkers.Add(few);
+        IsPerformingAction = false;
     }
 
-    [RelayCommand]
+    [RelayCommand(CanExecute = nameof(CanExecuteAction))]
     async Task UpdateWorker(ExternalWorker ew)
     {
+        IsPerformingAction = true;
         using MyDBContext c = new(Support.TypeOfDatabase.CloudPostgreSQL);
+        if (c is null)
+        {
+            IsPerformingAction = false;
+            return;
+        }
         c.ExternalWorkers.Update(ew);
         await PerformContextSave(c);
+        IsPerformingAction = false;
 
     }
-    [RelayCommand]
+
+    [RelayCommand(CanExecute = nameof(CanExecuteAction))]
     async Task DeleteWorker(ExternalWorker ew)
     {
+        IsPerformingAction = true;
         ExternalWorkers.Remove(ExternalWorkers.Where(few => few.IDExternalWorker == ew.ID).First());
         using MyDBContext c = new(Support.TypeOfDatabase.CloudPostgreSQL);
         c.ExternalWorkers.Remove(ew);
-       
+        if(c is null)
+        {
+            IsPerformingAction = false;
+            return;
+        }
+
         await PerformContextSave(c);
 
         if (!_operationSucceeded)
             await DisplayNotification("Smazání položky selhalo.");
-
+        IsPerformingAction = false;
     }
 }

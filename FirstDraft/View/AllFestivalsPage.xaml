@@ -8,6 +8,7 @@
              xmlns:controls ="clr-namespace:FirstDraft.Controls"
              x:DataType="viewModel:AllFestivalsPageVM"
              Title="Festivaly">
+  
 
     <VerticalStackLayout>
 
@@ -18,7 +19,7 @@
             x:Name="searchBar"  
             BackgroundColor="{StaticResource festivalColor}"
             TextColor="{StaticResource textColor}"
-            SearchCommand="{Binding PerformSearch}"
+            SearchCommand="{Binding PerformSearchCommand}"
             SearchCommandParameter="{Binding Text, Source={x:Reference searchBar}}"
             IsVisible="{Binding InternetAvailable}"
             MaximumWidthRequest="500"/>

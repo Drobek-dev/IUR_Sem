@@ -31,19 +31,24 @@ public partial class SingleTransportPageVM : BaseVM
             return;
 
         Transport = await c.Transports
-            .Include(w => w.LocalEquipmentRelations)
-            .Where(W => W.ID.Equals(Transport.ID)).FirstOrDefaultAsync();
+            .Include(w => w.LocalEquipmentRelationss)
+            .Where(W => W.ID.Equals(Transport.ID)).FirstAsync();
+
         Title = Transport is not null ? $"Transport {Transport.TransportName}" : Title;
 
     }
 
-    [RelayCommand]
+    [RelayCommand(CanExecute = nameof(CanExecuteAction))]
     async Task SaveChanges()
     {
+        IsPerformingAction = true;
         using MyDBContext c = GetMyDBContextInstance();
 
         if (c is null)
+        {
+            IsPerformingAction = false;
             return;
+        }
 
         c.Transports.Update(_transport);
 
@@ -54,21 +59,28 @@ public partial class SingleTransportPageVM : BaseVM
             await Refresh();
             await DisplayNotification("Změny uloženy.");
         }
+        IsPerformingAction=false;
     }
 
-    [RelayCommand]
+    [RelayCommand(CanExecute =nameof(CanExecuteAction))]
     async Task Delete()
     {
         if (!await YesNoAlert($"Smazat transport {Transport.TransportName}?{Environment.NewLine}" +
-            $"{Transport.LocalEquipmentRelations?.Count ?? 0} vybavení bude odstraněno."))
+            $"{Transport.LocalEquipmentRelationss?.Count ?? 0} vybavení bude odstraněno."))
+        {
+            IsPerformingAction = false;
             return;
+        }
        
             using MyDBContext c = GetMyDBContextInstance();
 
         if (c is null)
+        {
+            IsPerformingAction = false;
             return;
+        }
 
-        foreach (var ler in Transport.LocalEquipmentRelations)
+        foreach (var ler in Transport.LocalEquipmentRelationss)
         {
             c.Equipment.Remove(await c.Equipment.FindAsync(ler.IDEquipment));
         }
@@ -80,15 +92,18 @@ public partial class SingleTransportPageVM : BaseVM
             await Shell.Current.GoToAsync("..");
     }
 
-    [RelayCommand]
+    [RelayCommand(CanExecute = nameof(IsNavigating))]
     async Task NavToEquipment()
     {
-        await Shell.Current.GoToAsync($"{nameof(EquipmentPage)}",
-            new Dictionary<string, object>
-            {
-                ["IDLocation"] = Transport.ID,
-                ["Location"] = LocationTypes.transport,
-                ["LocationName"] = Transport.TransportName
-            });
+        await 
+            NavigateTo(
+                Shell.Current.GoToAsync($"{nameof(EquipmentPage)}",
+                new Dictionary<string, object>
+                {
+                    ["IDLocation"] = Transport.ID,
+                    ["Location"] = GlobalValues.transport,
+                    ["LocationName"] = Transport.TransportName
+                })
+            );
     }
 }

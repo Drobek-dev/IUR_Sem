@@ -14,8 +14,11 @@
             </ResourceDictionary.MergedDictionaries>
             
             <support:DateOnlyToString x:Key="dateOnlyToString" />
+            <support:DateOnlyToDateTime x:Key="dateOnlyToDateTimeConverter" />
             <support:InternetConnectionToVisibilityConverter x:Key="internetLostConverter" />
-            <support:DateTimeToString x:Key="dateTimeToString"/>
+            <support:DateTimeToTimeSpan x:Key="dateTimeToTimeSpanConverter" />
+           
+     
 
             <Color x:Key="textColor">Black</Color>
             <Color x:Key="festivalColor">#E3D122</Color>
@@ -40,12 +43,54 @@
                 <Setter Property="MinimumWidthRequest" Value="200"/>
             </Style>
 
+            <Style x:Key="baseDateLabelStyle" TargetType="Label">
+                <Setter Property="HorizontalOptions" Value="Start"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+                <Setter Property="TextColor" Value="OrangeRed"/>
+
+
+            </Style>
+
+            <Style x:Key="basePickerStyle" TargetType="Picker">
+                <Setter Property="BackgroundColor" Value="green"/>
+                <Setter Property="WidthRequest" Value="150"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+                <Setter Property="VerticalTextAlignment" Value="Center"/>
+            </Style>
+
             <Style x:Key="baseEntryStyle" TargetType="Entry">
                 <Setter Property="TextColor" Value="White"/>
                 <Setter Property="BackgroundColor" Value="Black"/>
                 <Setter Property="Margin" Value="0,5,5,0"/>
                 <Setter Property="MinimumWidthRequest" Value="150"/>
                 <Setter Property="MaxLength" Value="25"/>
+                <Setter Property="support:TextValidationBehaviorStyle.AttachBehavior" Value="true" />
+                
+            </Style>
+
+            <Style x:Key="basePhoneEntryStyle" TargetType="Entry" BasedOn="{StaticResource baseEntryStyle}">
+                
+                <Setter Property="support:PhoneStringValidationBehaviorStyle.AttachBehavior" Value="true" />
+            </Style>
+
+            <Style x:Key="baseEmailEntryStyle" TargetType="Entry" BasedOn="{StaticResource baseEntryStyle}">
+
+                <Setter Property="support:EmailValidationBehaviorStyle.AttachBehavior" Value="true" />
+            </Style>
+            
+            <Style x:Key="baseDateEntryStyle" TargetType="Entry" BasedOn="{StaticResource baseEntryStyle}">
+
+                <Setter Property="support:DateValidationBehaviorStyle.AttachBehavior" Value="true" />
+            </Style>
+
+            <Style x:Key="baseDateTimeEntryStyle" TargetType="Entry" BasedOn="{StaticResource baseEntryStyle}">
+
+                <Setter Property="support:DateTimeValidationBehaviorStyle.AttachBehavior" Value="true" />
+            </Style>
+
+            <Style x:Key="baseIntegerEntryStyle" TargetType="Entry" BasedOn="{StaticResource baseEntryStyle}">
+
+                <Setter Property="support:IntegerValidationBehaviorStyle.AttachBehavior" Value="true" />
             </Style>
 
             <Style x:Key="baseButtonStyle" TargetType="Button">

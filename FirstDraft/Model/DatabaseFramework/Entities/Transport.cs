@@ -26,9 +26,19 @@ public class Transport : INotifyPropertyChanged
     public required string DriverPhone {  get; set; }
     public required string StartingPosition {  get; set; }
     public required string Destination {  get; set; }
-    public required DateTime EstimatedArrivalTime {  get; set; }
 
-    public ObservableCollection<EquipmentInTransport> LocalEquipmentRelations { get; private init; } = new();
+    private DateTime _estimatedArrivalTime;
+    public required DateTime EstimatedArrivalTime
+    {
+        get => _estimatedArrivalTime;
+        set
+        {
+            _estimatedArrivalTime = DateTime.SpecifyKind(value, DateTimeKind.Utc);
+            OnPropertyChanged(nameof(EstimatedArrivalTime));
+        }
+    }
+
+    public ObservableCollection<EquipmentInTransport> LocalEquipmentRelationss { get; private init; } = new();
 
     public event PropertyChangedEventHandler PropertyChanged;
     void OnPropertyChanged(string name)

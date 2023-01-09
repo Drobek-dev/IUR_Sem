@@ -19,22 +19,23 @@ namespace FirstDraft.ViewModel;
 public partial class TransportsPageVM : BaseVM
 {
     [ObservableProperty]
-    string _newTransportName;
+    string _newTransportName="";
 
     [ObservableProperty]
-    string _newTransportDriverFullName;
+    string _newTransportDriverFullName="";
 
     [ObservableProperty]
-    string _newTransportDriverPhone;
+    string _newTransportDriverPhone = "";
 
     [ObservableProperty]
-    string _newTransportStartingPosition;
+    string _newTransportStartingPosition = "";
 
     [ObservableProperty]
-    string _newTransportDestination;
+    string _newTransportDestination = "";    
 
     [ObservableProperty]
-    DateTime _newTransportEstimatedArrivalTime = DateTime.MinValue;
+    DateTime _newTransportEstimatedArrivalDate = DateTime.Now;
+
 
     [ObservableProperty]
     ObservableCollection<Transport> _activeTransports;
@@ -57,7 +58,7 @@ public partial class TransportsPageVM : BaseVM
         if (c is null)
             return;
 
-        ActiveTransports = new(c.Transports.Include(t=> t.LocalEquipmentRelations).OrderByDescending(t=> t.ID));
+        ActiveTransports = new(c.Transports.Include(t=> t.LocalEquipmentRelationss).OrderByDescending(t=> t.ID));
         SearchResults = ActiveTransports;
     }
 
@@ -68,56 +69,40 @@ public partial class TransportsPageVM : BaseVM
     }
 
 
-    [RelayCommand]
+    [RelayCommand(CanExecute = nameof(IsNavigating))]
     async Task NavToAddTransportPage()
     {
-        await Shell.Current.GoToAsync(nameof(AddTransportPage));
+        await 
+            NavigateTo(
+                Shell.Current.GoToAsync(nameof(AddTransportPage))
+            );
+    }
+
+    [RelayCommand(CanExecute = nameof(IsNavigating))]
+    async Task NavToSingleTransportPage(Transport t)
+    {
+        await 
+            NavigateTo(
+                Shell.Current.GoToAsync(nameof(SingleTransportPage), new Dictionary<string, object>
+                    {
+                        ["Transport"] = t
+                    })
+            );
+    }
+
+    [RelayCommand(CanExecute = nameof(CanExecuteAction))]
+    async Task AddNew ()
+    {
+
+        DateTime d = DateTime.SpecifyKind(NewTransportEstimatedArrivalDate, DateTimeKind.Utc);
+        Transport t = new() { TransportName = NewTransportName, DriverFullName = NewTransportDriverFullName, StartingPosition = NewTransportStartingPosition
+                                , Destination = NewTransportDestination, DriverPhone = NewTransportDriverPhone, EstimatedArrivalTime = d};
+
+        await AddNewEntity(t);
     }
 
     [RelayCommand]
-    async Task NavToSingleTransportPage(Transport t)
-    {
-        await Shell.Current.GoToAsync(nameof(SingleTransportPage), new Dictionary<string, object>
-        {
-            ["Transport"] = t
-        });
-    }
-
-    [RelayCommand(CanExecute = nameof(CanExecuteAdd))]
-    async Task AddNew ()
-        {
-            using MyDBContext c = GetMyDBContextInstance();
-
-            if (c is null)
-                return;
-
-            Transport t = new() { TransportName = NewTransportName, DriverFullName = NewTransportDriverFullName, StartingPosition = NewTransportStartingPosition
-                                   , Destination = NewTransportDestination, DriverPhone = NewTransportDriverPhone, EstimatedArrivalTime =DateTime.SpecifyKind(NewTransportEstimatedArrivalTime, DateTimeKind.Utc)};
-
-            c.Transports.Update(t);
-
-            await PerformContextSave(c);
-
-            if (_operationSucceeded)
-            {
-                _activeTransports.Add(t);
-                await Shell.Current.GoToAsync("..");
-            }
-
-           
-        }
-
-    bool CanExecuteAdd()
-        {
-
-            if (_task is not null && _task.Status == TaskStatus.Running)
-            {
-                return false;
-            }
-            return true;
-        }
-
-    public ICommand PerformSearch => new Command<string>((string query) =>
+     void PerformSearch(string query)
     {
         if (string.IsNullOrWhiteSpace(query))
         {
@@ -128,5 +113,5 @@ public partial class TransportsPageVM : BaseVM
 
             SearchResults = new(ActiveTransports.Where(t => t.TransportName.Equals(query)).ToList());
         }
-    });
+    }
 }

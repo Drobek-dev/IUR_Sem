@@ -13,7 +13,7 @@ public class LocationToBoolConverter : IValueConverter
     {
         if (value == null)
             return false;
-        if (((string)value).Equals(LocationTypes.bin))
+        if (((string)value).Equals(GlobalValues.bin))
         {
             return true;
         }

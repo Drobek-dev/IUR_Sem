@@ -33,7 +33,7 @@ public partial class SingleFestivalPageVM : BaseVM
             return;
 
         Festival = await c.Festivals
-            .Include(f=> f.LocalEquipmentRelation)
+            .Include(f=> f.LocalEquipmentRelations)
             .Include(f=> f.FestivalsExtWorkersRelations)
             .ThenInclude(few=> few.ExternalWorker)
             .Include(f=> f.Construction)
@@ -44,23 +44,42 @@ public partial class SingleFestivalPageVM : BaseVM
         Title = Festival is not null ? $"Festival {Festival.Name}" : Title;
     }
 
-    [RelayCommand]
+    [RelayCommand(CanExecute =nameof(IsNavigating))]
     async Task NavigateToExternalWorkers()
     {
-        await Shell.Current.GoToAsync(nameof(ExternalWorkersPage), new Dictionary<string, object>
-        {
-            ["Festival"] = _festival,
-            ["ExternalWorkers"] = _festival.FestivalsExtWorkersRelations
-        });
+        await 
+            NavigateTo(
+                Shell.Current.GoToAsync(nameof(ExternalWorkersPage), new Dictionary<string, object>
+                {
+                    ["Festival"] = _festival,
+                    ["ExternalWorkers"] = _festival.FestivalsExtWorkersRelations
+                })
+            );
     }
 
-    [RelayCommand]
+    [RelayCommand(CanExecute = nameof(IsNavigating))]
+    async Task NavToEquipment ()
+    {
+        await Shell.Current.GoToAsync($"{nameof(EquipmentPage)}",
+            new Dictionary<string, object>
+            {
+                ["IDLocation"] = Festival.ID,
+                ["Location"] = GlobalValues.festival,
+                ["LocationName"] = Festival.Name
+            });
+    }
+
+    [RelayCommand(CanExecute = nameof(CanExecuteAction))]
     async Task SaveChanges()
     {
+        IsPerformingAction = true;  
         using MyDBContext c = GetMyDBContextInstance();
 
         if (c is null)
+        {
+            IsPerformingAction = false;
             return;
+        }
 
         c.Festivals.Update(_festival);
 
@@ -72,27 +91,30 @@ public partial class SingleFestivalPageVM : BaseVM
             await DisplayNotification("Změny uloženy.");
 
         }
-        
+        IsPerformingAction = false;
     }
 
-    [RelayCommand]
+    [RelayCommand(CanExecute = nameof(CanExecuteAction))]
     async Task DeleteFestival()
     {
         if (!await YesNoAlert($"Smazat festival {Festival.Name}?{Environment.NewLine}" +
             $"{Festival.FestivalsExtWorkersRelations?.Count ?? 0} externich pracovníků bude odstraněno.{Environment.NewLine}" +
-            $"{Festival.LocalEquipmentRelation?.Count ?? 0} kusů vybavení bude odstraněno."))
+            $"{Festival.LocalEquipmentRelations?.Count ?? 0} kusů vybavení bude odstraněno."))
             return;
-        
+        IsPerformingAction = true;
         using MyDBContext c = GetMyDBContextInstance();
 
         if (c is null)
+        {
+            IsPerformingAction = false;
             return;
+        }
 
         foreach (var ew in Festival.FestivalsExtWorkersRelations)
         {
             c.ExternalWorkers.Remove(ew.ExternalWorker);
         }
-        foreach(var ler in Festival.LocalEquipmentRelation)
+        foreach(var ler in Festival.LocalEquipmentRelations)
             {
             c.Equipment.Remove(await c.Equipment.FindAsync(ler.IDEquipment));
         }
@@ -117,19 +139,8 @@ public partial class SingleFestivalPageVM : BaseVM
         {
             await DisplayNotification(ex);
         }
-        
-    }
 
-    [RelayCommand]
-    async Task NavToEquipment ()
-    {
-        await Shell.Current.GoToAsync($"{nameof(EquipmentPage)}",
-            new Dictionary<string, object>
-            {
-                ["IDLocation"] = Festival.ID,
-                ["Location"] = LocationTypes.festival,
-                ["LocationName"] = Festival.Name
-            });
+        IsPerformingAction = false;
     }
 
 

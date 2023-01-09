@@ -50,7 +50,7 @@
                            MinimumWidthRequest="129"
                            Style="{StaticResource festivalLabelStyle}"/>
                     <Entry Text="{Binding PhoneNumber}"
-                           Style="{StaticResource baseEntryStyle}"/>
+                           Style="{StaticResource basePhoneEntryStyle}"/>
                 </HorizontalStackLayout>
                 </Border>
               <HorizontalStackLayout>
@@ -66,7 +66,7 @@
                                Style="{StaticResource festivalLabelStyle}"/>
                         <Entry Text="{Binding Email}"
                            
-                               Style="{StaticResource baseEntryStyle}"/>
+                               Style="{StaticResource baseEmailEntryStyle}"/>
                         
                     </HorizontalStackLayout>
                 </Border>
@@ -123,13 +123,15 @@
                                     <Label Grid.Column="1" Grid.Row="1" Text="Name: " Style="{StaticResource localLabelStyle}"/>
                                 <Entry Grid.Column="2" Grid.Row="1"
                                        Text="{Binding ExternalWorker.FirstName}"
-                                        TextColor="{StaticResource textColor}"
+                                       
+                                       Style="{StaticResource baseEntryStyle}"
                                        
                                        />
 
                                 <Entry Grid.Column="3" Grid.Row="1"
                                        Text="{Binding ExternalWorker.LastName}"
-                                        TextColor="{StaticResource textColor}"
+                                    
+                                       Style="{StaticResource baseEntryStyle}"
                                      
                                        />
 
@@ -137,34 +139,32 @@
                                     <Label Grid.Column="1" Grid.Row="2" Text="Function: " Style="{StaticResource localLabelStyle}"/>
                                 <Entry Grid.Column="2" Grid.Row="2"
                                        Text="{Binding ExternalWorker.Function}"
-                                        TextColor="{StaticResource textColor}"
+                                       Style="{StaticResource baseEntryStyle}"
                                        
                                        />
 
                                     <Label Grid.Column="1" Grid.Row="3" Text="Phone number: " Style="{StaticResource localLabelStyle}"/>
                                 <Entry Grid.Column="2" Grid.Row="3"
                                        Text="{Binding ExternalWorker.PhoneNumber}"
-                                        TextColor="{StaticResource textColor}"
+                                       Style="{StaticResource basePhoneEntryStyle}"
                                        
                                        />
 
                                     <Label Grid.Column="1" Grid.Row="4" Text="Name" Style="{StaticResource localLabelStyle}"/>
                                 <Entry Grid.Column="2" Grid.Row="4"
-                                        TextColor="{StaticResource textColor}"
                                        Text="{Binding ExternalWorker.Email}"
+                                       Style="{StaticResource baseEmailEntryStyle}"
                                       
                                        />
 
                                 <Button Text="Uložit"
                                         Grid.Row="2" Grid.Column="4"
                                         HorizontalOptions="End"
-                                        TextColor="{StaticResource textColor}"
                                         Command="{Binding Source={RelativeSource AncestorType={x:Type viewModel:ExternalWorkersVM}},Path=UpdateWorkerCommand}"
                                         CommandParameter="{Binding ExternalWorker}"/>
                                 <Button Text="Smazat"
                                         Grid.Row="3" Grid.Column="4"
                                         HorizontalOptions="End"
-                                        TextColor="{StaticResource textColor}"
                                         Command="{Binding Source={RelativeSource AncestorType={x:Type viewModel:ExternalWorkersVM}},Path=DeleteWorkerCommand}"
                                         CommandParameter="{Binding ExternalWorker}"/>
               

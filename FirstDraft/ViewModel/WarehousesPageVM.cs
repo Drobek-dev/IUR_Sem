@@ -17,25 +17,18 @@ namespace FirstDraft.ViewModel;
 
 public partial class WarehousesPageVM : BaseVM
 {
-    Task _taskWarehouse = null;
+    
     [ObservableProperty]
-    string _newWarehouseName;
+    string _newWarehouseName = "";
 
     [ObservableProperty]
-    string _newWarehouseAddress;
+    string _newWarehouseAddress = "";
 
     [ObservableProperty]
     ObservableCollection<Warehouse> _activeWarehouses;
 
     [ObservableProperty]
     ObservableCollection<Warehouse> _searchResults;
-
-    [RelayCommand]
-    async Task NavToAddWarehousePage()
-    {
-        await Shell.Current.GoToAsync(nameof(AddWarehousePage));
-    }
-
 
     public WarehousesPageVM()
     {
@@ -50,7 +43,7 @@ public partial class WarehousesPageVM : BaseVM
 
         if (c is null)
             return;
-        ActiveWarehouses = new(c.Warehouses.Include(w=>w.LocalEquipmentRelations));
+        ActiveWarehouses = new(c.Warehouses.Include(w=>w.LocalEquipmentRelationss));
         SearchResults = ActiveWarehouses;
     }
 
@@ -60,47 +53,37 @@ public partial class WarehousesPageVM : BaseVM
         Init();
     }
 
-
-    [RelayCommand]
-    async Task NavToSingleWarehousePage(Warehouse w)
+    [RelayCommand(CanExecute = nameof(IsNavigating))]
+    async Task NavToAddWarehousePage()
     {
-        await Shell.Current.GoToAsync(nameof(SingleWarehousePage), new Dictionary<string, object>
-        {
-            ["Warehouse"] = w
-        });
+        await
+            NavigateTo(
+                Shell.Current.GoToAsync(nameof(AddWarehousePage))
+            );
     }
 
-    [RelayCommand(CanExecute = nameof(CanExecute))]
+    [RelayCommand(CanExecute = nameof(IsNavigating))]
+    async Task NavToSingleWarehousePage(Warehouse w)
+    {
+        await 
+            NavigateTo(
+                Shell.Current.GoToAsync(nameof(SingleWarehousePage), new Dictionary<string, object>
+                {
+                    ["Warehouse"] = w
+                })
+            );
+    }
+
+    [RelayCommand(CanExecute = nameof(CanExecuteAction))]
     async Task AddNew ()
         {
-            Warehouse w = new() { Name = NewWarehouseName, Address = NewWarehouseAddress};
+        Warehouse w = new() { Name = NewWarehouseName, Address = NewWarehouseAddress };
+        await AddNewEntity(w);
+        
+    }
 
-            using MyDBContext c = GetMyDBContextInstance();
-
-            if (c is null)
-                return;
-
-            c.Warehouses.Update(w);
-            await PerformContextSave(c);
-
-            if (_operationSucceeded)
-            {
-                _activeWarehouses.Add(w);
-                await Shell.Current.GoToAsync("..");
-            }
-        }
-
-    bool CanExecute()
-        {
-
-            if (_taskWarehouse is not null && _taskWarehouse.Status == TaskStatus.Running)
-            {
-                return false;
-            }
-            return true;
-        }
-
-    public ICommand PerformSearch => new Command<string>((string query) =>
+    [RelayCommand]
+    void PerformSearch(string query)
     {
         if (string.IsNullOrWhiteSpace(query))
         {
@@ -109,7 +92,7 @@ public partial class WarehousesPageVM : BaseVM
         else
         {
 
-            SearchResults = new(ActiveWarehouses.Where(w => w.Name.Equals(query)).ToList());
+            SearchResults = new(ActiveWarehouses.Where(w => w.Name.Contains(query)).ToList());
         }
-    });
+    }
 }
