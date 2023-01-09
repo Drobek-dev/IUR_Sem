@@ -39,6 +39,7 @@ public partial class TransferPage : ContentPage
         {
             searchBar.BackgroundColor = (Color)color;
             selectionBorder.Stroke = (Color)color;
+            activityIndicator.Color = (Color)color; 
         }
 
         Title = vm?.NewLocation is not null ? $"Přemístit do {GetLocInCzech()}" : Title;

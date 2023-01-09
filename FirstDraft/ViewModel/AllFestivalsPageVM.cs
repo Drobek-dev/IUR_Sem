@@ -63,12 +63,12 @@ public partial class AllFestivalsPageVM : BaseVM, INotifyPropertyChanged
         Init();
     }
 
-    private void Init()
+    async private void Init()
     {
         if (!InternetAvailable)
             return;
 
-        using MyDBContext c = GetMyDBContextInstance();
+        using MyDBContext c = await GetMyDBContextInstance();
 
         if (c is null)
             return;

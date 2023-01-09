@@ -59,7 +59,7 @@ public partial class TransferPageVM : BaseVM
     [RelayCommand]
     async Task LoadTargetInfo()
     {
-        using MyDBContext c = GetMyDBContextInstance();
+        using MyDBContext c = await GetMyDBContextInstance();
 
         if (c is null)
             return;
@@ -179,7 +179,7 @@ public partial class TransferPageVM : BaseVM
         if (IDTarget.Equals(OriginalLocationID))
             return;
 
-        using MyDBContext c = GetMyDBContextInstance();
+        using MyDBContext c = await GetMyDBContextInstance();
 
         if (c is null)
             return;
@@ -201,10 +201,7 @@ public partial class TransferPageVM : BaseVM
         
         if (_operationSucceeded)
         {
-            await 
-                NavigateTo(
-                    Shell.Current.GoToAsync("..")
-                );
+            await Shell.Current.GoToAsync("..");
         }
         IsPerformingAction = false;
     }

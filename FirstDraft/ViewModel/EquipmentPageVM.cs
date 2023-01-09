@@ -48,11 +48,11 @@ public partial class EquipmentPageVM : BaseVM, INotifyPropertyChanged
     [ObservableProperty]
     string _selection;
  
-    public void RefreshEquipmentMethod()
+    async public void RefreshEquipmentMethod()
     {
         LocalEquipment = new();
         EquipmentToTransfer = new();
-        using MyDBContext c = GetMyDBContextInstance();
+        using MyDBContext c = await GetMyDBContextInstance();
 
         if (c is null)
             return;

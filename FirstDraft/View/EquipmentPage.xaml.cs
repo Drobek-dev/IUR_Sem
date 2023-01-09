@@ -62,6 +62,7 @@ public partial class EquipmentPage : ContentPage, INotifyPropertyChanged
 		{
 			availableEqpBorder.Stroke = (Color)color;
 			LocationColor = (Color)color;
+			activityIndicator.Color = (Color)color;
 		}
     }
 

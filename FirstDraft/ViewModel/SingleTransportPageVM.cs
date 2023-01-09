@@ -25,7 +25,7 @@ public partial class SingleTransportPageVM : BaseVM
 
     public async Task Refresh()
     {
-        using MyDBContext c = GetMyDBContextInstance();
+        using MyDBContext c = await GetMyDBContextInstance();
 
         if (c is null)
             return;
@@ -48,7 +48,7 @@ public partial class SingleTransportPageVM : BaseVM
             return;
 
         IsPerformingAction = true;
-        using MyDBContext c = GetMyDBContextInstance();
+        using MyDBContext c = await GetMyDBContextInstance();
 
         if (c is null)
         {
@@ -78,7 +78,7 @@ public partial class SingleTransportPageVM : BaseVM
             return;
         }
        
-            using MyDBContext c = GetMyDBContextInstance();
+            using MyDBContext c = await GetMyDBContextInstance();
 
         if (c is null)
         {

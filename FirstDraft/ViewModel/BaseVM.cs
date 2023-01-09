@@ -20,9 +20,8 @@ public partial class BaseVM : ObservableObject
 
     [ObservableProperty]
     bool _internetAvailable;
-
-    protected bool IsTransferingToOtherPage { get; private set; }
-    protected bool IsPerformingAction {  get; set; }  
+    [ObservableProperty]
+    public bool _isPerformingAction;  
 
 
     public BaseVM()
@@ -85,15 +84,15 @@ public partial class BaseVM : ObservableObject
 
     protected async Task NavigateTo(Task navTask)
     {
-        IsTransferingToOtherPage = true;
+        IsPerformingAction = true;
         await navTask;
-        IsTransferingToOtherPage = false;
+        IsPerformingAction = false;
     }
 
     protected async Task AddNewEntity(object entity)
     {
         IsPerformingAction = true;
-        using MyDBContext c = GetMyDBContextInstance();
+        using MyDBContext c = await GetMyDBContextInstance();
 
         if (c is null)
         {
@@ -113,33 +112,30 @@ public partial class BaseVM : ObservableObject
         if (_operationSucceeded)
         {
 
-            await 
-                NavigateTo(
-                    Shell.Current.GoToAsync("..")
-                );
+            await Shell.Current.GoToAsync("..");
         }
         IsPerformingAction = false;
     }
     protected bool IsNavigating()
     {
-        return !IsTransferingToOtherPage;
+        return !IsPerformingAction;
     }
     protected bool CanExecuteAction()
     {
 
         if (_task is not null && _task.Status == TaskStatus.Running
-            || IsTransferingToOtherPage || IsPerformingAction)
+            || IsPerformingAction || IsPerformingAction)
         {
             return false;
         }
         return true;
     }
 
-    protected MyDBContext GetMyDBContextInstance()
+    async protected Task<MyDBContext> GetMyDBContextInstance()
     {
         if (!_internetAvailable)
         {
-            DisplayNotification("Can not connect to databse.");
+            await DisplayNotification("Can not connect to databse.");
             return null;
         }
         
@@ -149,7 +145,7 @@ public partial class BaseVM : ObservableObject
         }
         catch(Exception ex)
         {
-            DisplayNotification(ex);
+            await DisplayNotification(ex);
             return null;
         }
     }

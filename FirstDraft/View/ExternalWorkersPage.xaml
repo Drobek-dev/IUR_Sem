@@ -16,6 +16,7 @@
         </Style>
     </ContentPage.Resources>
     <VerticalStackLayout>
+        <ActivityIndicator IsRunning="{Binding IsPerformingAction}" Color="{StaticResource festivalColor}"/>
         
         <HorizontalStackLayout HorizontalOptions="Center" >
             <VerticalStackLayout >

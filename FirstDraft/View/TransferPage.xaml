@@ -13,6 +13,8 @@
 
     <VerticalStackLayout>
 
+        <ActivityIndicator x:Name="activityIndicator" IsRunning="{Binding IsPerformingAction}" />
+
         <controls:InternetConnectionControl 
             IsVisible="{Binding InternetAvailable, Converter={StaticResource internetLostConverter} }"/>
 

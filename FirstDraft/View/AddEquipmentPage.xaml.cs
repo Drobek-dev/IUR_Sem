@@ -1,4 +1,5 @@
-﻿using FirstDraft.Support;
+﻿
+using FirstDraft.Support;
 using FirstDraft.ViewModel;
 
 namespace FirstDraft.View;
@@ -36,7 +37,12 @@ public partial class AddEquipmentPage : ContentPage
             addEqpButtonBorder.Style = (Style)buttonBorderStyle;
         }
 
-        
+        if (App.Current.Resources.TryGetValue($"{vm.Location}Color", out object color))
+        {
+            activityIndicator.Color = (Color)color;
+        }
+
+
 
         Title = vm?.LocationName is not null ? $"Přidat vybavení do {GetLocInCzech()} \"{vm.LocationName}\"" : Title;
         Title = vm?.Location?.Equals(GlobalValues.bin)?? false ? $"Přidat vybavení do Koše" : Title;

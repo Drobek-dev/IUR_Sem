@@ -11,6 +11,8 @@
 
     <VerticalStackLayout Margin="0,50,0,0">
 
+        <ActivityIndicator IsRunning="{Binding IsPerformingAction}" Color="{StaticResource warehouseColor}"/>
+
         <controls:InternetConnectionControl 
             IsVisible="{Binding InternetAvailable, Converter={StaticResource internetLostConverter} }"/>
         

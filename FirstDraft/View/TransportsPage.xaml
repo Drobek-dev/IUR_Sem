@@ -12,6 +12,8 @@
 
     <VerticalStackLayout>
 
+        <ActivityIndicator IsRunning="{Binding IsPerformingAction}" Color="{StaticResource transportColor}"/>
+
         <controls:InternetConnectionControl 
             IsVisible="{Binding InternetAvailable, Converter={StaticResource internetLostConverter} }"/>
 

@@ -10,11 +10,12 @@ public partial class App : Application
 	public App()
 	{
 		InitializeComponent();
-        const int WindowWidth = 1500;
-        const int WindowHeight = 940;
+        
         Microsoft.Maui.Handlers.WindowHandler.Mapper.AppendToMapping(nameof(IWindow), (handler, view) =>
         {
 #if WINDOWS
+            const int WindowWidth = 1500;
+            const int WindowHeight = 940;
             var mauiWindow = handler.VirtualView;
             var nativeWindow = handler.PlatformView;
             nativeWindow.Activate();
