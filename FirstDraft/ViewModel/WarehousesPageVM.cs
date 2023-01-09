@@ -77,6 +77,12 @@ public partial class WarehousesPageVM : BaseVM
     [RelayCommand(CanExecute = nameof(CanExecuteAction))]
     async Task AddNew ()
         {
+
+        if (! await AreInputsValid(
+            standartEntries: new string[] { NewWarehouseAddress, NewWarehouseName })
+            )
+            return;
+
         Warehouse w = new() { Name = NewWarehouseName, Address = NewWarehouseAddress };
         await AddNewEntity(w);
         

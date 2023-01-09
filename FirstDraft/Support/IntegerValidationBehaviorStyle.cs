@@ -53,7 +53,7 @@ public partial class IntegerValidationBehaviorStyle : Behavior<Entry>
             return;
 
         bool isValid = false;
-        if (int.TryParse(args?.NewTextValue, out int _))
+        if (int.TryParse(args?.NewTextValue, out int _) && !args.NewTextValue.Contains('-'))
             isValid = true;
 
         ((Entry)sender).BackgroundColor = isValid ? Colors.Green : Colors.Black;

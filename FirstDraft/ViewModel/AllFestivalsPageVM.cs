@@ -106,6 +106,8 @@ public partial class AllFestivalsPageVM : BaseVM, INotifyPropertyChanged
     [RelayCommand(CanExecute =nameof(CanExecuteAction))]
     async Task AddNew()
     {
+        if (! await AreInputsValid(standartEntries:new string[] { NewFestivalName, Location}))
+            return;
 
         Festival f = new() { Name = NewFestivalName, 
             StartDate = DateOnly.FromDateTime(NewStartDate), 

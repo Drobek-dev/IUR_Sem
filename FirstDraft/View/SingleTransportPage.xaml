@@ -86,7 +86,7 @@
                     <Label Text="Telefon na řidiče: "
                         Style="{StaticResource transportLabelStyle}"/>
                     <Entry Text="{Binding Transport.DriverPhone}"
-                            Style="{StaticResource baseEntryStyle}"/>
+                            Style="{StaticResource basePhoneEntryStyle}"/>
                 </HorizontalStackLayout>
             </Border>
 

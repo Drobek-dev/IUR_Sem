@@ -30,7 +30,7 @@ public partial class AddEquipmentPageVM : BaseVM
     string _newEquipmentName = "";
 
     [ObservableProperty]
-    int _newEquipmentQuantity = 1;
+    string _newEquipmentQuantity = "1";
 
     [ObservableProperty]
     DateTime _newDateOfPurchase = DateTime.Now;
@@ -40,10 +40,13 @@ public partial class AddEquipmentPageVM : BaseVM
     [RelayCommand(CanExecute = nameof(CanExecuteAction))]
     async Task AddNewEquipment()
     {
+        if (! await AreInputsValid(
+            standartEntries: new string[] { NewEquipmentName},
+            integerStrings: new string[] {NewEquipmentQuantity})
+            )
+            return;
 
         IsPerformingAction = true;
-
-       
         using MyDBContext c = new(Support.TypeOfDatabase.CloudPostgreSQL);
 
         if(c is null)
@@ -52,7 +55,7 @@ public partial class AddEquipmentPageVM : BaseVM
             return;
         }
         Equipment e = new() { Name = _newEquipmentName, Location = Location, 
-            Quantity = NewEquipmentQuantity, DayOfPurchase = DateOnly.FromDateTime(NewDateOfPurchase) };
+            Quantity = int.Parse(NewEquipmentQuantity), DayOfPurchase = DateOnly.FromDateTime(NewDateOfPurchase) };
         
         c.Equipment.Add(e);
 

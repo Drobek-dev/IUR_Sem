@@ -42,6 +42,11 @@ public partial class SingleWarehousePageVM : BaseVM
     [RelayCommand(CanExecute =nameof(CanExecuteAction))]
     async Task SaveChanges()
     {
+        if (! await AreInputsValid(
+            standartEntries: new string[] { Warehouse.Name, Warehouse.Address})
+            )
+            return;
+
         IsPerformingAction = true;  
         using MyDBContext c = GetMyDBContextInstance();
 

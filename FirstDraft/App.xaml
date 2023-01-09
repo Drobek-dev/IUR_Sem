@@ -65,17 +65,21 @@
                 <Setter Property="MinimumWidthRequest" Value="150"/>
                 <Setter Property="MaxLength" Value="25"/>
                 <Setter Property="support:TextValidationBehaviorStyle.AttachBehavior" Value="true" />
-                
+                <Setter Property="ToolTipProperties.Text" Value="Název musí obsahovat alespoň dva charaktery."/>
+
             </Style>
 
             <Style x:Key="basePhoneEntryStyle" TargetType="Entry" BasedOn="{StaticResource baseEntryStyle}">
                 
                 <Setter Property="support:PhoneStringValidationBehaviorStyle.AttachBehavior" Value="true" />
+                <Setter Property="ToolTipProperties.Text" Value="Alespoň 7 číslic. Předvolba je volitelná. Písmena nejsou povolena."/>
             </Style>
 
             <Style x:Key="baseEmailEntryStyle" TargetType="Entry" BasedOn="{StaticResource baseEntryStyle}">
 
                 <Setter Property="support:EmailValidationBehaviorStyle.AttachBehavior" Value="true" />
+                <Setter Property="ToolTipProperties.Text" Value="název@doména.(alespoň dvě písmena)"/>
+               
             </Style>
             
             <Style x:Key="baseDateEntryStyle" TargetType="Entry" BasedOn="{StaticResource baseEntryStyle}">
@@ -91,6 +95,7 @@
             <Style x:Key="baseIntegerEntryStyle" TargetType="Entry" BasedOn="{StaticResource baseEntryStyle}">
 
                 <Setter Property="support:IntegerValidationBehaviorStyle.AttachBehavior" Value="true" />
+                <Setter Property="ToolTipProperties.Text" Value="Jsou povoleny pouze celočíselné kladné hodnoty."/>
             </Style>
 
             <Style x:Key="baseButtonStyle" TargetType="Button">

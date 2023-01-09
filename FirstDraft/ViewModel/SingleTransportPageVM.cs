@@ -41,6 +41,12 @@ public partial class SingleTransportPageVM : BaseVM
     [RelayCommand(CanExecute = nameof(CanExecuteAction))]
     async Task SaveChanges()
     {
+        if (! await AreInputsValid(
+            standartEntries: new string[] { Transport.TransportName, Transport.DriverFullName, Transport.Destination, Transport.StartingPosition},
+            phoneNumbers: new string[] {Transport.DriverPhone})
+            )
+            return;
+
         IsPerformingAction = true;
         using MyDBContext c = GetMyDBContextInstance();
 

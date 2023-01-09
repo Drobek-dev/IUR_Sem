@@ -72,6 +72,11 @@ public partial class SingleFestivalPageVM : BaseVM
     [RelayCommand(CanExecute = nameof(CanExecuteAction))]
     async Task SaveChanges()
     {
+        if (! await AreInputsValid(
+            standartEntries: new string[] { Festival.Name, Festival.Location })
+            )
+            return;
+
         IsPerformingAction = true;  
         using MyDBContext c = GetMyDBContextInstance();
 

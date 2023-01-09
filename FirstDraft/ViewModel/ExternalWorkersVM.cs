@@ -19,7 +19,7 @@ public partial class ExternalWorkersVM : BaseVM
     [ObservableProperty] string _function = "";
     [ObservableProperty] string _firstName = "";
     [ObservableProperty] string _lastName = "";
-    [ObservableProperty] string _PhoneNumber = "";
+    [ObservableProperty] string _phoneNumber = "";
     [ObservableProperty] string _Email = "";
 
     [ObservableProperty]
@@ -34,6 +34,13 @@ public partial class ExternalWorkersVM : BaseVM
     [RelayCommand(CanExecute =nameof(CanExecuteAction))]
     async Task AddWorker()
     {
+        if (! await AreInputsValid(
+            standartEntries: new string[] { Function, FirstName, LastName },
+            phoneNumbers: new string[] { PhoneNumber },
+            emails: new string[] { Email })
+            )
+            return;
+
         IsPerformingAction = true;
         ExternalWorker ew = new() { FirstName = FirstName, LastName = LastName, Function = Function, PhoneNumber = PhoneNumber, Email = Email };
         using MyDBContext c = new(Support.TypeOfDatabase.CloudPostgreSQL);
@@ -59,6 +66,12 @@ public partial class ExternalWorkersVM : BaseVM
     [RelayCommand(CanExecute = nameof(CanExecuteAction))]
     async Task UpdateWorker(ExternalWorker ew)
     {
+        if (! await AreInputsValid(
+           standartEntries: new string[] { ew.Function, ew.FirstName, ew.LastName },
+           phoneNumbers: new string[] { ew.PhoneNumber },
+           emails: new string[] { ew.Email })
+           )
+            return;
         IsPerformingAction = true;
         using MyDBContext c = new(Support.TypeOfDatabase.CloudPostgreSQL);
         if (c is null)

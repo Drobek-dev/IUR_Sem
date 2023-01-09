@@ -1,4 +1,5 @@
 ﻿
+
 using CommunityToolkit.Mvvm.ComponentModel;
 using FirstDraft.Model.DatabaseFramework;
 using FirstDraft.Model.DatabaseFramework.Entities;
@@ -175,33 +176,58 @@ public partial class BaseVM : ObservableObject
 
     // Input Check Begin --------------------------------------------------
 
-    protected static bool AreInputsValid(string?[] standartEntries = null, string?[] emails = null, 
-        string?[] phoneNumbers = null, string?[] dateOnlyStrings = null,
-        string?[] dateTimeStrings = null)
+    async protected static Task<bool> AreInputsValid(string[] standartEntries = null, string[] emails = null, 
+        string[] phoneNumbers = null, string[] dateOnlyStrings = null,
+        string[] dateTimeStrings = null, string[] integerStrings = null)
     {
+        bool isAllInputValid = true;
         if(standartEntries is not null && !IsOfTypeStandartEntry(standartEntries))
         {
-            return false;
+            isAllInputValid = false;
         }
         if(emails is not null && !IsOfTypeEmail(emails))
         {
-            return false;
+            isAllInputValid = false;
         }
         if (phoneNumbers is not null && !IsOfTypePhoneString(phoneNumbers))
         {
-            return false;
+            isAllInputValid = false;
         }
         if(dateOnlyStrings is not null && !IsOfTypeDateOnly(dateOnlyStrings))
         {
-            return false;
+            isAllInputValid = false;
         }
         if(dateTimeStrings is not null && !IsOfTypeDateTime(dateTimeStrings))
         {
+            isAllInputValid = false;
+        }
+        if (integerStrings is not null && !IsOfTypeInteger(integerStrings))
+        {
+            isAllInputValid = false;
+        }
+
+        if (isAllInputValid)
+            return true;
+        else
+        {
+            await DisplayNotification($"Všechna políčka pro vyplnění musí svítit zeleně.{Environment.NewLine}" +
+                $"Každé vstupní políčko obsahuje nápovědu. {Environment.NewLine}");
             return false;
+        }
+
+    }
+
+    protected static bool IsOfTypeInteger(string[] strings)
+    {
+        foreach (string s in strings)
+        {
+            if(!int.TryParse(s, out int _))
+            {
+                return false;
+            }
         }
         return true;
     }
-
     protected static bool IsOfTypeStandartEntry(string[] strings)
     {
         foreach (string s in strings)

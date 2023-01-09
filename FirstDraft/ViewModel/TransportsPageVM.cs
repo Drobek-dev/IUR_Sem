@@ -93,6 +93,11 @@ public partial class TransportsPageVM : BaseVM
     [RelayCommand(CanExecute = nameof(CanExecuteAction))]
     async Task AddNew ()
     {
+        if (! await AreInputsValid(
+            standartEntries: new string[] { NewTransportName, NewTransportDriverFullName, NewTransportDestination, NewTransportStartingPosition },
+            phoneNumbers: new string[] { NewTransportDriverPhone })
+            )
+            return;
 
         DateTime d = DateTime.SpecifyKind(NewTransportEstimatedArrivalDate, DateTimeKind.Utc);
         Transport t = new() { TransportName = NewTransportName, DriverFullName = NewTransportDriverFullName, StartingPosition = NewTransportStartingPosition

@@ -47,7 +47,7 @@ public class TextValidationBehaviorStyle : Behavior<Entry>
     {
 
         bool isValid = true;
-        if (args?.NewTextValue?.Length < 2)
+        if (args?.NewTextValue?.Length - args.NewTextValue?.Count(Char.IsWhiteSpace) < 2)
             isValid = false;
         ((Entry)sender).BackgroundColor = isValid ? Colors.Green : Colors.Black;
     }
